@@ -13,23 +13,13 @@ namespace SpecialProjectInventory
 {
     public partial class UserModuleForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
         SqlCommand cm = new SqlCommand();
 
 
         public UserModuleForm()
         {
             InitializeComponent();
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void picBoxClose_Click(object sender, EventArgs e)
@@ -50,27 +40,27 @@ namespace SpecialProjectInventory
 
                 if (MessageBox.Show("Are you sure you want to save this user?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    cm = new SqlCommand("INSERT INTO tbUser(username,fullname,password,phone)VALUES(@username,@fullname,@password,@phone)", con);
-                    cm.Parameters.AddWithValue("@username", txtUserNameUM.Text);
-                    cm.Parameters.AddWithValue("@fullname", txtFullnameUM.Text);
-                    cm.Parameters.AddWithValue("@password", txtPasswordUM.Text);
-                    cm.Parameters.AddWithValue("@phone", txtPhoneUM.Text);
-                    con.Open();
-                    cm.ExecuteNonQuery();
-                    con.Close();
+                    using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("INSERT INTO tbUser(username, fullname, password, phone) VALUES (@username, @fullname, @password, @phone)", con))
+                        {
+                            cm.Parameters.AddWithValue("@username", txtUserNameUM.Text);
+                            cm.Parameters.AddWithValue("@fullname", txtFullnameUM.Text);
+                            cm.Parameters.AddWithValue("@password", txtPasswordUM.Text);
+                            cm.Parameters.AddWithValue("@phone", txtPhoneUM.Text);
+                            con.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
                     MessageBox.Show("User has been successfully saved.");
                     Clear();
                 }
-
-
             }
             catch (Exception ex)
             {
 
                 MessageBox.Show(ex.Message);
             }
-
-
 
         }
 
@@ -104,20 +94,23 @@ namespace SpecialProjectInventory
 
                 if (MessageBox.Show("Are you sure you want to update this user?", "Update Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    using (SqlConnection con = new SqlConnection(@"Your Connection String"))
+                    {
+                        using (SqlCommand cm = new SqlCommand("UPDATE tbUser SET fullname = @fullname, password=@password, phone=@phone WHERE username LIKE @username", con))
+                        {
+                            cm.Parameters.AddWithValue("@username", txtUserNameUM.Text);
+                            cm.Parameters.AddWithValue("@fullname", txtFullnameUM.Text);
+                            cm.Parameters.AddWithValue("@password", txtPasswordUM.Text);
+                            cm.Parameters.AddWithValue("@phone", txtPhoneUM.Text);
+                            con.Open();
+                            cm.ExecuteNonQuery();
+                        }
 
-                    cm = new SqlCommand("UPDATE tbUser SET fullname = @fullname, password=@password, phone=@phone WHERE username LIKE '"+txtUserNameUM.Text +"' ", con);
-                    cm.Parameters.AddWithValue("@fullname", txtFullnameUM.Text);
-                    cm.Parameters.AddWithValue("@password", txtPasswordUM.Text);
-                    cm.Parameters.AddWithValue("@phone", txtPhoneUM.Text);
-                    con.Open();
-                    cm.ExecuteNonQuery();
-                    con.Close();
+
+                    }
                     MessageBox.Show("User has been successfully updated!");
                     this.Dispose();
-                   
                 }
-
-
             }
             catch (Exception ex)
             {

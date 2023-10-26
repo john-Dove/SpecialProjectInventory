@@ -17,11 +17,6 @@ namespace SpecialProjectInventory
             InitializeComponent();
         }
 
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
         /*private void customerButton1_Click(object sender, EventArgs e)
         {
             this was taken out and placed, then main forms stop showing, there a code in main from.cs add to commented out
@@ -31,8 +26,11 @@ namespace SpecialProjectInventory
         private Form activeForm = null;
         private void openChildForm(Form childForm)
         {
-            if(activeForm != null) 
-               activeForm.Close();
+            if(activeForm != null)
+            {
+                activeForm.Close();
+
+            }
             activeForm = childForm;
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;

@@ -118,7 +118,7 @@
             this.label5.Size = new System.Drawing.Size(75, 13);
             this.label5.TabIndex = 16;
             this.label5.Text = "CUSTOMERS";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            //this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label2
             // 

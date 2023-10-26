@@ -13,7 +13,7 @@ namespace SpecialProjectInventory
 {
     public partial class ProductForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
         SqlCommand cm = new SqlCommand();
         SqlDataReader dr;
 
@@ -27,19 +27,31 @@ namespace SpecialProjectInventory
         {
             int i = 0;
             dgvProduct.Rows.Clear();
-            cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE '%"+txtSearch.Text+"%'", con);
-            con.Open();
-            dr = cm.ExecuteReader();
-            while (dr.Read())
+            string searchQuery = "%" + txtSearch.Text + "%";
+            try
             {
-                i++;
-                dgvProduct.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString(), dr[4].ToString(), dr[5].ToString());
+                using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                {
+                    cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE @search", connection);
+                    cm.Parameters.AddWithValue("@search", searchQuery);
+                    connection.Open();
+                    dr = cm.ExecuteReader();    
+                    while(dr.Read())
+                    {
+                        i++;
+                        dgvProduct.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString(), dr[4].ToString(), dr[5].ToString());
+
+                    }
+                    dr.Close();
+                }
+
+             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            dr.Close();
-            con.Close();
 
-
-        }
+    }
 
         private void btncatAdd_Click(object sender, EventArgs e)
         {
@@ -72,19 +84,26 @@ namespace SpecialProjectInventory
                 productModule.ShowDialog();
 
             }
-            else if (colName == "Delete")
+            if (colName == "Delete")
             {
                 if (MessageBox.Show("Are you sure you want to delete this product?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    con.Open();
-                    cm = new SqlCommand("DELETE FROM tbProduct WHERE pid LIKE '" + dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString() + "'", con);
-                    cm.ExecuteNonQuery();
-                    con.Close();
-                    MessageBox.Show("Record has been successfully deleted!");
-
-
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                        {
+                            connection.Open();
+                            cm = new SqlCommand("DELETE FROM tbProduct WHERE pid = @pid", connection);
+                            cm.Parameters.AddWithValue("@pid", dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString());
+                            cm.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Record has been successfully deleted!");
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-
 
             }
             LoadProduct();
@@ -94,8 +113,6 @@ namespace SpecialProjectInventory
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadProduct();
-
-
 
         }
     }

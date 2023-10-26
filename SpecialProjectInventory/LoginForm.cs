@@ -13,9 +13,10 @@ namespace SpecialProjectInventory
 {
     public partial class LoginForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
+
+        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-CAAM698\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+       // SqlCommand cm = new SqlCommand();
+        //SqlDataReader dr;
 
         public LoginForm()
         {
@@ -24,28 +25,33 @@ namespace SpecialProjectInventory
 
         private void button1_Click(object sender, EventArgs e)  //LOGIN BUTTON CLICK
         {
+            string sql = "SELECT * FROM tbUser WHERE username=@username AND password=@password";
             try
             {
-                cm = new SqlCommand("SELECT * FROM tbUser WHERE username=@username AND password=@password", con);
-                cm.Parameters.AddWithValue("@username", txtUserName.Text);
-                cm.Parameters.AddWithValue("@password", txtPassword.Text);
-                con.Open();
-                dr = cm.ExecuteReader();
-                dr.Read();
-                if(dr.HasRows)
+                using (SqlConnection connection = new SqlConnection (SpecialProjectInventory.DatabaseConfig.ConnectionString))
                 {
-                    MessageBox.Show("welcome "+ dr["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    MainForm main = new MainForm();
-                    this.Hide();
-                    main.ShowDialog();
-                    
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@username", txtUserName.Text);
+                        command.Parameters.AddWithValue("@password", txtPassword.Text);
+
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            MessageBox.Show("Welcome " + reader["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MainForm main = new MainForm();
+                            this.Hide();
+                            main.ShowDialog();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
 
                 }
-                else
-                {
-                    MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                con.Close();
 
             }
             catch (Exception ex)

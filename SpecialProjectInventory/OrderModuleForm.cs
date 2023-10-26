@@ -13,8 +13,9 @@ namespace SpecialProjectInventory
 {
     public partial class OrderModuleForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+        SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString);
         SqlCommand cm = new SqlCommand();
+  
         SqlDataReader dr;
         int qty = 0;            //ensures that amount ordering doesnt goes over what is in stock con't
 

@@ -14,10 +14,8 @@ namespace SpecialProjectInventory
 {
     public partial class CustomerForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
-
+        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+      
         public CustomerForm()
         {
             InitializeComponent();
@@ -28,18 +26,21 @@ namespace SpecialProjectInventory
         {
             int i = 0;
             dgvCustomer.Rows.Clear();
-            cm = new SqlCommand("SELECT * FROM  tbCustomer", con);  // should be tbCustomer <--- recheck back this
-            con.Open();
-            dr = cm.ExecuteReader();
-            while (dr.Read())
+            using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
             {
-                i++;
-                dgvCustomer.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString());
+                using (SqlCommand cm = new SqlCommand("SELECT * FROM tbCustomer", connection))
+                {
+                    connection.Open();
+                    using (SqlDataReader dr = cm.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            i++;
+                            dgvCustomer.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString());
+                        }
+                    }
+                }
             }
-            dr.Close();
-            con.Close();
-
-
         }
 
         private void btncusAdd_Click(object sender, EventArgs e)
@@ -51,9 +52,9 @@ namespace SpecialProjectInventory
             LoadCustomer();
 
         }
-
+        //this section edits and deletes record when one presses the pencil or the trash can
         private void dgvCustomer_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {//this section edits and deletes record when one presses the pencil or the tras can
+        {
 
             string colName = dgvCustomer.Columns[e.ColumnIndex].Name;
             if (colName == "Edit")
@@ -68,19 +69,20 @@ namespace SpecialProjectInventory
                 customerModule.ShowDialog();
 
             }
-            else if (colName == "Delete")
+            if (colName == "Delete")
             {
                 if (MessageBox.Show("Are you sure you want to delete this customer?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    con.Open();
-                    cm = new SqlCommand("DELETE FROM tbCustomer WHERE cid LIKE '" + dgvCustomer.Rows[e.RowIndex].Cells[1].Value.ToString() + "'", con);
-                    cm.ExecuteNonQuery();
-                    con.Close();
+                    using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("DELETE FROM tbCustomer WHERE cid LIKE '" + dgvCustomer.Rows[e.RowIndex].Cells[1].Value.ToString() + "'", connection))
+                        {
+                            connection.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
                     MessageBox.Show("Record has been successfully deleted!");
-
-
                 }
-
 
             }
             LoadCustomer();

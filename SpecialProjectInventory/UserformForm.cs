@@ -13,11 +13,8 @@ namespace SpecialProjectInventory
 {
     public partial class UserformForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
-
-
+        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+        
         public UserformForm()
         {
             InitializeComponent();
@@ -28,22 +25,26 @@ namespace SpecialProjectInventory
         {
             int i = 0;
             dgvUser.Rows.Clear();
-            cm = new SqlCommand("SELECT * FROM  tbUser", con);
-            con.Open();
-            dr = cm.ExecuteReader();
-            while(dr.Read()) 
+            using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
             {
-                i++;
-                dgvUser.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString());
+                using (SqlCommand cm = new SqlCommand("SELECT * FROM tbUser", con))
+                {
+                    con.Open();
+                    using (SqlDataReader dr = cm.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            i++;
+                            dgvUser.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString());
+                        }
+                    }
+                }
             }
-            dr.Close();
-            con.Close();
-
 
         }
 
-        private void btncusAdd_Click(object sender, EventArgs e)        //user add button 
-        {//these are realted to the plus special button and its features
+        private void btncusAdd_Click(object sender, EventArgs e)  //user add button 
+        {//these are related to the plus special button and its features
             UserModuleForm userModule = new UserModuleForm();
             userModule.btnSave.Enabled = true;
             userModule.btnUpdateUM.Enabled = false;
@@ -69,19 +70,21 @@ namespace SpecialProjectInventory
                 userModule.ShowDialog();
 
             }
-            else if(colName == "Delete")
+            if (colName == "Delete")
             {
-                if(MessageBox.Show("Are you sure you want to delete this user?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) 
+                if (MessageBox.Show("Are you sure you want to delete this user?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    con.Open();
-                    cm = new SqlCommand("DELETE FROM tbUser WHERE username LIKE '" + dgvUser.Rows[e.RowIndex].Cells[1].Value.ToString() + "'", con);
-                    cm.ExecuteNonQuery();
-                    con.Close();
+                    using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("DELETE FROM tbUser WHERE username LIKE @username", con))
+                        {
+                            cm.Parameters.AddWithValue("@username", dgvUser.Rows[e.RowIndex].Cells[1].Value.ToString());
+                            con.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
                     MessageBox.Show("Record has been successfully deleted!");
-
-
                 }
-    
 
             }
             LoadUser();
