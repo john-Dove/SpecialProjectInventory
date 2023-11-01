@@ -45,6 +45,9 @@
             this.BtnClearUM = new System.Windows.Forms.Button();
             this.txtRepass = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.lblUserID = new System.Windows.Forms.Label();
+            this.lblUserRole = new System.Windows.Forms.Label();
+            this.cmbUserRole = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxClose)).BeginInit();
             this.SuspendLayout();
@@ -57,7 +60,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(630, 54);
+            this.panel1.Size = new System.Drawing.Size(638, 54);
             this.panel1.TabIndex = 0;
             // 
             // picBoxClose
@@ -86,43 +89,41 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(49, 95);
+            this.label2.Location = new System.Drawing.Point(49, 131);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 17);
             this.label2.TabIndex = 1;
             this.label2.Text = "User Name :";
-            //this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txtUserNameUM
             // 
-            this.txtUserNameUM.Location = new System.Drawing.Point(155, 92);
+            this.txtUserNameUM.Location = new System.Drawing.Point(155, 131);
             this.txtUserNameUM.Name = "txtUserNameUM";
-            this.txtUserNameUM.Size = new System.Drawing.Size(409, 20);
+            this.txtUserNameUM.Size = new System.Drawing.Size(408, 20);
             this.txtUserNameUM.TabIndex = 2;
             // 
             // txtFullnameUM
             // 
-            this.txtFullnameUM.Location = new System.Drawing.Point(155, 136);
+            this.txtFullnameUM.Location = new System.Drawing.Point(155, 171);
             this.txtFullnameUM.Name = "txtFullnameUM";
-            this.txtFullnameUM.Size = new System.Drawing.Size(409, 20);
+            this.txtFullnameUM.Size = new System.Drawing.Size(408, 20);
             this.txtFullnameUM.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(54, 139);
+            this.label3.Location = new System.Drawing.Point(54, 171);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 17);
             this.label3.TabIndex = 3;
             this.label3.Text = "Full Name :";
-            //this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtPasswordUM
             // 
-            this.txtPasswordUM.Location = new System.Drawing.Point(155, 179);
+            this.txtPasswordUM.Location = new System.Drawing.Point(155, 211);
             this.txtPasswordUM.Name = "txtPasswordUM";
-            this.txtPasswordUM.Size = new System.Drawing.Size(409, 20);
+            this.txtPasswordUM.Size = new System.Drawing.Size(408, 20);
             this.txtPasswordUM.TabIndex = 6;
             this.txtPasswordUM.UseSystemPasswordChar = true;
             // 
@@ -130,7 +131,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(57, 182);
+            this.label4.Location = new System.Drawing.Point(57, 211);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(77, 17);
             this.label4.TabIndex = 5;
@@ -138,16 +139,16 @@
             // 
             // txtPhoneUM
             // 
-            this.txtPhoneUM.Location = new System.Drawing.Point(155, 261);
+            this.txtPhoneUM.Location = new System.Drawing.Point(155, 291);
             this.txtPhoneUM.Name = "txtPhoneUM";
-            this.txtPhoneUM.Size = new System.Drawing.Size(409, 20);
+            this.txtPhoneUM.Size = new System.Drawing.Size(408, 20);
             this.txtPhoneUM.TabIndex = 8;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(77, 264);
+            this.label5.Location = new System.Drawing.Point(77, 294);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 17);
             this.label5.TabIndex = 7;
@@ -159,7 +160,7 @@
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(227, 310);
+            this.btnSave.Location = new System.Drawing.Point(227, 344);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(93, 38);
             this.btnSave.TabIndex = 9;
@@ -173,7 +174,7 @@
             this.btnUpdateUM.FlatAppearance.BorderSize = 0;
             this.btnUpdateUM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdateUM.ForeColor = System.Drawing.Color.White;
-            this.btnUpdateUM.Location = new System.Drawing.Point(349, 310);
+            this.btnUpdateUM.Location = new System.Drawing.Point(349, 344);
             this.btnUpdateUM.Name = "btnUpdateUM";
             this.btnUpdateUM.Size = new System.Drawing.Size(93, 38);
             this.btnUpdateUM.TabIndex = 10;
@@ -187,7 +188,7 @@
             this.BtnClearUM.FlatAppearance.BorderSize = 0;
             this.BtnClearUM.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnClearUM.ForeColor = System.Drawing.Color.White;
-            this.BtnClearUM.Location = new System.Drawing.Point(471, 310);
+            this.BtnClearUM.Location = new System.Drawing.Point(471, 344);
             this.BtnClearUM.Name = "BtnClearUM";
             this.BtnClearUM.Size = new System.Drawing.Size(93, 38);
             this.BtnClearUM.TabIndex = 11;
@@ -197,9 +198,9 @@
             // 
             // txtRepass
             // 
-            this.txtRepass.Location = new System.Drawing.Point(155, 219);
+            this.txtRepass.Location = new System.Drawing.Point(155, 251);
             this.txtRepass.Name = "txtRepass";
-            this.txtRepass.Size = new System.Drawing.Size(409, 20);
+            this.txtRepass.Size = new System.Drawing.Size(408, 20);
             this.txtRepass.TabIndex = 13;
             this.txtRepass.UseSystemPasswordChar = true;
             // 
@@ -207,17 +208,49 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(5, 222);
+            this.label6.Location = new System.Drawing.Point(5, 252);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(129, 17);
             this.label6.TabIndex = 12;
             this.label6.Text = "Re-Type Password :";
             // 
+            // lblUserID
+            // 
+            this.lblUserID.AutoSize = true;
+            this.lblUserID.Location = new System.Drawing.Point(68, 67);
+            this.lblUserID.Name = "lblUserID";
+            this.lblUserID.Size = new System.Drawing.Size(38, 13);
+            this.lblUserID.TabIndex = 14;
+            this.lblUserID.Text = "userID";
+            this.lblUserID.Visible = false;
+            // 
+            // lblUserRole
+            // 
+            this.lblUserRole.AutoSize = true;
+            this.lblUserRole.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserRole.Location = new System.Drawing.Point(65, 91);
+            this.lblUserRole.Name = "lblUserRole";
+            this.lblUserRole.Size = new System.Drawing.Size(69, 17);
+            this.lblUserRole.TabIndex = 15;
+            this.lblUserRole.Text = "User Role:";
+            // 
+            // cmbUserRole
+            // 
+            this.cmbUserRole.FormattingEnabled = true;
+            this.cmbUserRole.Location = new System.Drawing.Point(155, 90);
+            this.cmbUserRole.Name = "cmbUserRole";
+            this.cmbUserRole.Size = new System.Drawing.Size(408, 21);
+            this.cmbUserRole.TabIndex = 16;
+            this.cmbUserRole.Text = "Select A Role";
+            // 
             // UserModuleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 372);
+            this.ClientSize = new System.Drawing.Size(638, 425);
+            this.Controls.Add(this.cmbUserRole);
+            this.Controls.Add(this.lblUserRole);
+            this.Controls.Add(this.lblUserID);
             this.Controls.Add(this.txtRepass);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.BtnClearUM);
@@ -236,6 +269,7 @@
             this.Name = "UserModuleForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UserModuleForm";
+            this.Load += new System.EventHandler(this.UserModuleForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxClose)).EndInit();
@@ -262,5 +296,8 @@
         public System.Windows.Forms.TextBox txtPhoneUM;
         public System.Windows.Forms.TextBox txtRepass;
         private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.Label lblUserID;
+        private System.Windows.Forms.Label lblUserRole;
+        private System.Windows.Forms.ComboBox cmbUserRole;
     }
 }

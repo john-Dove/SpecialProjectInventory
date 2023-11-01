@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleHelper.cs" />
     <Compile Include="UserformForm.cs">
       <SubType>Form</SubType>
     </Compile>

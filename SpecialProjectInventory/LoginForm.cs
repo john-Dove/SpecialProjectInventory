@@ -25,7 +25,9 @@ namespace SpecialProjectInventory
 
         private void button1_Click(object sender, EventArgs e)  //LOGIN BUTTON CLICK
         {
-            string sql = "SELECT * FROM tbUser WHERE username=@username AND password=@password";
+            //string sql = "SELECT * FROM tbUser WHERE username=@username AND password=@password";
+            string sql = "SELECT tbUser.*, tbRole.roleName FROM tbUser INNER JOIN tbRole ON tbUser.roleID = tbRole.roleID WHERE username=@username AND password=@password";
+
             try
             {
                 using (SqlConnection connection = new SqlConnection (SpecialProjectInventory.DatabaseConfig.ConnectionString))
@@ -38,13 +40,22 @@ namespace SpecialProjectInventory
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
 
-                        if (reader.Read())
+                        /*if (reader.Read())
                         {
                             MessageBox.Show("Welcome " + reader["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             MainForm main = new MainForm();
                             this.Hide();
                             main.ShowDialog();
+                        }*/
+                        if (reader.Read())
+                        {
+                            MainForm.UserRole = reader["roleName"].ToString();
+                            MessageBox.Show("Welcome " + reader["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MainForm main = new MainForm();
+                            this.Hide();
+                            main.ShowDialog();
                         }
+
                         else
                         {
                             MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);

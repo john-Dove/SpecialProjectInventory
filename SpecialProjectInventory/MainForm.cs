@@ -12,17 +12,14 @@ namespace SpecialProjectInventory
 {
     public partial class MainForm : Form
     {
+        public static string UserRole { get; set; }
+
         public MainForm()
         {
             InitializeComponent();
         }
 
-        /*private void customerButton1_Click(object sender, EventArgs e)
-        {
-            this was taken out and placed, then main forms stop showing, there a code in main from.cs add to commented out
-        }*/
-
-        //to show subform form in mainform
+        // Shows subform form in mainform
         private Form activeForm = null;
         private void openChildForm(Form childForm)
         {
@@ -61,6 +58,37 @@ namespace SpecialProjectInventory
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Sets all buttons to false initially
+            btncusUsers.Visible = false;
+            btncusCustomer.Visible = false;
+            btncusCategories.Visible = false;
+            btncusProduct.Visible = false;
+            btncusOrders.Visible = false;
+
+            // Checks for Admin privileges
+            if (RoleHelper.IsAdmin())
+            {
+                btncusUsers.Visible = true;
+                btncusCustomer.Visible = true;
+                btncusCategories.Visible = true;
+                btncusProduct.Visible = true;
+                btncusOrders.Visible = true;
+            }
+
+            // Checks for Manager privileges
+            if (RoleHelper.IsManager())
+            {
+                btncusCustomer.Visible = true;
+                btncusCategories.Visible = true;
+                btncusProduct.Visible = true;
+                btncusOrders.Visible = true;
+            }
+
+            // Checks for Employee privileges
+            if (RoleHelper.IsEmployee())
+            {
+                btncusOrders.Visible = true;
+            }
 
         }
 
@@ -72,6 +100,20 @@ namespace SpecialProjectInventory
         private void btncusOrders_Click(object sender, EventArgs e)
         {
             openChildForm(new OrderForm());
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            // Hides the MainForm
+            this.Hide();
+
+            // Creates a new instance of the login form and show it
+            LoginForm loginForm = new LoginForm();
+            loginForm.ShowDialog();
+
+            // Closes the MainForm after logging out
+            this.Close();
+
         }
     }
 }
