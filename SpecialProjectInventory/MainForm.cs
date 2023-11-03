@@ -78,6 +78,7 @@ namespace SpecialProjectInventory
             // Checks for Manager privileges
             if (RoleHelper.IsManager())
             {
+                btncusUsers.Visible = true;
                 btncusCustomer.Visible = true;
                 btncusCategories.Visible = true;
                 btncusProduct.Visible = true;

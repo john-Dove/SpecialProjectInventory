@@ -110,6 +110,11 @@ ADD FOREIGN KEY (userRole) REFERENCES tbRole(roleID);*/
 /*UPDATE tbUser SET roleID = 3 WHERE username = 'brad';*/
 /*UPDATE tbUser SET roleID = 2 WHERE username = 'Simoney';*/
 
+/*ALTER TABLE tbUser ADD IsPasswordReset BIT NOT NULL DEFAULT 0;*/
+
+
+
+
 
 
 

@@ -15,81 +15,82 @@ namespace SpecialProjectInventory
     {
 
         //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-CAAM698\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-       // SqlCommand cm = new SqlCommand();
-        //SqlDataReader dr;
-
+       
         public LoginForm()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)  //LOGIN BUTTON CLICK
+        
+        private void BtnLogin_Click(object sender, EventArgs e)  // login query instructions
         {
-            //string sql = "SELECT * FROM tbUser WHERE username=@username AND password=@password";
             string sql = "SELECT tbUser.*, tbRole.roleName FROM tbUser INNER JOIN tbRole ON tbUser.roleID = tbRole.roleID WHERE username=@username AND password=@password";
 
             try
             {
-                using (SqlConnection connection = new SqlConnection (SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
                 {
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        command.Parameters.AddWithValue("@username", txtUserName.Text);
-                        command.Parameters.AddWithValue("@password", txtPassword.Text);
+                        command.Parameters.AddWithValue("@username", TxtUserName.Text);
+                        command.Parameters.AddWithValue("@password", TxtPassword.Text);
 
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
 
-                        /*if (reader.Read())
-                        {
-                            MessageBox.Show("Welcome " + reader["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            MainForm main = new MainForm();
-                            this.Hide();
-                            main.ShowDialog();
-                        }*/
                         if (reader.Read())
                         {
                             MainForm.UserRole = reader["roleName"].ToString();
-                            MessageBox.Show("Welcome " + reader["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            MainForm main = new MainForm();
-                            this.Hide();
-                            main.ShowDialog();
-                        }
+                            int userID = (int)reader["userID"];
+                            // Checks whether a password reset is required
+                            if (IsPasswordResetRequired(TxtUserName.Text))
+                            {
+                                // Informs the user and then redirect to the Change Password form it is
+                                MessageBox.Show("You are required to reset your password before proceeding.", "PASSWORD RESET REQUIRED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                ShowChangePasswordForm(userID, TxtUserName.Text);
+                                this.Hide();
 
+                            }
+                            else
+                            {
+                                MessageBox.Show("Welcome " + reader["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MainForm main = new MainForm();
+                                this.Hide();
+                                main.ShowDialog();
+                            }
+                        }
                         else
                         {
                             MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
-
-
         }
+
+
+
 
         private void cbPassword_CheckedChanged(object sender, EventArgs e)
         {
             if(cbPassword.Checked == false) 
             {
-                txtPassword.UseSystemPasswordChar = true;
+                TxtPassword.UseSystemPasswordChar = true;
             }
             else
             {
-                txtPassword.UseSystemPasswordChar = false;
+                TxtPassword.UseSystemPasswordChar = false;
             }
         }
 
         private void lblClear_Click(object sender, EventArgs e)
         {
-            txtUserName.Clear();
-            txtPassword.Clear();
+            TxtUserName.Clear();
+            TxtPassword.Clear();
         }
 
         private void picBoxClose_Click(object sender, EventArgs e)
@@ -99,6 +100,31 @@ namespace SpecialProjectInventory
                 Application.Exit();
             }
         }
+
+        private bool IsPasswordResetRequired(string username)
+        {
+            using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+            {
+                string query = "SELECT isPasswordReset FROM tbUser WHERE username = @username";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+
+                    connection.Open();
+                    bool resetRequired = (bool)command.ExecuteScalar();
+
+                    return resetRequired;
+                }
+            }
+        }
+
+        private void ShowChangePasswordForm(int userID, string username)
+        {
+            PasswordResetForm changePasswordForm = new PasswordResetForm(userID, username);
+            changePasswordForm.ShowDialog();
+        }
+
+
 
 
 
