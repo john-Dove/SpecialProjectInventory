@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-
 
 namespace SpecialProjectInventory
 {
     public partial class CustomerForm : Form
-    {
-        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-      
+    {    
         public CustomerForm()
         {
             InitializeComponent();
             LoadCustomer();
         }
 
-        public void LoadCustomer()  //allows data in the system to show in the data grid view here
+        public void LoadCustomer()  // Allows data in the system to show in the data grid view here
         {
             int i = 0;
             dgvCustomer.Rows.Clear();
@@ -43,7 +33,7 @@ namespace SpecialProjectInventory
             }
         }
 
-        private void btncusAdd_Click(object sender, EventArgs e)
+        private void BtnCusAdd_Click(object sender, EventArgs e)
         {
             CustomerModuleForm moduleForm = new CustomerModuleForm();
             moduleForm.btnSave.Enabled = true;
@@ -52,8 +42,8 @@ namespace SpecialProjectInventory
             LoadCustomer();
 
         }
-        //this section edits and deletes record when one presses the pencil or the trash can
-        private void dgvCustomer_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        // This section edits and deletes record when the pencil or the trash can is clicked
+        private void DgvCustomer_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
             string colName = dgvCustomer.Columns[e.ColumnIndex].Name;

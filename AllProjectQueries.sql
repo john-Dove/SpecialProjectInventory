@@ -112,6 +112,117 @@ ADD FOREIGN KEY (userRole) REFERENCES tbRole(roleID);*/
 
 /*ALTER TABLE tbUser ADD IsPasswordReset BIT NOT NULL DEFAULT 0;*/
 
+/*EXEC sp_rename 'tbUser.IsPasswordReset', 'isPasswordReset', 'COLUMN';*/
+
+/*ALTER TABLE tbUser
+ALTER COLUMN password NVARCHAR(64) NOT NULL;*/
+
+/*ALTER TABLE tbOrder ALTER COLUMN price DECIMAL(10, 2);*/
+/*ALTER TABLE tbOrder ALTER COLUMN total DECIMAL(10, 2);*/
+
+/*CREATE TABLE tbAlertSettings (
+    alertID INT PRIMARY KEY IDENTITY(1,1),
+    alertType VARCHAR(255),
+    threshold INT,
+    isEnabled BIT
+);*/
+
+/*INSERT INTO tbAlertSettings (alertType, threshold, isEnabled) VALUES 
+    ('Low-Stock', 0, 1), -- Assuming a default threshold of 0 and enabled status for Low-Stock alerts.
+    ('Expiring Products', 0, 1), -- Assuming a default threshold of 0 and enabled status for Expiring Products alerts.
+    ('Pending Orders', 0, 1); -- Assuming a default threshold of 0 and enabled status for Pending Orders alerts.
+
+*/
+/*CREATE TABLE tbAlertLog (
+    logID INT PRIMARY KEY IDENTITY(1,1),
+    alertID INT,
+    triggeredOn DATETIME,
+    message VARCHAR(255),
+    isResolved BIT,
+    FOREIGN KEY (alertID) REFERENCES tbAlertSettings(alertID)
+);
+*/
+/*ALTER TABLE tbProduct
+ADD LowStockThreshold INT NOT NULL DEFAULT 10;*/
+
+/*ALTER TABLE tbProduct
+ADD expiredatee DATE NULL; -- NULL if not all products have expiration dates*/
+
+/*ALTER TABLE tbOrder
+ADD status VARCHAR(50) DEFAULT 'Pending'; -- Add a default status*/
+
+/*EXEC sp_rename 'tbProduct.LowStockThreshold', 'lowstockthreshold', 'COLUMN';*/
+
+/*SELECT *
+FROM information_schema.tables;*/
+
+/*SELECT *
+FROM information_schema.columns;*/
+
+/*sp_help tbOrder;*/
+
+/*USE SpecialProjectDBs;
+SELECT * FROM information_schema.tables;*/
+
+/*SELECT * FROM information_schema.tables WHERE table_name = 'tbProduct'*/
+/*INSERT INTO tbProduct (pname, pqty, pprice, pdescription, pcategory, lowstockthreshold, expiredatee)
+VALUES ('Product Name', 10, 100, 'Description', 'Category', 5, '2023-01-01');*/
+
+/*INSERT INTO tbProduct (pname, pqty, pprice, pdescription, pcategory, lowstockthreshold, expiredatee)
+VALUES ('Product B', 20, 19.99, 'Description B', 'Category B', 15, GETDATE() + 2); -- Expiring in 2 days*/
+
+/*INSERT INTO tbOrder (odate, pid, cid, qty, price, total, status)
+VALUES (GETDATE() - 5, 1, 1, 5, 9.99, 49.95, 'Pending');*/
+
+/*SELECT * FROM tbAlertLog WHERE Message LIKE '%Test Product%';*/
+/*ALTER TABLE tbProduct
+ALTER COLUMN pprice money;*/
+
+/*INSERT INTO tbAlertLog (Message, TriggeredOn, IsResolved) VALUES ('Test Alert', GETDATE(), 0);*/
+/*ALTER TABLE tbAlertLog
+ADD LastCheckedOn DATETIME NULL;*/
+
+-- Delete all entries from the table
+/*DELETE FROM tbAlertLog;
+-- Reset the identity column
+DBCC CHECKIDENT ('tbAlertLog', RESEED, 0);*/
+
+/*EXEC sp_rename 'tbAlertLog.LastCheckedOn', 'lastCheckedOn', 'COLUMN';*/
+
+/*ALTER TABLE tbProduct
+ADD lastCheckedOn DATETIME NULL;*/
+
+/*TRUNCATE TABLE tbAlertLog;*/
+
+/*DBCC CHECKIDENT ('tbAlertLog', RESEED, 1);*/
+
+/*ALTER TABLE tbOrder
+ALTER COLUMN price money;*/
+
+/*ALTER TABLE tbOrder
+ALTER COLUMN total money;*/
+
+/*UPDATE tbProduct SET LastCheckedOn = NULL;*/
+
+/*ALTER TABLE tbAlertLog
+ADD productID INT;*/
+
+/*ALTER TABLE tbAlertLog
+ADD CONSTRAINT FK_tbAlertLog_tbProduct
+FOREIGN KEY (productID) REFERENCES tbProduct(pid);*/
+
+/*ALTER TABLE tbAlertLog
+ALTER COLUMN productID INT NOT NULL;*/
+
+
+
+
+
+
+
+
+
+
 
 
 

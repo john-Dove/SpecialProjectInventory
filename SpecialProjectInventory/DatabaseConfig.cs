@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 
 namespace SpecialProjectInventory
 {
@@ -12,7 +8,11 @@ namespace SpecialProjectInventory
         {
             get
             {
+                // My local connection string @NManning
                 return @"Data Source=DESKTOP-CAAM698\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True";
+                
+                /* Team member's connection string @OGayle*/
+                //return @"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True";
             }
         }
     }

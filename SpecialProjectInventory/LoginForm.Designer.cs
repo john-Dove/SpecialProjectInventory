@@ -58,7 +58,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(348, 85);
+            this.panel1.Size = new System.Drawing.Size(357, 85);
             this.panel1.TabIndex = 0;
             // 
             // picBoxClose
@@ -70,7 +70,7 @@
             this.picBoxClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBoxClose.TabIndex = 8;
             this.picBoxClose.TabStop = false;
-            this.picBoxClose.Click += new System.EventHandler(this.picBoxClose_Click);
+            this.picBoxClose.Click += new System.EventHandler(this.PicBoxClose_Click);
             // 
             // label3
             // 
@@ -177,7 +177,7 @@
             this.cbPassword.TabIndex = 8;
             this.cbPassword.Text = "Show Password";
             this.cbPassword.UseVisualStyleBackColor = true;
-            this.cbPassword.CheckedChanged += new System.EventHandler(this.cbPassword_CheckedChanged);
+            this.cbPassword.CheckedChanged += new System.EventHandler(this.ChkBxPassword_CheckedChanged);
             // 
             // LblClear
             // 
@@ -190,14 +190,14 @@
             this.LblClear.Size = new System.Drawing.Size(49, 18);
             this.LblClear.TabIndex = 9;
             this.LblClear.Text = "Clear";
-            this.LblClear.Click += new System.EventHandler(this.lblClear_Click);
+            this.LblClear.Click += new System.EventHandler(this.LblClear_Click);
             // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(348, 551);
+            this.ClientSize = new System.Drawing.Size(357, 518);
             this.Controls.Add(this.LblClear);
             this.Controls.Add(this.cbPassword);
             this.Controls.Add(this.label4);

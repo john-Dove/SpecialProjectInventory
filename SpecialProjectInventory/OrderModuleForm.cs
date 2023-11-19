@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
@@ -78,41 +71,30 @@ namespace SpecialProjectInventory
         {
             LoadProduct();       //find items stored in the products table when type
         }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtCld_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-                
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+   
+        private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             GetQty();
 
-            if (Convert.ToInt16(UDQty.Value) > qty)     //ensures that amount ordering doesnt goes over what is in stock con't
+            if (UDQty.Value > qty) // Ensures that the ordering amount doesn't go over what is in stock
             {
-                MessageBox.Show("Instock quantity is not enough!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("In-stock quantity is not enough!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 UDQty.Value = UDQty.Value - 1;
                 return;
-
             }
 
-            if(Convert.ToInt16(UDQty.Value) > 0)
+            if (UDQty.Value > 0)
             {
-                int total = Convert.ToInt16(txtPrice.Text) * Convert.ToInt16(UDQty.Value);
+                // Use decimal for price to handle money values correctly
+                decimal total = Convert.ToDecimal(txtPrice.Text) * UDQty.Value;
                 txtTotal.Text = total.ToString();
-
             }
-            
+
 
 
         }
 
-        private void dgvCustomer_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvCustomer_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             txtCld.Text = dgvCustomer.Rows[e.RowIndex].Cells[1].Value.ToString();
             txtCname.Text = dgvCustomer.Rows[e.RowIndex].Cells[2].Value.ToString();
@@ -120,7 +102,7 @@ namespace SpecialProjectInventory
 
         }
 
-        private void dgvProduct_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvProduct_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             txtPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
             txtPName.Text = dgvProduct.Rows[e.RowIndex].Cells[2].Value.ToString();
@@ -130,7 +112,7 @@ namespace SpecialProjectInventory
 
         }
 
-        private void btnInsert_Click(object sender, EventArgs e)
+        private void BtnInsert_Click(object sender, EventArgs e)
         {
             try
             {
@@ -147,13 +129,14 @@ namespace SpecialProjectInventory
 
                 if (MessageBox.Show("Are you sure you want to Insert this order?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total)VALUES(@odate, @pid, @cid, @qty, @price, @total)", con);
+                    //cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total)VALUES(@odate, @pid, @cid, @qty, @price, @total)", con);
+                    cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total) VALUES (@odate, @pid, @cid, @qty, @price, @total)", con);
                     cm.Parameters.AddWithValue("@odate", dtOrder.Value);
                     cm.Parameters.AddWithValue("@pid", Convert.ToInt32(txtPid.Text));
                     cm.Parameters.AddWithValue("@cid", Convert.ToInt32(txtCld.Text));
                     cm.Parameters.AddWithValue("@qty", Convert.ToInt32(UDQty.Value));
-                    cm.Parameters.AddWithValue("@price", Convert.ToInt32(txtPrice.Text));
-                    cm.Parameters.AddWithValue("@total", Convert.ToInt32(txtTotal.Text));                    
+                    cm.Parameters.AddWithValue("@price", Convert.ToDecimal(txtPrice.Text));
+                    cm.Parameters.AddWithValue("@total", Convert.ToDecimal(txtTotal.Text));
                     con.Open();
                     cm.ExecuteNonQuery();
                     con.Close();
@@ -197,32 +180,27 @@ namespace SpecialProjectInventory
 
 
         }
-
         private void BtnClear_Click(object sender, EventArgs e)
         {
             Clear();
             //btnInsert.Enabled = true;
             //btnOUpdate.Enabled = false;
 
-
-
         }
 
         public void GetQty()
         {                                                       //THIS EQUAL SYMBOL MIGHT BE WRONG 2:23:54
-            cm = new SqlCommand("SELECT pqty FROM tbProduct WHERE pid='"+ txtPid.Text +"'", con);      //this code was written for this "Instock quantity is not enough!"
+            cm = new SqlCommand("SELECT pqty FROM tbProduct WHERE pid = @pid", con);
+            cm.Parameters.AddWithValue("@pid", txtPid.Text);    //this code was written for this "Instock quantity is not enough!"
             con.Open();                                                                                 //error message when attemting to update or delete an order
             dr = cm.ExecuteReader();
-            while (dr.Read())
+            if (dr.Read())
             {
-               qty = Convert.ToInt32(dr[0].ToString()); 
-                
+                qty = Convert.ToInt32(dr["pqty"].ToString());
             }
             dr.Close();
             con.Close();
-
         }
-
         
     }
 }

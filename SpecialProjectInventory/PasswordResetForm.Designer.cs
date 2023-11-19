@@ -117,6 +117,7 @@
             this.TxtConfirmPassword.Name = "TxtConfirmPassword";
             this.TxtConfirmPassword.Size = new System.Drawing.Size(299, 20);
             this.TxtConfirmPassword.TabIndex = 25;
+            this.TxtConfirmPassword.UseSystemPasswordChar = true;
             // 
             // BtnChangePassword
             // 

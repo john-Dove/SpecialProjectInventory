@@ -129,7 +129,7 @@
             this.btncusAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btncusAdd.TabIndex = 2;
             this.btncusAdd.TabStop = false;
-            this.btncusAdd.Click += new System.EventHandler(this.btncusAdd_Click);
+            this.btncusAdd.Click += new System.EventHandler(this.BtnCusAdd_Click);
             // 
             // label1
             // 

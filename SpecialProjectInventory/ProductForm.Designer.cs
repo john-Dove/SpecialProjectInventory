@@ -88,7 +88,7 @@
             this.dgvProduct.Name = "dgvProduct";
             this.dgvProduct.Size = new System.Drawing.Size(953, 523);
             this.dgvProduct.TabIndex = 7;
-            this.dgvProduct.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellContentClick);
+            this.dgvProduct.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProduct_CellContentClick);
             // 
             // panel1
             // 
@@ -114,7 +114,7 @@
             this.btncatAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btncatAdd.TabIndex = 2;
             this.btncatAdd.TabStop = false;
-            this.btncatAdd.Click += new System.EventHandler(this.btncatAdd_Click);
+            this.btncatAdd.Click += new System.EventHandler(this.BtnCatAdd_Click);
             // 
             // label1
             // 
@@ -196,7 +196,7 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(448, 23);
             this.txtSearch.TabIndex = 3;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.txtSearch.TextChanged += new System.EventHandler(this.TxtSearch_TextChanged);
             // 
             // label2
             // 

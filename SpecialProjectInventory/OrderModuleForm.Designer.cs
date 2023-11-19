@@ -167,7 +167,7 @@
             this.txtCld.Name = "txtCld";
             this.txtCld.Size = new System.Drawing.Size(242, 23);
             this.txtCld.TabIndex = 9;
-            this.txtCld.TextChanged += new System.EventHandler(this.txtCld_TextChanged);
+//            this.txtCld.TextChanged += new System.EventHandler(this.txtCld_TextChanged);
             // 
             // label4
             // 
@@ -177,7 +177,7 @@
             this.label4.Size = new System.Drawing.Size(87, 17);
             this.label4.TabIndex = 8;
             this.label4.Text = "Search box :";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            //this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // txtSearchCust
             // 
@@ -230,7 +230,7 @@
             this.dgvCustomer.RowHeadersVisible = false;
             this.dgvCustomer.Size = new System.Drawing.Size(321, 267);
             this.dgvCustomer.TabIndex = 5;
-            this.dgvCustomer.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomer_CellClick);
+            this.dgvCustomer.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCustomer_CellClick);
             // 
             // Column5
             // 
@@ -289,7 +289,7 @@
             this.UDQty.Name = "UDQty";
             this.UDQty.Size = new System.Drawing.Size(138, 23);
             this.UDQty.TabIndex = 28;
-            this.UDQty.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.UDQty.ValueChanged += new System.EventHandler(this.NumericUpDown1_ValueChanged);
             // 
             // BtnClear
             // 
@@ -317,7 +317,7 @@
             this.btnInsert.TabIndex = 25;
             this.btnInsert.Text = "Order Insert";
             this.btnInsert.UseVisualStyleBackColor = false;
-            this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
+            this.btnInsert.Click += new System.EventHandler(this.BtnInsert_Click);
             // 
             // label13
             // 
@@ -478,7 +478,7 @@
             this.dgvProduct.RowHeadersVisible = false;
             this.dgvProduct.Size = new System.Drawing.Size(730, 267);
             this.dgvProduct.TabIndex = 9;
-            this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellClick);
+            this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProduct_CellClick);
             // 
             // dataGridViewTextBoxColumn1
             // 

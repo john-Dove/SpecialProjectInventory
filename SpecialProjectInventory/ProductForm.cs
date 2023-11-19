@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class ProductForm : Form
     {
-        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+        
         SqlCommand cm = new SqlCommand();
         SqlDataReader dr;
 
@@ -22,8 +15,8 @@ namespace SpecialProjectInventory
             InitializeComponent();
             LoadProduct();
         }
-
-        public void LoadProduct()  //allows data in the system to show in the data grid view here
+        // Populates the data grid with data from the system
+        public void LoadProduct()  
         {
             int i = 0;
             dgvProduct.Rows.Clear();
@@ -53,7 +46,7 @@ namespace SpecialProjectInventory
 
     }
 
-        private void btncatAdd_Click(object sender, EventArgs e)
+        private void BtnCatAdd_Click(object sender, EventArgs e)
         {
             ProductModuleForm formModule = new ProductModuleForm();
             formModule.btnSavePM.Enabled = true;
@@ -64,10 +57,10 @@ namespace SpecialProjectInventory
 
         }
 
-        private void dgvProduct_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvProduct_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
             string colName = dgvProduct.Columns[e.ColumnIndex].Name;
+            bool isEmployee = CheckUserRole("Employee");
             if (colName == "Edit")
             {
                 ProductModuleForm productModule = new ProductModuleForm();
@@ -84,7 +77,7 @@ namespace SpecialProjectInventory
                 productModule.ShowDialog();
 
             }
-            if (colName == "Delete")
+            if (colName == "Delete" && !isEmployee)
             {
                 if (MessageBox.Show("Are you sure you want to delete this product?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
@@ -105,15 +98,24 @@ namespace SpecialProjectInventory
                     }
                 }
 
+            }else
+            {
+               if (colName == "Delete") MessageBox.Show("You do not have permission to delete products.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
             LoadProduct();
 
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadProduct();
 
+        }
+
+        private bool CheckUserRole(string roleName)
+        {
+            
+            return MainForm.UserRole == roleName;
         }
     }
 }

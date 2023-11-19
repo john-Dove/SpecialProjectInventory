@@ -104,7 +104,7 @@
             this.dgvUser.Name = "dgvUser";
             this.dgvUser.Size = new System.Drawing.Size(953, 523);
             this.dgvUser.TabIndex = 1;
-            this.dgvUser.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUser_CellContentClick);
+            this.dgvUser.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvUser_CellContentClick);
             // 
             // btncusAdd
             // 
@@ -117,7 +117,7 @@
             this.btncusAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btncusAdd.TabIndex = 2;
             this.btncusAdd.TabStop = false;
-            this.btncusAdd.Click += new System.EventHandler(this.btncusAdd_Click);
+            this.btncusAdd.Click += new System.EventHandler(this.BtncusAdd_Click);
             // 
             // userID
             // 

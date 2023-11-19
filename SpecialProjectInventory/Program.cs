@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
@@ -17,6 +14,7 @@ namespace SpecialProjectInventory
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new WelcomeForm());  // LoginForm was change to MainFrom
+            //Application.Run(new AlertsForm());
         }
     }
 }

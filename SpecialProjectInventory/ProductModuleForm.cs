@@ -1,26 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class ProductModuleForm : Form
     {
-        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        //SqlDataReader dr;
-
         public ProductModuleForm()
         {
             InitializeComponent();
             LoadCategory();
+        }
+
+        public void Clear()
+        {
+            txtPName.Clear();
+            txtPQTY.Clear();
+            txtPprice.Clear();
+            txtPDes.Clear();
+            comboCat.Text = "";
+
         }
 
         public void LoadCategory()
@@ -43,12 +42,12 @@ namespace SpecialProjectInventory
 
         }
 
-        private void picBoxClose_Click(object sender, EventArgs e)
+        private void PicBoxClose_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            Dispose();
         }
 
-        private void btnSavePM_Click(object sender, EventArgs e)
+        /*private void BtnSavePM_Click(object sender, EventArgs e)
         {
             try
             {
@@ -76,18 +75,41 @@ namespace SpecialProjectInventory
             {
                 MessageBox.Show(ex.Message);
             }
-        }
+        }*/
 
-
-        public void Clear()
+        private void BtnSavePM_Click(object sender, EventArgs e)
         {
-            txtPName.Clear();
-            txtPQTY.Clear();
-            txtPprice.Clear();
-            txtPDes.Clear();
-            comboCat.Text = "";
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to save this product?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("INSERT INTO tbProduct(pname, pqty, pprice, pdescription, pcategory,lowstockthreshold, expiredatee)VALUES(@pname, @pqty, @pprice, @pdescription, @pcategory,@lowstockthreshold, @expiredatee)", connection))
+                        {
+                            cm.Parameters.AddWithValue("@pname", txtPName.Text);
+                            cm.Parameters.AddWithValue("@pqty", Convert.ToInt32(txtPQTY.Text));
+                            cm.Parameters.AddWithValue("@pprice", Convert.ToDecimal(txtPprice.Text));
+                            cm.Parameters.AddWithValue("@pdescription", txtPDes.Text);
+                            cm.Parameters.AddWithValue("@pcategory", comboCat.Text);
+                            cm.Parameters.AddWithValue("@lowstockthreshold", NudReorderLevel.Value);
+                            cm.Parameters.AddWithValue("@expiredatee", DtExpiryDate.Value.Date);
+                           
 
+                            connection.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
+                    MessageBox.Show("Product has been successfully saved.");
+                    Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+
 
         private void BtnClearPM_Click(object sender, EventArgs e)
         {
@@ -98,7 +120,7 @@ namespace SpecialProjectInventory
 
         }
 
-        private void btnUpdatePM_Click(object sender, EventArgs e)
+        /*private void BtnUpdatePM_Click(object sender, EventArgs e)
         {
             try
             {
@@ -106,13 +128,65 @@ namespace SpecialProjectInventory
                 {
                     using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
                     {
-                        using (SqlCommand cm = new SqlCommand("UPDATE tbProduct SET pname = @pname, pqty=@pqty, pprice=@pprice, pdescription=@pdescription, pcategory=@pcategory WHERE pid LIKE '" + lblPid.Text + "' ", connection))
+                        using (SqlCommand cm = new SqlCommand("UPDATE tbProduct SET pname = @pname, pqty = @pqty, pprice = @pprice, pdescription = @pdescription, pcategory = @pcategory WHERE pid = @pid", connection))
                         {
                             cm.Parameters.AddWithValue("@pname", txtPName.Text);
-                            cm.Parameters.AddWithValue("@pqty", Convert.ToInt16(txtPQTY.Text));
-                            cm.Parameters.AddWithValue("@pprice", Convert.ToInt16(txtPprice.Text));
+
+                            // Ensure the quantity and price text can be converted to the correct types
+                            decimal price;
+                            bool qtyIsValid = int.TryParse(txtPQTY.Text, out int quantity);
+                            bool priceIsValid = decimal.TryParse(txtPprice.Text, out price);
+
+                            if (!qtyIsValid)
+                            {
+                                MessageBox.Show("Invalid format for quantity.");
+                                return;
+                            }
+
+                            if (!priceIsValid)
+                            {
+                                MessageBox.Show("Invalid format for price.");
+                                return;
+                            }
+
+                            cm.Parameters.AddWithValue("@pqty", quantity);
+                            cm.Parameters.AddWithValue("@pprice", price);
                             cm.Parameters.AddWithValue("@pdescription", txtPDes.Text);
                             cm.Parameters.AddWithValue("@pcategory", comboCat.Text);
+                            cm.Parameters.AddWithValue("@pid", lblPid.Text);
+
+                            connection.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
+                    MessageBox.Show("Product has been successfully updated!");
+                    this.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }*/
+
+        private void BtnUpdatePM_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to update this product?", "Update Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("UPDATE tbProduct SET pname = @pname, pqty = @pqty, pprice = @pprice, pdescription = @pdescription, pcategory = @pcategory,lowstockthreshold = @lowstockthreshold, expiredatee = @expiredatee WHERE pid = @pid", connection))
+                        {
+                            cm.Parameters.AddWithValue("@pname", txtPName.Text);
+                            cm.Parameters.AddWithValue("@pqty", Convert.ToInt32(txtPQTY.Text));
+                            cm.Parameters.AddWithValue("@pprice", Convert.ToDecimal(txtPprice.Text));
+                            cm.Parameters.AddWithValue("@pdescription", txtPDes.Text);
+                            cm.Parameters.AddWithValue("@pcategory", comboCat.Text);
+                            cm.Parameters.AddWithValue("@lowstockthreshold", NudReorderLevel.Value);
+                            cm.Parameters.AddWithValue("@expiredatee", DtExpiryDate.Value.Date);
+                            cm.Parameters.AddWithValue("@pid", lblPid.Text);
 
                             connection.Open();
                             cm.ExecuteNonQuery();
@@ -127,7 +201,6 @@ namespace SpecialProjectInventory
                 MessageBox.Show(ex.Message);
             }
         }
-
 
     }
 }

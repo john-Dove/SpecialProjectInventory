@@ -38,7 +38,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtPasswordUM = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtPhoneUM = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnUpdateUM = new System.Windows.Forms.Button();
@@ -52,6 +51,7 @@
             this.ChkBxEditName = new System.Windows.Forms.CheckBox();
             this.ChkBxEditPassword = new System.Windows.Forms.CheckBox();
             this.ChkBxEditPhone = new System.Windows.Forms.CheckBox();
+            this.MskTxtPhoneUM = new System.Windows.Forms.MaskedTextBox();
             this.PnlUserModule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxClose)).BeginInit();
             this.SuspendLayout();
@@ -64,19 +64,19 @@
             this.PnlUserModule.Dock = System.Windows.Forms.DockStyle.Top;
             this.PnlUserModule.Location = new System.Drawing.Point(0, 0);
             this.PnlUserModule.Name = "PnlUserModule";
-            this.PnlUserModule.Size = new System.Drawing.Size(840, 54);
+            this.PnlUserModule.Size = new System.Drawing.Size(799, 54);
             this.PnlUserModule.TabIndex = 0;
             // 
             // picBoxClose
             // 
             this.picBoxClose.Image = ((System.Drawing.Image)(resources.GetObject("picBoxClose.Image")));
-            this.picBoxClose.Location = new System.Drawing.Point(731, 3);
+            this.picBoxClose.Location = new System.Drawing.Point(744, 3);
             this.picBoxClose.Name = "picBoxClose";
             this.picBoxClose.Size = new System.Drawing.Size(43, 47);
             this.picBoxClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBoxClose.TabIndex = 12;
             this.picBoxClose.TabStop = false;
-            this.picBoxClose.Click += new System.EventHandler(this.picBoxClose_Click);
+            this.picBoxClose.Click += new System.EventHandler(this.PicBoxClose_Click);
             // 
             // label1
             // 
@@ -144,14 +144,6 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Password :";
             // 
-            // txtPhoneUM
-            // 
-            this.txtPhoneUM.Enabled = false;
-            this.txtPhoneUM.Location = new System.Drawing.Point(155, 291);
-            this.txtPhoneUM.Name = "txtPhoneUM";
-            this.txtPhoneUM.Size = new System.Drawing.Size(560, 20);
-            this.txtPhoneUM.TabIndex = 8;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -175,7 +167,7 @@
             this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // btnUpdateUM
             // 
@@ -301,11 +293,21 @@
             this.ChkBxEditPhone.UseVisualStyleBackColor = true;
             this.ChkBxEditPhone.CheckedChanged += new System.EventHandler(this.ChkBxEditPhone_CheckedChanged);
             // 
+            // MskTxtPhoneUM
+            // 
+            this.MskTxtPhoneUM.Enabled = false;
+            this.MskTxtPhoneUM.Location = new System.Drawing.Point(155, 288);
+            this.MskTxtPhoneUM.Mask = "(999) 999-9999";
+            this.MskTxtPhoneUM.Name = "MskTxtPhoneUM";
+            this.MskTxtPhoneUM.Size = new System.Drawing.Size(560, 20);
+            this.MskTxtPhoneUM.TabIndex = 23;
+            // 
             // UserModuleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(840, 436);
+            this.ClientSize = new System.Drawing.Size(799, 416);
+            this.Controls.Add(this.MskTxtPhoneUM);
             this.Controls.Add(this.ChkBxEditPhone);
             this.Controls.Add(this.ChkBxEditPassword);
             this.Controls.Add(this.ChkBxEditName);
@@ -318,7 +320,6 @@
             this.Controls.Add(this.BtnClearUM);
             this.Controls.Add(this.btnUpdateUM);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtPhoneUM);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtPasswordUM);
             this.Controls.Add(this.label4);
@@ -355,7 +356,6 @@
         public System.Windows.Forms.TextBox txtUserNameUM;
         public System.Windows.Forms.TextBox txtFullnameUM;
         public System.Windows.Forms.TextBox txtPasswordUM;
-        public System.Windows.Forms.TextBox txtPhoneUM;
         public System.Windows.Forms.Label lblUserID;
         private System.Windows.Forms.Label lblUserRole;
         private System.Windows.Forms.ComboBox cmbUserRole;
@@ -365,5 +365,6 @@
         private System.Windows.Forms.CheckBox ChkBxEditName;
         private System.Windows.Forms.CheckBox ChkBxEditPassword;
         private System.Windows.Forms.CheckBox ChkBxEditPhone;
+        public System.Windows.Forms.MaskedTextBox MskTxtPhoneUM;
     }
 }

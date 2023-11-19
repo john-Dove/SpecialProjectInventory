@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class OrderForm : Form
     {
-        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
+        
 
         public OrderForm()
         {
@@ -54,7 +45,7 @@ namespace SpecialProjectInventory
 
         }
 
-        private void btncusAdd_Click(object sender, EventArgs e)     //order add plus/button
+        private void BtnCusAdd_Click(object sender, EventArgs e) 
         {
             OrderModuleForm moduleForm = new OrderModuleForm();
            // moduleForm.btnInsert.Enabled = true;
