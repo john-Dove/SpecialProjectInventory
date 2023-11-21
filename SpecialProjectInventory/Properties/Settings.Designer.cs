@@ -22,5 +22,16 @@ namespace SpecialProjectInventory.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-CAAM698\\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrat" +
+            "ed Security=True")]
+        public string SpecialProjectDBsConnectionString {
+            get {
+                return ((string)(this["SpecialProjectDBsConnectionString"]));
+            }
+        }
     }
 }

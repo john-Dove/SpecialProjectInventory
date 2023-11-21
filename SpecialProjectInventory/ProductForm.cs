@@ -64,12 +64,12 @@ namespace SpecialProjectInventory
             if (colName == "Edit")
             {
                 ProductModuleForm productModule = new ProductModuleForm();
-                productModule.lblPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
+                productModule.LblPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
                 productModule.txtPName.Text = dgvProduct.Rows[e.RowIndex].Cells[2].Value.ToString();
                 productModule.txtPQTY.Text = dgvProduct.Rows[e.RowIndex].Cells[3].Value.ToString();
                 productModule.txtPprice.Text = dgvProduct.Rows[e.RowIndex].Cells[4].Value.ToString();
                 productModule.txtPDes.Text = dgvProduct.Rows[e.RowIndex].Cells[5].Value.ToString();
-                productModule.comboCat.Text = dgvProduct.Rows[e.RowIndex].Cells[6].Value.ToString();
+                productModule.CmbCatCategory.Text = dgvProduct.Rows[e.RowIndex].Cells[6].Value.ToString();
 
 
                 productModule.btnSavePM.Enabled = false;
@@ -98,7 +98,8 @@ namespace SpecialProjectInventory
                     }
                 }
 
-            }else
+            }
+            else
             {
                if (colName == "Delete") MessageBox.Show("You do not have permission to delete products.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }

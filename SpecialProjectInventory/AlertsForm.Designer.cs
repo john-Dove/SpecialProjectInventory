@@ -32,17 +32,19 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AlertsForm));
             this.DgvAlerts = new System.Windows.Forms.DataGridView();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.BtnAlertConfig = new SpecialProjectInventory.CustomerButton();
-            this.LblManageAlerts = new System.Windows.Forms.Label();
             this.logID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.alertID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.triggeredOn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.message = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.productID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.resolve = new System.Windows.Forms.DataGridViewImageColumn();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.LblManageAlerts = new System.Windows.Forms.Label();
+            this.CbSettings = new SpecialProjectInventory.CustomerButton();
+            this.BtnAlertConfig = new SpecialProjectInventory.CustomerButton();
             ((System.ComponentModel.ISupportInitialize)(this.DgvAlerts)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CbSettings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnAlertConfig)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,42 +82,6 @@
             this.DgvAlerts.Name = "DgvAlerts";
             this.DgvAlerts.Size = new System.Drawing.Size(953, 523);
             this.DgvAlerts.TabIndex = 3;
-            this.DgvAlerts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvAlerts_CellContentClick);
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(160)))));
-            this.panel2.Controls.Add(this.BtnAlertConfig);
-            this.panel2.Controls.Add(this.LblManageAlerts);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 523);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(953, 49);
-            this.panel2.TabIndex = 2;
-            // 
-            // BtnAlertConfig
-            // 
-            this.BtnAlertConfig.Image = ((System.Drawing.Image)(resources.GetObject("BtnAlertConfig.Image")));
-            this.BtnAlertConfig.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnAlertConfig.ImageHover")));
-            this.BtnAlertConfig.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnAlertConfig.ImageNormal")));
-            this.BtnAlertConfig.Location = new System.Drawing.Point(907, 6);
-            this.BtnAlertConfig.Name = "BtnAlertConfig";
-            this.BtnAlertConfig.Size = new System.Drawing.Size(51, 38);
-            this.BtnAlertConfig.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtnAlertConfig.TabIndex = 2;
-            this.BtnAlertConfig.TabStop = false;
-            this.BtnAlertConfig.Click += new System.EventHandler(this.BtnAlertConfig_Click);
-            // 
-            // LblManageAlerts
-            // 
-            this.LblManageAlerts.AutoSize = true;
-            this.LblManageAlerts.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblManageAlerts.ForeColor = System.Drawing.Color.White;
-            this.LblManageAlerts.Location = new System.Drawing.Point(12, 12);
-            this.LblManageAlerts.Name = "LblManageAlerts";
-            this.LblManageAlerts.Size = new System.Drawing.Size(121, 19);
-            this.LblManageAlerts.TabIndex = 2;
-            this.LblManageAlerts.Text = "Manage Alerts";
             // 
             // logID
             // 
@@ -156,6 +122,55 @@
             this.resolve.Name = "resolve";
             this.resolve.Width = 5;
             // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(160)))));
+            this.panel2.Controls.Add(this.CbSettings);
+            this.panel2.Controls.Add(this.BtnAlertConfig);
+            this.panel2.Controls.Add(this.LblManageAlerts);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 523);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(953, 49);
+            this.panel2.TabIndex = 2;
+            // 
+            // LblManageAlerts
+            // 
+            this.LblManageAlerts.AutoSize = true;
+            this.LblManageAlerts.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblManageAlerts.ForeColor = System.Drawing.Color.White;
+            this.LblManageAlerts.Location = new System.Drawing.Point(12, 12);
+            this.LblManageAlerts.Name = "LblManageAlerts";
+            this.LblManageAlerts.Size = new System.Drawing.Size(121, 19);
+            this.LblManageAlerts.TabIndex = 2;
+            this.LblManageAlerts.Text = "Manage Alerts";
+            // 
+            // CbSettings
+            // 
+            this.CbSettings.Image = ((System.Drawing.Image)(resources.GetObject("CbSettings.Image")));
+            this.CbSettings.ImageHover = ((System.Drawing.Image)(resources.GetObject("CbSettings.ImageHover")));
+            this.CbSettings.ImageNormal = ((System.Drawing.Image)(resources.GetObject("CbSettings.ImageNormal")));
+            this.CbSettings.Location = new System.Drawing.Point(890, 6);
+            this.CbSettings.Name = "CbSettings";
+            this.CbSettings.Size = new System.Drawing.Size(51, 38);
+            this.CbSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.CbSettings.TabIndex = 3;
+            this.CbSettings.TabStop = false;
+            this.CbSettings.Click += new System.EventHandler(this.CBtnSettings_Click);
+            // 
+            // BtnAlertConfig
+            // 
+            this.BtnAlertConfig.Image = ((System.Drawing.Image)(resources.GetObject("BtnAlertConfig.Image")));
+            this.BtnAlertConfig.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnAlertConfig.ImageHover")));
+            this.BtnAlertConfig.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnAlertConfig.ImageNormal")));
+            this.BtnAlertConfig.Location = new System.Drawing.Point(682, 6);
+            this.BtnAlertConfig.Name = "BtnAlertConfig";
+            this.BtnAlertConfig.Size = new System.Drawing.Size(51, 38);
+            this.BtnAlertConfig.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtnAlertConfig.TabIndex = 2;
+            this.BtnAlertConfig.TabStop = false;
+            this.BtnAlertConfig.Click += new System.EventHandler(this.BtnAlertConfig_Click);
+            // 
             // AlertsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -169,6 +184,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DgvAlerts)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CbSettings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnAlertConfig)).EndInit();
             this.ResumeLayout(false);
 
@@ -186,5 +202,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn message;
         private System.Windows.Forms.DataGridViewTextBoxColumn productID;
         private System.Windows.Forms.DataGridViewImageColumn resolve;
+        private CustomerButton CbSettings;
     }
 }

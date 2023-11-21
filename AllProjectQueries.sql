@@ -183,9 +183,10 @@ ALTER COLUMN pprice money;*/
 ADD LastCheckedOn DATETIME NULL;*/
 
 -- Delete all entries from the table
-/*DELETE FROM tbAlertLog;
+/*DELETE FROM tbAlertLog;*/
 -- Reset the identity column
-DBCC CHECKIDENT ('tbAlertLog', RESEED, 0);*/
+/*DBCC CHECKIDENT ('tbAlertLog',  RESEED, 0);*/
+
 
 /*EXEC sp_rename 'tbAlertLog.LastCheckedOn', 'lastCheckedOn', 'COLUMN';*/
 
@@ -203,7 +204,6 @@ ALTER COLUMN price money;*/
 ALTER COLUMN total money;*/
 
 /*UPDATE tbProduct SET LastCheckedOn = NULL;*/
-
 /*ALTER TABLE tbAlertLog
 ADD productID INT;*/
 
@@ -213,6 +213,14 @@ FOREIGN KEY (productID) REFERENCES tbProduct(pid);*/
 
 /*ALTER TABLE tbAlertLog
 ALTER COLUMN productID INT NOT NULL;*/
+
+/*UPDATE tbProduct
+SET expiredatee = NULL;*/
+
+/*INSERT INTO tbAlertSettings (alertType, threshold, isEnabled)
+VALUES ('Expired-Product', 0, 'True');*/
+
+
 
 
 

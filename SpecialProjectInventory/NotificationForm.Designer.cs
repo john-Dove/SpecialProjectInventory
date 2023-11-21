@@ -39,9 +39,9 @@
             this.LblNotification.Location = new System.Drawing.Point(12, 9);
             this.LblNotification.MaximumSize = new System.Drawing.Size(250, 0);
             this.LblNotification.Name = "LblNotification";
-            this.LblNotification.Size = new System.Drawing.Size(35, 13);
+            this.LblNotification.Size = new System.Drawing.Size(50, 13);
             this.LblNotification.TabIndex = 0;
-            this.LblNotification.Text = "label1";
+            this.LblNotification.Text = "Message";
             // 
             // BtnCloseNote
             // 

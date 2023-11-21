@@ -31,21 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.panTop = new System.Windows.Forms.Panel();
             this.LblAlerts = new System.Windows.Forms.Label();
-            this.BtnMainAlerts = new SpecialProjectInventory.CustomerButton();
             this.LblWelcomeMsg = new System.Windows.Forms.Label();
             this.LblReports = new System.Windows.Forms.Label();
-            this.BtnReport = new SpecialProjectInventory.CustomerButton();
-            this.BtnLogout = new SpecialProjectInventory.CustomerButton();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.BtncusOrders = new SpecialProjectInventory.CustomerButton();
-            this.BtncusUsers = new SpecialProjectInventory.CustomerButton();
-            this.BtncusCustomer = new SpecialProjectInventory.CustomerButton();
-            this.BtncusCategories = new SpecialProjectInventory.CustomerButton();
-            this.BtncusProduct = new SpecialProjectInventory.CustomerButton();
+            this.LblOrders = new System.Windows.Forms.Label();
+            this.LblUsers = new System.Windows.Forms.Label();
+            this.LblCategories = new System.Windows.Forms.Label();
+            this.LblCustomers = new System.Windows.Forms.Label();
+            this.LblProduct = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -53,7 +45,17 @@
             this.panMain = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.PictMainLogo = new System.Windows.Forms.PictureBox();
+            this.BtnMainAlerts = new SpecialProjectInventory.CustomerButton();
+            this.BtnReport = new SpecialProjectInventory.CustomerButton();
+            this.BtnLogout = new SpecialProjectInventory.CustomerButton();
+            this.BtncusOrders = new SpecialProjectInventory.CustomerButton();
+            this.BtncusUsers = new SpecialProjectInventory.CustomerButton();
+            this.BtncusCustomer = new SpecialProjectInventory.CustomerButton();
+            this.BtncusCategories = new SpecialProjectInventory.CustomerButton();
+            this.BtncusProduct = new SpecialProjectInventory.CustomerButton();
             this.panTop.SuspendLayout();
+            this.panMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictMainLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnMainAlerts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnReport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnLogout)).BeginInit();
@@ -62,8 +64,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.BtncusCustomer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtncusCategories)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtncusProduct)).BeginInit();
-            this.panMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictMainLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // panTop
@@ -75,11 +75,11 @@
             this.panTop.Controls.Add(this.LblReports);
             this.panTop.Controls.Add(this.BtnReport);
             this.panTop.Controls.Add(this.BtnLogout);
-            this.panTop.Controls.Add(this.label8);
-            this.panTop.Controls.Add(this.label7);
-            this.panTop.Controls.Add(this.label6);
-            this.panTop.Controls.Add(this.label5);
-            this.panTop.Controls.Add(this.label2);
+            this.panTop.Controls.Add(this.LblOrders);
+            this.panTop.Controls.Add(this.LblUsers);
+            this.panTop.Controls.Add(this.LblCategories);
+            this.panTop.Controls.Add(this.LblCustomers);
+            this.panTop.Controls.Add(this.LblProduct);
             this.panTop.Controls.Add(this.BtncusOrders);
             this.panTop.Controls.Add(this.BtncusUsers);
             this.panTop.Controls.Add(this.BtncusCustomer);
@@ -105,21 +105,6 @@
             this.LblAlerts.TabIndex = 26;
             this.LblAlerts.Text = "ALERTS";
             // 
-            // BtnMainAlerts
-            // 
-            this.BtnMainAlerts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnMainAlerts.Image = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.Image")));
-            this.BtnMainAlerts.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.ImageHover")));
-            this.BtnMainAlerts.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.ImageNormal")));
-            this.BtnMainAlerts.InitialImage = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.InitialImage")));
-            this.BtnMainAlerts.Location = new System.Drawing.Point(1019, 14);
-            this.BtnMainAlerts.Name = "BtnMainAlerts";
-            this.BtnMainAlerts.Size = new System.Drawing.Size(51, 38);
-            this.BtnMainAlerts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtnMainAlerts.TabIndex = 25;
-            this.BtnMainAlerts.TabStop = false;
-            this.BtnMainAlerts.Click += new System.EventHandler(this.BtnMainAlerts_Click);
-            // 
             // LblWelcomeMsg
             // 
             this.LblWelcomeMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -143,155 +128,58 @@
             this.LblReports.TabIndex = 23;
             this.LblReports.Text = "REPORTS";
             // 
-            // BtnReport
+            // LblOrders
             // 
-            this.BtnReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnReport.Enabled = false;
-            this.BtnReport.Image = ((System.Drawing.Image)(resources.GetObject("BtnReport.Image")));
-            this.BtnReport.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnReport.ImageHover")));
-            this.BtnReport.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnReport.ImageNormal")));
-            this.BtnReport.Location = new System.Drawing.Point(904, 14);
-            this.BtnReport.Name = "BtnReport";
-            this.BtnReport.Size = new System.Drawing.Size(51, 38);
-            this.BtnReport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtnReport.TabIndex = 22;
-            this.BtnReport.TabStop = false;
-            this.BtnReport.Click += new System.EventHandler(this.BtnReport_Click);
+            this.LblOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LblOrders.AutoSize = true;
+            this.LblOrders.ForeColor = System.Drawing.Color.Red;
+            this.LblOrders.Location = new System.Drawing.Point(782, 63);
+            this.LblOrders.Name = "LblOrders";
+            this.LblOrders.Size = new System.Drawing.Size(53, 13);
+            this.LblOrders.TabIndex = 19;
+            this.LblOrders.Text = "ORDERS";
             // 
-            // BtnLogout
+            // LblUsers
             // 
-            this.BtnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnLogout.Image = ((System.Drawing.Image)(resources.GetObject("BtnLogout.Image")));
-            this.BtnLogout.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnLogout.ImageHover")));
-            this.BtnLogout.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnLogout.ImageNormal")));
-            this.BtnLogout.Location = new System.Drawing.Point(1139, 14);
-            this.BtnLogout.Name = "BtnLogout";
-            this.BtnLogout.Size = new System.Drawing.Size(51, 38);
-            this.BtnLogout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtnLogout.TabIndex = 20;
-            this.BtnLogout.TabStop = false;
-            this.BtnLogout.Click += new System.EventHandler(this.BtnLogout_Click);
-            // 
-            // label8
-            // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(782, 63);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 13);
-            this.label8.TabIndex = 19;
-            this.label8.Text = "ORDERS";
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.LblUsers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(665, 62);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(44, 13);
-            this.label7.TabIndex = 18;
-            this.label7.Text = "USERS";
+            this.LblUsers.AutoSize = true;
+            this.LblUsers.ForeColor = System.Drawing.Color.Red;
+            this.LblUsers.Location = new System.Drawing.Point(665, 62);
+            this.LblUsers.Name = "LblUsers";
+            this.LblUsers.Size = new System.Drawing.Size(44, 13);
+            this.LblUsers.TabIndex = 18;
+            this.LblUsers.Text = "USERS";
             // 
-            // label6
+            // LblCategories
             // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Red;
-            this.label6.Location = new System.Drawing.Point(546, 62);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(76, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "CATEGORIES";
+            this.LblCategories.AutoSize = true;
+            this.LblCategories.ForeColor = System.Drawing.Color.Red;
+            this.LblCategories.Location = new System.Drawing.Point(546, 62);
+            this.LblCategories.Name = "LblCategories";
+            this.LblCategories.Size = new System.Drawing.Size(76, 13);
+            this.LblCategories.TabIndex = 17;
+            this.LblCategories.Text = "CATEGORIES";
             // 
-            // label5
+            // LblCustomers
             // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(427, 63);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(75, 13);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "CUSTOMERS";
+            this.LblCustomers.AutoSize = true;
+            this.LblCustomers.ForeColor = System.Drawing.Color.Red;
+            this.LblCustomers.Location = new System.Drawing.Point(427, 63);
+            this.LblCustomers.Name = "LblCustomers";
+            this.LblCustomers.Size = new System.Drawing.Size(75, 13);
+            this.LblCustomers.TabIndex = 16;
+            this.LblCustomers.Text = "CUSTOMERS";
             // 
-            // label2
+            // LblProduct
             // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(308, 63);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "PRODUCT";
-            // 
-            // BtncusOrders
-            // 
-            this.BtncusOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtncusOrders.Image = ((System.Drawing.Image)(resources.GetObject("BtncusOrders.Image")));
-            this.BtncusOrders.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusOrders.ImageHover")));
-            this.BtncusOrders.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusOrders.ImageNormal")));
-            this.BtncusOrders.Location = new System.Drawing.Point(785, 13);
-            this.BtncusOrders.Name = "BtncusOrders";
-            this.BtncusOrders.Size = new System.Drawing.Size(51, 38);
-            this.BtncusOrders.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtncusOrders.TabIndex = 15;
-            this.BtncusOrders.TabStop = false;
-            this.BtncusOrders.Click += new System.EventHandler(this.BtncusOrders_Click);
-            // 
-            // BtncusUsers
-            // 
-            this.BtncusUsers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtncusUsers.Image = ((System.Drawing.Image)(resources.GetObject("BtncusUsers.Image")));
-            this.BtncusUsers.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusUsers.ImageHover")));
-            this.BtncusUsers.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusUsers.ImageNormal")));
-            this.BtncusUsers.Location = new System.Drawing.Point(668, 13);
-            this.BtncusUsers.Name = "BtncusUsers";
-            this.BtncusUsers.Size = new System.Drawing.Size(51, 38);
-            this.BtncusUsers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtncusUsers.TabIndex = 14;
-            this.BtncusUsers.TabStop = false;
-            this.BtncusUsers.Click += new System.EventHandler(this.BtncusUsers_Click);
-            // 
-            // BtncusCustomer
-            // 
-            this.BtncusCustomer.Image = ((System.Drawing.Image)(resources.GetObject("BtncusCustomer.Image")));
-            this.BtncusCustomer.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusCustomer.ImageHover")));
-            this.BtncusCustomer.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusCustomer.ImageNormal")));
-            this.BtncusCustomer.Location = new System.Drawing.Point(430, 13);
-            this.BtncusCustomer.Name = "BtncusCustomer";
-            this.BtncusCustomer.Size = new System.Drawing.Size(51, 38);
-            this.BtncusCustomer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtncusCustomer.TabIndex = 13;
-            this.BtncusCustomer.TabStop = false;
-            this.BtncusCustomer.Click += new System.EventHandler(this.BtncusCustomer_Click);
-            // 
-            // BtncusCategories
-            // 
-            this.BtncusCategories.Image = ((System.Drawing.Image)(resources.GetObject("BtncusCategories.Image")));
-            this.BtncusCategories.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusCategories.ImageHover")));
-            this.BtncusCategories.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusCategories.ImageNormal")));
-            this.BtncusCategories.Location = new System.Drawing.Point(549, 14);
-            this.BtncusCategories.Name = "BtncusCategories";
-            this.BtncusCategories.Size = new System.Drawing.Size(51, 38);
-            this.BtncusCategories.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtncusCategories.TabIndex = 12;
-            this.BtncusCategories.TabStop = false;
-            this.BtncusCategories.Click += new System.EventHandler(this.BtncusCategories_Click);
-            // 
-            // BtncusProduct
-            // 
-            this.BtncusProduct.Image = ((System.Drawing.Image)(resources.GetObject("BtncusProduct.Image")));
-            this.BtncusProduct.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusProduct.ImageHover")));
-            this.BtncusProduct.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusProduct.ImageNormal")));
-            this.BtncusProduct.Location = new System.Drawing.Point(311, 13);
-            this.BtncusProduct.Name = "BtncusProduct";
-            this.BtncusProduct.Size = new System.Drawing.Size(51, 38);
-            this.BtncusProduct.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.BtncusProduct.TabIndex = 0;
-            this.BtncusProduct.TabStop = false;
-            this.BtncusProduct.Click += new System.EventHandler(this.BtncusProduct_Click);
+            this.LblProduct.AutoSize = true;
+            this.LblProduct.ForeColor = System.Drawing.Color.Red;
+            this.LblProduct.Location = new System.Drawing.Point(308, 63);
+            this.LblProduct.Name = "LblProduct";
+            this.LblProduct.Size = new System.Drawing.Size(60, 13);
+            this.LblProduct.TabIndex = 0;
+            this.LblProduct.Text = "PRODUCT";
             // 
             // label4
             // 
@@ -371,6 +259,117 @@
             this.PictMainLogo.TabIndex = 21;
             this.PictMainLogo.TabStop = false;
             // 
+            // BtnMainAlerts
+            // 
+            this.BtnMainAlerts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnMainAlerts.Image = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.Image")));
+            this.BtnMainAlerts.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.ImageHover")));
+            this.BtnMainAlerts.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.ImageNormal")));
+            this.BtnMainAlerts.InitialImage = ((System.Drawing.Image)(resources.GetObject("BtnMainAlerts.InitialImage")));
+            this.BtnMainAlerts.Location = new System.Drawing.Point(1019, 14);
+            this.BtnMainAlerts.Name = "BtnMainAlerts";
+            this.BtnMainAlerts.Size = new System.Drawing.Size(51, 38);
+            this.BtnMainAlerts.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtnMainAlerts.TabIndex = 25;
+            this.BtnMainAlerts.TabStop = false;
+            this.BtnMainAlerts.Click += new System.EventHandler(this.BtnMainAlerts_Click);
+            // 
+            // BtnReport
+            // 
+            this.BtnReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnReport.Image = ((System.Drawing.Image)(resources.GetObject("BtnReport.Image")));
+            this.BtnReport.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnReport.ImageHover")));
+            this.BtnReport.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnReport.ImageNormal")));
+            this.BtnReport.Location = new System.Drawing.Point(904, 14);
+            this.BtnReport.Name = "BtnReport";
+            this.BtnReport.Size = new System.Drawing.Size(51, 38);
+            this.BtnReport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtnReport.TabIndex = 22;
+            this.BtnReport.TabStop = false;
+            this.BtnReport.Click += new System.EventHandler(this.BtnReport_Click);
+            // 
+            // BtnLogout
+            // 
+            this.BtnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnLogout.Image = ((System.Drawing.Image)(resources.GetObject("BtnLogout.Image")));
+            this.BtnLogout.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtnLogout.ImageHover")));
+            this.BtnLogout.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtnLogout.ImageNormal")));
+            this.BtnLogout.Location = new System.Drawing.Point(1139, 14);
+            this.BtnLogout.Name = "BtnLogout";
+            this.BtnLogout.Size = new System.Drawing.Size(51, 38);
+            this.BtnLogout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtnLogout.TabIndex = 20;
+            this.BtnLogout.TabStop = false;
+            this.BtnLogout.Click += new System.EventHandler(this.BtnLogout_Click);
+            // 
+            // BtncusOrders
+            // 
+            this.BtncusOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtncusOrders.Image = ((System.Drawing.Image)(resources.GetObject("BtncusOrders.Image")));
+            this.BtncusOrders.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusOrders.ImageHover")));
+            this.BtncusOrders.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusOrders.ImageNormal")));
+            this.BtncusOrders.Location = new System.Drawing.Point(785, 13);
+            this.BtncusOrders.Name = "BtncusOrders";
+            this.BtncusOrders.Size = new System.Drawing.Size(51, 38);
+            this.BtncusOrders.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtncusOrders.TabIndex = 15;
+            this.BtncusOrders.TabStop = false;
+            this.BtncusOrders.Click += new System.EventHandler(this.BtncusOrders_Click);
+            // 
+            // BtncusUsers
+            // 
+            this.BtncusUsers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtncusUsers.Image = ((System.Drawing.Image)(resources.GetObject("BtncusUsers.Image")));
+            this.BtncusUsers.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusUsers.ImageHover")));
+            this.BtncusUsers.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusUsers.ImageNormal")));
+            this.BtncusUsers.Location = new System.Drawing.Point(668, 13);
+            this.BtncusUsers.Name = "BtncusUsers";
+            this.BtncusUsers.Size = new System.Drawing.Size(51, 38);
+            this.BtncusUsers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtncusUsers.TabIndex = 14;
+            this.BtncusUsers.TabStop = false;
+            this.BtncusUsers.Click += new System.EventHandler(this.BtncusUsers_Click);
+            // 
+            // BtncusCustomer
+            // 
+            this.BtncusCustomer.Image = ((System.Drawing.Image)(resources.GetObject("BtncusCustomer.Image")));
+            this.BtncusCustomer.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusCustomer.ImageHover")));
+            this.BtncusCustomer.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusCustomer.ImageNormal")));
+            this.BtncusCustomer.Location = new System.Drawing.Point(430, 13);
+            this.BtncusCustomer.Name = "BtncusCustomer";
+            this.BtncusCustomer.Size = new System.Drawing.Size(51, 38);
+            this.BtncusCustomer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtncusCustomer.TabIndex = 13;
+            this.BtncusCustomer.TabStop = false;
+            this.BtncusCustomer.Click += new System.EventHandler(this.BtncusCustomer_Click);
+            // 
+            // BtncusCategories
+            // 
+            this.BtncusCategories.Image = ((System.Drawing.Image)(resources.GetObject("BtncusCategories.Image")));
+            this.BtncusCategories.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusCategories.ImageHover")));
+            this.BtncusCategories.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusCategories.ImageNormal")));
+            this.BtncusCategories.Location = new System.Drawing.Point(549, 14);
+            this.BtncusCategories.Name = "BtncusCategories";
+            this.BtncusCategories.Size = new System.Drawing.Size(51, 38);
+            this.BtncusCategories.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtncusCategories.TabIndex = 12;
+            this.BtncusCategories.TabStop = false;
+            this.BtncusCategories.Click += new System.EventHandler(this.BtncusCategories_Click);
+            // 
+            // BtncusProduct
+            // 
+            this.BtncusProduct.Image = ((System.Drawing.Image)(resources.GetObject("BtncusProduct.Image")));
+            this.BtncusProduct.ImageHover = ((System.Drawing.Image)(resources.GetObject("BtncusProduct.ImageHover")));
+            this.BtncusProduct.ImageNormal = ((System.Drawing.Image)(resources.GetObject("BtncusProduct.ImageNormal")));
+            this.BtncusProduct.Location = new System.Drawing.Point(311, 13);
+            this.BtncusProduct.Name = "BtncusProduct";
+            this.BtncusProduct.Size = new System.Drawing.Size(51, 38);
+            this.BtncusProduct.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.BtncusProduct.TabIndex = 0;
+            this.BtncusProduct.TabStop = false;
+            this.BtncusProduct.Click += new System.EventHandler(this.BtncusProduct_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -386,6 +385,9 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panTop.ResumeLayout(false);
             this.panTop.PerformLayout();
+            this.panMain.ResumeLayout(false);
+            this.panMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictMainLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnMainAlerts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnReport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtnLogout)).EndInit();
@@ -394,9 +396,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.BtncusCustomer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtncusCategories)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BtncusProduct)).EndInit();
-            this.panMain.ResumeLayout(false);
-            this.panMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictMainLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -414,11 +413,11 @@
         private CustomerButton BtncusUsers;
         private CustomerButton BtncusCustomer;
         private CustomerButton BtncusCategories;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label LblOrders;
+        private System.Windows.Forms.Label LblUsers;
+        private System.Windows.Forms.Label LblCategories;
+        private System.Windows.Forms.Label LblCustomers;
+        private System.Windows.Forms.Label LblProduct;
         private System.Windows.Forms.PictureBox PictMainLogo;
         private System.Windows.Forms.Label label10;
         private CustomerButton BtnLogout;

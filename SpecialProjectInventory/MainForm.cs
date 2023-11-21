@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
-using System.Linq;
-//using System.Text;
+
 
 namespace SpecialProjectInventory
 {
@@ -19,8 +18,8 @@ namespace SpecialProjectInventory
 
         // Shows subform form in mainform
         private Form activeForm = null;
-
-        private void OpenChildForm(Form childForm)
+        
+        public void OpenChildForm(Form childForm)
         {
             activeForm?.Close();
             activeForm = childForm;
@@ -31,73 +30,6 @@ namespace SpecialProjectInventory
             panMain.Tag = childForm;
             childForm.BringToFront();
             childForm.Show();
-            
-        }
-
-        private void BtncusUsers_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new UserformForm());
-        }
-
-        private void BtncusCustomer_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new CustomerForm());
-        }
-
-        private void BtncusCategories_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new CategoryForm());
-        }
-
-        private void BtnMainAlerts_Click(object sender, EventArgs e)
-        {
-            AlertsForm alertsForm = new AlertsForm();
-            alertsForm.LoadAlerts();
-            OpenChildForm(alertsForm);
-        }
-
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            notificationTimer.Interval = 60000;
-            notificationTimer.Tick += new EventHandler(NotificationTimer_Tick);
-            notificationTimer.Start();
-
-            // Presets for main buttons
-            BtncusUsers.Visible = false;
-            BtncusCustomer.Visible = false;
-            BtncusCategories.Visible = false;
-            BtncusProduct.Visible = false;
-            BtncusOrders.Visible = false;
-            BtnReport.Enabled = RoleHelper.IsAdmin() || RoleHelper.IsManager();
-
-
-            // Checks for Admin privileges
-            if (RoleHelper.IsAdmin())
-            {
-                BtncusUsers.Visible = true;
-                BtncusCustomer.Visible = true;
-                BtncusCategories.Visible = true;
-                BtncusProduct.Visible = true;
-                BtncusOrders.Visible = true;
-            }
-
-            // Checks for Manager privileges
-            if (RoleHelper.IsManager())
-            {
-                BtncusUsers.Visible = true;
-                BtncusCustomer.Visible = true;
-                BtncusCategories.Visible = true;
-                BtncusProduct.Visible = true;
-                BtncusOrders.Visible = true;
-            }
-
-            // Checks for Employee privileges
-            if (RoleHelper.IsEmployee())
-            {
-                BtncusProduct.Visible = true;
-               
-            }
 
         }
 
@@ -132,13 +64,13 @@ namespace SpecialProjectInventory
 
         private void BtnReport_Click(object sender, EventArgs e)
         {
-            // Check if the user has the permission to generate reports
-            if (!RoleHelper.IsAdmin() && !RoleHelper.IsManager())
+            // Checks whether the user has the permission to generate reports
+            /*if (!RoleHelper.IsAdmin() && !RoleHelper.IsManager())
             {
                 MessageBox.Show("You do not have permission to generate reports.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            else
-            {
+            }*/
+            //else
+           // {
                 try
                 {
                    
@@ -157,12 +89,81 @@ namespace SpecialProjectInventory
                     // Informs the user that there was an error
                     MessageBox.Show("Failed to generate report: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            //}
+        }
+        private void BtncusUsers_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new UserformForm());
+        }
+
+        private void BtncusCustomer_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new CustomerForm());
+        }
+
+        private void BtncusCategories_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new CategoryForm());
+        }
+
+        private void BtnMainAlerts_Click(object sender, EventArgs e)
+        {
+            AlertsForm alertsForm = new AlertsForm(UserRole);
+            alertsForm.LoadAlerts();
+            OpenChildForm(alertsForm);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            notificationTimer.Interval = 60000;
+            notificationTimer.Tick += new EventHandler(NotificationTimer_Tick);
+            notificationTimer.Start();
+
+            // Presets for main buttons
+            BtncusUsers.Visible = BtncusCustomer.Visible = BtncusCategories.Visible = false;
+            BtncusProduct.Visible = BtncusOrders.Visible = BtnMainAlerts.Visible = false;
+
+            // Report button is always visible
+            BtnReport.Visible = true;
+
+            // Presets for label visibility
+            LblProduct.Visible = LblCustomers.Visible = LblCategories.Visible = false;
+            LblUsers.Visible = LblOrders.Visible = LblAlerts.Visible = false;
+            LblReports.Visible = true; // Always visible
+
+            // Checks for Admin privileges
+            if (RoleHelper.IsAdmin())
+            {
+                BtncusUsers.Visible = BtncusCustomer.Visible = BtncusCategories.Visible = true;
+                BtncusProduct.Visible = BtncusOrders.Visible = BtnMainAlerts.Visible = true;
+
+                LblProduct.Visible = LblCustomers.Visible = LblCategories.Visible = true;
+                LblUsers.Visible = LblOrders.Visible = LblAlerts.Visible = true;
+            }
+
+            // Checks for Manager privileges
+            if (RoleHelper.IsManager())
+            {
+                BtncusUsers.Visible = BtncusCustomer.Visible = BtncusCategories.Visible = true;
+                BtncusProduct.Visible = BtncusOrders.Visible = BtnMainAlerts.Visible = true;
+
+                LblProduct.Visible = LblCustomers.Visible = LblCategories.Visible = true;
+                LblUsers.Visible = LblOrders.Visible = LblAlerts.Visible = true;
+            }
+
+            // Checks for Employee privileges
+            if (RoleHelper.IsEmployee())
+            {
+                BtncusProduct.Visible = BtnMainAlerts.Visible = true;
+
+                LblProduct.Visible = LblAlerts.Visible = true;
             }
         }
-        
+       
         private void ShowNotificationHere(string message)
         {
-            NotificationForm notificationPopup = new NotificationForm(message)
+            // Passes 'UserRole' as an additional argument to the NotificationForm constructor
+            NotificationForm notificationPopup = new NotificationForm(this, message, UserRole)
             {
                 // Sets the location of the notification window
                 StartPosition = FormStartPosition.Manual
@@ -174,6 +175,7 @@ namespace SpecialProjectInventory
             notificationPopup.Show();
         }
 
+
         private void NotificationTimer_Tick(object sender, EventArgs e)
         {
             
@@ -184,7 +186,6 @@ namespace SpecialProjectInventory
             }
         }
 
-       
         private bool CheckForNewAlerts()
         {
             AlertManager alertManager = new AlertManager(DatabaseConfig.ConnectionString);
@@ -200,21 +201,11 @@ namespace SpecialProjectInventory
 
             try
             {
-                var lowStockProducts = alertManager.GetAllProductsWithLowStockThreshold(lastCheckedTime);
-                if (lowStockProducts.Any())
-                {
-                    foreach (var product in lowStockProducts)
-                    {
-                        int alertID = alertManager.GetAlertID("Low-Stock");
-                        if (alertID != -1)
-                        {
-                            string message = $"Low stock alert for {product.Name} (ID: {product.Id}). Only {product.Quantity} items left.";
-                            alertManager.LogAlert(message, alertID, product.Id);
-                            alertManager.UpdateProductLastCheckedTime(product.Id);
-                            hasNewAlerts = true; // Sets hasNewAlerts to true here to indicate a new alert was logged
-                        }
-                    }
-                }
+                // Checks for low stock alerts
+                hasNewAlerts |= CheckLowStockAlerts(alertManager, lastCheckedTime);
+
+                // Checks for expiring product alerts
+                hasNewAlerts |= alertManager.CheckExpiringProductAlerts(lastCheckedTime);
             }
             catch (Exception ex)
             {
@@ -224,6 +215,26 @@ namespace SpecialProjectInventory
             return hasNewAlerts;
         }
 
-       
+        private bool CheckLowStockAlerts(AlertManager alertManager, DateTime lastCheckedTime)
+        {
+            bool newAlerts = false;
+            var lowStockProducts = alertManager.GetAllProductsWithLowStockThreshold(lastCheckedTime);
+            foreach (var product in lowStockProducts)
+            {
+                int alertID = alertManager.GetAlertID("Low-Stock");
+                if (alertID != -1)
+                {
+                    string message = $"Low stock alert for {product.Name} (ID: {product.Id}). Only {product.Quantity} items left.";
+                    alertManager.LogAlert(message, alertID, product.Id);
+                    alertManager.UpdateProductLastCheckedTime(product.Id);
+                    newAlerts = true;
+                }
+            }
+            return newAlerts;
+        }
+
+
+
+
     }
 }
