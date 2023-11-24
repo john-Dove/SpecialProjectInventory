@@ -1,81 +1,107 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class LoginForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
-
+       
         public LoginForm()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)  //LOGIN BUTTON CLICK
+        // Login query instructions
+        private void BtnLogin_Click(object sender, EventArgs e) 
         {
+           
+            string sql = "SELECT tbUser.*, tbRole.roleName FROM tbUser INNER JOIN tbRole ON tbUser.roleID = tbRole.roleID WHERE username=@username";
+
             try
             {
-                cm = new SqlCommand("SELECT * FROM tbUser WHERE username=@username AND password=@password", con);
-                cm.Parameters.AddWithValue("@username", txtUserName.Text);
-                cm.Parameters.AddWithValue("@password", txtPassword.Text);
-                con.Open();
-                dr = cm.ExecuteReader();
-                dr.Read();
-                if(dr.HasRows)
+                using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
                 {
-                    MessageBox.Show("welcome "+ dr["fullname"].ToString() + " | ", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    MainForm main = new MainForm();
-                    this.Hide();
-                    main.ShowDialog();
-                    
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        // Adds the username parameter to the command
+                        command.Parameters.AddWithValue("@username", TxtUserName.Text);
 
-                }
-                else
-                {
-                    MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                con.Close();
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
 
+                        if (reader.Read())
+                        {
+                            // Hashes the input password
+                            string inputPasswordHashed = ProjectUtility.HashPassword(TxtPassword.Text);
+
+                            // Gets the stored password hash from the database
+                            string storedPasswordHash = reader["password"].ToString();
+
+                            // Compares the hashed input password with the stored hashed password
+                            if (inputPasswordHashed == storedPasswordHash)
+                            {
+                                // Continues with login success logic...
+                                MainForm.UserRole = reader["roleName"].ToString();
+                                int userID = (int)reader["userID"];
+
+                                // Checks whether a password reset is required 
+                                if (IsPasswordResetRequired(TxtUserName.Text))
+                                {
+                                    MessageBox.Show("You are required to reset your password before proceeding.", "PASSWORD RESET REQUIRED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    ShowChangePasswordForm(userID, TxtUserName.Text);
+                                    Hide();
+                                }
+                                else
+                                {
+                                    string username = reader["username"].ToString();
+                                    MessageBox.Show("Welcome " + reader["fullname"].ToString() + "!", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    Hide();
+                                    MainForm main = new MainForm();
+                                    main.SetWelcomeMessage(username);
+                                    
+                                    main.ShowDialog();
+                                    
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
-
-
         }
 
-        private void cbPassword_CheckedChanged(object sender, EventArgs e)
+        // Toggles between masking and unmasking password
+        private void ChkBxPassword_CheckedChanged(object sender, EventArgs e)
         {
             if(cbPassword.Checked == false) 
             {
-                txtPassword.UseSystemPasswordChar = true;
+                TxtPassword.UseSystemPasswordChar = true;
             }
             else
             {
-                txtPassword.UseSystemPasswordChar = false;
+                TxtPassword.UseSystemPasswordChar = false;
             }
         }
 
-        private void lblClear_Click(object sender, EventArgs e)
+        private void LblClear_Click(object sender, EventArgs e)
         {
-            txtUserName.Clear();
-            txtPassword.Clear();
+            TxtUserName.Clear();
+            TxtPassword.Clear();
         }
 
-        private void picBoxClose_Click(object sender, EventArgs e)
+        private void PicBoxClose_Click(object sender, EventArgs e)
         {
             if(MessageBox.Show("Exit Application", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -83,7 +109,28 @@ namespace SpecialProjectInventory
             }
         }
 
+        // Checks the database for whether a password reset is needed
+        private bool IsPasswordResetRequired(string username)
+        {
+            using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+            {
+                string query = "SELECT isPasswordReset FROM tbUser WHERE username = @username";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
 
+                    connection.Open();
+                    bool resetRequired = (bool)command.ExecuteScalar();
 
+                    return resetRequired;
+                }
+            }
+        }
+
+        private void ShowChangePasswordForm(int userID, string username)
+        {
+            PasswordResetForm changePasswordForm = new PasswordResetForm(userID, username);
+            changePasswordForm.ShowDialog();
+        }
     }
 }

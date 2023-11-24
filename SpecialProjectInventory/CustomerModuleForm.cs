@@ -22,44 +22,36 @@ namespace SpecialProjectInventory
             InitializeComponent();
         }
 
-
-
         private void btnSave_Click(object sender, EventArgs e)
         {
-
             try
             {
-                
-
                 if (MessageBox.Show("Are you sure you want to save this customer?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    cm = new SqlCommand("INSERT INTO tbCustomer(cname,cphone)VALUES(@cname, @cphone)", con);
-                    cm.Parameters.AddWithValue("@cname", txtCName.Text);
-                    cm.Parameters.AddWithValue("@cphone", txtCPhone.Text);
-                    con.Open();
-                    cm.ExecuteNonQuery();
-                    con.Close();
+                    using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("INSERT INTO tbCustomer(cname,cphone)VALUES(@cname, @cphone)", con))
+                        {
+                            cm.Parameters.AddWithValue("@cname", txtCName.Text);
+                            cm.Parameters.AddWithValue("@cphone", txtCPhone.Text);
+                            con.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
                     MessageBox.Show("Customer has been successfully saved.");
                     Clear();
                 }
-
-
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
-
-
         }
 
         public void Clear()
         {
             txtCName.Clear();
             txtCPhone.Clear();
-           
-
 
         }
 
@@ -68,8 +60,6 @@ namespace SpecialProjectInventory
             Clear();
             btnSave.Enabled = true;
             btnUpdateUM.Enabled = false;
-
-
         }
 
         private void picBoxClose_Click(object sender, EventArgs e)
@@ -80,34 +70,30 @@ namespace SpecialProjectInventory
         private void btnUpdateUM_Click(object sender, EventArgs e)
         {
             try
-            { 
+            {
                 if (MessageBox.Show("Are you sure you want to update this Customer?", "Update Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-
-                    cm = new SqlCommand("UPDATE tbCustomer SET cname = @cname, cphone=@cphone WHERE cid LIKE '" + lblCld.Text + "' ", con);
-                    cm.Parameters.AddWithValue("@cname", txtCName.Text);
-                    cm.Parameters.AddWithValue("@cphone", txtCPhone.Text);
-                    con.Open();
-                    cm.ExecuteNonQuery();
-                    con.Close();
+                    using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("UPDATE tbCustomer SET cname = @cname, cphone=@cphone WHERE cid LIKE '" + lblCld.Text + "' ", con))
+                        {
+                            cm.Parameters.AddWithValue("@cname", txtCName.Text);
+                            cm.Parameters.AddWithValue("@cphone", txtCPhone.Text);
+                            con.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
                     MessageBox.Show("Customer has been successfully updated!");
                     this.Dispose();
-
                 }
-
-
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message);
             }
-
-
-
         }
-
-
-
     }
+
+
 }
+

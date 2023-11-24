@@ -80,7 +80,7 @@
             this.dgvCustomer.Name = "dgvCustomer";
             this.dgvCustomer.Size = new System.Drawing.Size(953, 523);
             this.dgvCustomer.TabIndex = 3;
-            this.dgvCustomer.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomer_CellContentClick);
+            this.dgvCustomer.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCustomer_CellContentClick);
             // 
             // Column5
             // 
@@ -147,7 +147,7 @@
             this.btncusAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btncusAdd.TabIndex = 2;
             this.btncusAdd.TabStop = false;
-            this.btncusAdd.Click += new System.EventHandler(this.btncusAdd_Click);
+            this.btncusAdd.Click += new System.EventHandler(this.BtnCusAdd_Click);
             // 
             // label1
             // 

@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class ProductForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
+        
         SqlCommand cm = new SqlCommand();
         SqlDataReader dr;
 
@@ -22,26 +15,38 @@ namespace SpecialProjectInventory
             InitializeComponent();
             LoadProduct();
         }
-
-        public void LoadProduct()  //allows data in the system to show in the data grid view here
+        // Populates the data grid with data from the system
+        public void LoadProduct()  
         {
             int i = 0;
             dgvProduct.Rows.Clear();
-            cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE '%"+txtSearch.Text+"%'", con);
-            con.Open();
-            dr = cm.ExecuteReader();
-            while (dr.Read())
+            string searchQuery = "%" + txtSearch.Text + "%";
+            try
             {
-                i++;
-                dgvProduct.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString(), dr[4].ToString(), dr[5].ToString());
+                using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                {
+                    cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE @search", connection);
+                    cm.Parameters.AddWithValue("@search", searchQuery);
+                    connection.Open();
+                    dr = cm.ExecuteReader();    
+                    while(dr.Read())
+                    {
+                        i++;
+                        dgvProduct.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString(), dr[4].ToString(), dr[5].ToString());
+
+                    }
+                    dr.Close();
+                }
+
+             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            dr.Close();
-            con.Close();
 
+    }
 
-        }
-
-        private void btncatAdd_Click(object sender, EventArgs e)
+        private void BtnCatAdd_Click(object sender, EventArgs e)
         {
             ProductModuleForm formModule = new ProductModuleForm();
             formModule.btnSavePM.Enabled = true;
@@ -52,19 +57,19 @@ namespace SpecialProjectInventory
 
         }
 
-        private void dgvProduct_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvProduct_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
             string colName = dgvProduct.Columns[e.ColumnIndex].Name;
+            bool isEmployee = CheckUserRole("Employee");
             if (colName == "Edit")
             {
                 ProductModuleForm productModule = new ProductModuleForm();
-                productModule.lblPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
+                productModule.LblPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
                 productModule.txtPName.Text = dgvProduct.Rows[e.RowIndex].Cells[2].Value.ToString();
                 productModule.txtPQTY.Text = dgvProduct.Rows[e.RowIndex].Cells[3].Value.ToString();
                 productModule.txtPprice.Text = dgvProduct.Rows[e.RowIndex].Cells[4].Value.ToString();
                 productModule.txtPDes.Text = dgvProduct.Rows[e.RowIndex].Cells[5].Value.ToString();
-                productModule.comboCat.Text = dgvProduct.Rows[e.RowIndex].Cells[6].Value.ToString();
+                productModule.CmbCatCategory.Text = dgvProduct.Rows[e.RowIndex].Cells[6].Value.ToString();
 
 
                 productModule.btnSavePM.Enabled = false;
@@ -72,31 +77,46 @@ namespace SpecialProjectInventory
                 productModule.ShowDialog();
 
             }
-            else if (colName == "Delete")
+            if (colName == "Delete" && !isEmployee)
             {
                 if (MessageBox.Show("Are you sure you want to delete this product?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    con.Open();
-                    cm = new SqlCommand("DELETE FROM tbProduct WHERE pid LIKE '" + dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString() + "'", con);
-                    cm.ExecuteNonQuery();
-                    con.Close();
-                    MessageBox.Show("Record has been successfully deleted!");
-
-
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                        {
+                            connection.Open();
+                            cm = new SqlCommand("DELETE FROM tbProduct WHERE pid = @pid", connection);
+                            cm.Parameters.AddWithValue("@pid", dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString());
+                            cm.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Record has been successfully deleted!");
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
 
-
+            }
+            else
+            {
+               if (colName == "Delete") MessageBox.Show("You do not have permission to delete products.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
             LoadProduct();
 
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadProduct();
 
+        }
 
-
+        private bool CheckUserRole(string roleName)
+        {
+            
+            return MainForm.UserRole == roleName;
         }
     }
 }

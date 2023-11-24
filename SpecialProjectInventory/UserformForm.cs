@@ -1,91 +1,112 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class UserformForm : Form
-    {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-        SqlDataReader dr;
-
-
+    {        
         public UserformForm()
         {
             InitializeComponent();
             LoadUser();
         }
-
-        public void LoadUser()  //allows data in the system to show in the data grid view here
+        
+        public void LoadUser()
         {
-            int i = 0;
             dgvUser.Rows.Clear();
-            cm = new SqlCommand("SELECT * FROM  tbUser", con);
-            con.Open();
-            dr = cm.ExecuteReader();
-            while(dr.Read()) 
+            using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
             {
-                i++;
-                dgvUser.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString());
+                using (SqlCommand cm = new SqlCommand("SELECT * FROM tbUser", con))
+                {
+                    con.Open();
+                    using (SqlDataReader dr = cm.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            dgvUser.Rows.Add(dr["userID"]?.ToString() ?? string.Empty,
+                                             dr["username"]?.ToString() ?? string.Empty,
+                                             dr["fullname"]?.ToString() ?? string.Empty,
+                                             //dr["password"]?.ToString() ?? string.Empty,
+                                             "********", // Replaces the password field 
+                                             dr["phone"]?.ToString() ?? string.Empty,
+                                             null,  // Placeholder for edit image column
+                                             null); // Placeholder for delete image column
+                        }
+                    }
+                }
             }
-            dr.Close();
-            con.Close();
-
-
         }
 
-        private void btncusAdd_Click(object sender, EventArgs e)        //user add button 
-        {//these are realted to the plus special button and its features
+        // Invokes the LoadUser method if the correct role is established
+        private void BtncusAdd_Click(object sender, EventArgs e)  
+        {
+            // Checks whether the user's role grants permission
+            if (RoleHelper.IsManager())
+            {
+                MessageBox.Show("You do not have permission to add new users.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Prevents the manager from adding new users
+            }
+            // User related controls
             UserModuleForm userModule = new UserModuleForm();
             userModule.btnSave.Enabled = true;
-            userModule.btnUpdateUM.Enabled = false;
+            userModule.IsAddButtonClicked = true;
+            userModule.DisableUpdateButtonIfAddClicked();
+            userModule.EnableAllCheckBoxes();
+
             userModule.ShowDialog();
             LoadUser();
 
         }
-
-        private void dgvUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {//allows the pencil icon which is named "Edit" to edit user info also trash can to delete 
+        // Manages the operations based on the control selected 
+        private void DgvUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
             string colName = dgvUser.Columns[e.ColumnIndex].Name;
-            if(colName == "Edit")
+
+           
+            if (colName == "Edit")
             {
                 UserModuleForm userModule = new UserModuleForm();
-                userModule.txtUserNameUM.Text = dgvUser.Rows[e.RowIndex].Cells[1].Value.ToString();
-                userModule.txtFullnameUM.Text = dgvUser.Rows[e.RowIndex].Cells[2].Value.ToString();
-                userModule.txtPasswordUM.Text = dgvUser.Rows[e.RowIndex].Cells[3].Value.ToString();
-                userModule.txtPhoneUM.Text = dgvUser.Rows[e.RowIndex].Cells[4].Value.ToString();
 
-                userModule.btnSave.Enabled=false;
-                userModule.btnUpdateUM.Enabled=true;
-                userModule.txtUserNameUM.Enabled = false;  //when userModule form comes up the username is not highlighted
+                userModule.lblUserID.Text = dgvUser.Rows[e.RowIndex].Cells["userID"].Value.ToString(); 
+                userModule.txtUserNameUM.Text = dgvUser.Rows[e.RowIndex].Cells["userName"].Value.ToString();
+                userModule.txtFullnameUM.Text = dgvUser.Rows[e.RowIndex].Cells["fullName"].Value.ToString();
+                userModule.txtPasswordUM.Text = dgvUser.Rows[e.RowIndex].Cells["password"].Value.ToString();
+                userModule.MskTxtPhoneUM.Text = dgvUser.Rows[e.RowIndex].Cells["phoneNum"].Value.ToString();
+
+                userModule.btnSave.Enabled = false;
+                userModule.txtUserNameUM.Enabled = false;
+                userModule.btnUpdateUM.Enabled = RoleHelper.IsManager();
                 userModule.ShowDialog();
 
             }
-            else if(colName == "Delete")
+            if (colName == "Delete")
             {
-                if(MessageBox.Show("Are you sure you want to delete this user?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) 
+
+                if (RoleHelper.IsManager())
                 {
-                    con.Open();
-                    cm = new SqlCommand("DELETE FROM tbUser WHERE username LIKE '" + dgvUser.Rows[e.RowIndex].Cells[1].Value.ToString() + "'", con);
-                    cm.ExecuteNonQuery();
-                    con.Close();
-                    MessageBox.Show("Record has been successfully deleted!");
-
-
+                    MessageBox.Show("You do not have permission to delete users.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Prevents the manager from deleting users
                 }
-    
 
+                if (MessageBox.Show("Are you sure you want to delete this user?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    using (SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    {
+                        using (SqlCommand cm = new SqlCommand("DELETE FROM tbUser WHERE userID = @userID", con))
+                        {
+                            cm.Parameters.AddWithValue("@userID", dgvUser.Rows[e.RowIndex].Cells["userID"].Value.ToString());
+                            con.Open();
+                            cm.ExecuteNonQuery();
+                        }
+                    }
+                    MessageBox.Show("Record has been successfully deleted!"); 
+                }
             }
             LoadUser();
-
         }
+
+
+
     }
 }
