@@ -13,7 +13,7 @@ namespace SpecialProjectInventory
         private int originalQuantity;
         private decimal originalPrice;
         private decimal originalLowStockThreshold;
-        private bool originalIsPerishable;
+        private readonly bool originalIsPerishable;
         private DateTime? originalExpiryDate;
 
 
@@ -238,8 +238,6 @@ namespace SpecialProjectInventory
                 MessageBox.Show("An error occurred while updating the product: " + ex.Message);
             }
         }
-
-
 
         private void BtnClearPM_Click(object sender, EventArgs e)
         {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data;
 using System.Windows.Forms;
-
 
 namespace SpecialProjectInventory
 {
@@ -64,33 +62,10 @@ namespace SpecialProjectInventory
 
         private void BtnReport_Click(object sender, EventArgs e)
         {
-            // Checks whether the user has the permission to generate reports
-            /*if (!RoleHelper.IsAdmin() && !RoleHelper.IsManager())
-            {
-                MessageBox.Show("You do not have permission to generate reports.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }*/
-            //else
-           // {
-                try
-                {
-                   
-                    DataTable inventoryData = ProjectUtility.GetInventoryData(); 
-
-                    string reportPath = @"C:\Users\Nathaniel Manning\Desktop\Special Project\Reports\ReportsInventoryReport.csv";
-
-                    // Calls the method to generate the report
-                    ProjectUtility.GenerateInventoryReport(inventoryData, reportPath);
-
-                    // Informs the user that the report was generated successfully
-                    MessageBox.Show("Report generated successfully at " + reportPath, "Report Generated", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    // Informs the user that there was an error
-                    MessageBox.Show("Failed to generate report: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            //}
+            ReportModule reportModule = new ReportModule();
+            reportModule.ShowDialog();
         }
+
         private void BtncusUsers_Click(object sender, EventArgs e)
         {
             OpenChildForm(new UserformForm());
@@ -232,9 +207,6 @@ namespace SpecialProjectInventory
             }
             return newAlerts;
         }
-
-
-
 
     }
 }

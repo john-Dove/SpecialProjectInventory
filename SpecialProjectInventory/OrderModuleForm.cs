@@ -112,6 +112,57 @@ namespace SpecialProjectInventory
 
         }
 
+        /* private void BtnInsert_Click(object sender, EventArgs e)
+         {
+             try
+             {
+                 if (txtCld.Text == "")
+                 {
+                     MessageBox.Show("Please select a customer!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                     return;
+                 }
+                 if (txtPid.Text == "")
+                 {
+                     MessageBox.Show("Please select a product!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                     return;
+                 }
+
+                 if (MessageBox.Show("Are you sure you want to Insert this order?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                 {
+                     cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total) VALUES (@odate, @pid, @cid, @qty, @price, @total)", con);
+                     cm.Parameters.AddWithValue("@odate", dtOrder.Value);
+                     cm.Parameters.AddWithValue("@pid", Convert.ToInt32(txtPid.Text));
+                     cm.Parameters.AddWithValue("@cid", Convert.ToInt32(txtCld.Text));
+                     cm.Parameters.AddWithValue("@qty", Convert.ToInt32(UDQty.Value));
+                     cm.Parameters.AddWithValue("@price", Convert.ToDecimal(txtPrice.Text));
+                     cm.Parameters.AddWithValue("@total", Convert.ToDecimal(txtTotal.Text));
+                     con.Open();
+                     cm.ExecuteNonQuery();
+                     con.Close();
+                     MessageBox.Show("Order has been successfully Inserted.");
+                     //Clear();
+
+                     cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid LIKE '"+ txtPid.Text +"' ", con);     // as a part with quantity not going over what is in stock
+                     cm.Parameters.AddWithValue("@pqty", Convert.ToInt16(UDQty.Value));
+
+                     con.Open();
+                     cm.ExecuteNonQuery();
+                     con.Close();
+                     Clear();
+                     LoadProduct();      //loads new product list after and order has been made
+
+                 }
+
+
+             }
+             catch (Exception ex)
+             {
+                 MessageBox.Show(ex.Message);
+             }
+
+
+         }*/
+
         private void BtnInsert_Click(object sender, EventArgs e)
         {
             try
@@ -129,7 +180,7 @@ namespace SpecialProjectInventory
 
                 if (MessageBox.Show("Are you sure you want to Insert this order?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    //cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total)VALUES(@odate, @pid, @cid, @qty, @price, @total)", con);
+                    // Inserts the order into tbOrder
                     cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total) VALUES (@odate, @pid, @cid, @qty, @price, @total)", con);
                     cm.Parameters.AddWithValue("@odate", dtOrder.Value);
                     cm.Parameters.AddWithValue("@pid", Convert.ToInt32(txtPid.Text));
@@ -141,29 +192,33 @@ namespace SpecialProjectInventory
                     cm.ExecuteNonQuery();
                     con.Close();
                     MessageBox.Show("Order has been successfully Inserted.");
-                    //Clear();
 
-                    cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid LIKE '"+ txtPid.Text +"' ", con);     // as a part with quantity not going over what is in stock
+                    // Deducts the quantity from tbProduct
+                    cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid LIKE '" + txtPid.Text + "' ", con);
                     cm.Parameters.AddWithValue("@pqty", Convert.ToInt16(UDQty.Value));
-                    
 
                     con.Open();
                     cm.ExecuteNonQuery();
                     con.Close();
                     Clear();
-                    LoadProduct();      //loads new product list after and order has been made
+                    LoadProduct(); //loads new product list after and order has been made
 
+                    // Record the sale for analytics
+                    SalesUtility.RecordSale(
+                        productId: Convert.ToInt32(txtPid.Text),
+                        quantitySold: Convert.ToInt32(UDQty.Value),
+                        totalAmount: Convert.ToDecimal(txtTotal.Text),
+                        saleDate: dtOrder.Value,
+                        customerId: Convert.ToInt32(txtCld.Text)
+                    );
                 }
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
-
         }
+
 
         public void Clear() 
         {

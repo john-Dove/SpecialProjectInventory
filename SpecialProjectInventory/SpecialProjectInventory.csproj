@@ -143,7 +143,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProjectUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportModule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReportModule.Designer.cs">
+      <DependentUpon>ReportModule.cs</DependentUpon>
+    </Compile>
     <Compile Include="RoleHelper.cs" />
+    <Compile Include="SalesUtility.cs" />
     <Compile Include="SpecialProjectDBsDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -222,6 +229,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ReportModule.resx">
+      <DependentUpon>ReportModule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserformForm.resx">
       <DependentUpon>UserformForm.cs</DependentUpon>
     </EmbeddedResource>

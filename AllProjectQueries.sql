@@ -220,6 +220,19 @@ SET expiredatee = NULL;*/
 /*INSERT INTO tbAlertSettings (alertType, threshold, isEnabled)
 VALUES ('Expired-Product', 0, 'True');*/
 
+/*ALTER TABLE tbProduct
+ADD isPerishable BIT DEFAULT 0 NOT NULL;*/
+
+/*CREATE TABLE tbSales (
+    saleID INT PRIMARY KEY IDENTITY(1,1),
+    productID INT NOT NULL,
+    quantitySold INT NOT NULL,
+    totalAmount DECIMAL(18, 2) NOT NULL,
+    saleDate DATETIME NOT NULL,
+    customerID INT, -- If you track which customer made the purchase
+    FOREIGN KEY (productID) REFERENCES tbProduct(pid),
+    FOREIGN KEY (customerID) REFERENCES tbCustomer(cid) -- If you have a customer table
+);*/
 
 
 
