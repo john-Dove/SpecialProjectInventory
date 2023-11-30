@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -177,6 +178,7 @@ namespace SpecialProjectInventory
             }
         }
 
+
         private void BtnUpdatePM_Click(object sender, EventArgs e)
         {
             try
@@ -186,9 +188,9 @@ namespace SpecialProjectInventory
                 decimal currentPrice = Convert.ToDecimal(txtPprice.Text);
                 decimal currentLowStockThreshold = NudReorderLevel.Value;
                 DateTime? currentExpiryDate = DtExpiryDate.Visible ? DtExpiryDate.Value.Date : (DateTime?)null;
-                bool currentIsPerishable = RdBtnPerishable.Checked; // Assuming RdBtnPerishable indicates if the product is perishable
+                bool currentIsPerishable = RdBtnPerishable.Checked;
 
-                // Compare current form values to original values
+                // Compares current form values to original values
                 bool quantityChanged = originalQuantity != currentQuantity;
                 bool priceChanged = originalPrice != currentPrice;
                 bool lowStockThresholdChanged = originalLowStockThreshold != currentLowStockThreshold;
@@ -201,23 +203,25 @@ namespace SpecialProjectInventory
                     {
                         using (var connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
                         {
-                            var query = "UPDATE tbProduct SET pname = @pname, " +
-                                        (quantityChanged ? "pqty = @pqty, " : "") +
-                                        (priceChanged ? "pprice = @pprice, " : "") +
-                                        "pdescription = @pdescription, pcategory = @pcategory, " +
-                                        (lowStockThresholdChanged ? "lowstockthreshold = @lowstockthreshold, " : "") +
-                                        (expiryDateChanged ? "expiredatee = @expiredatee, " : "") +
-                                        (isPerishableChanged ? "isPerishable = @isPerishable, " : "") +
-                                        "WHERE pid = @pid";
+                            List<string> setClauses = new List<string>();
+                            if (quantityChanged) setClauses.Add("pqty = @pqty");
+                            if (priceChanged) setClauses.Add("pprice = @pprice");
+                            if (lowStockThresholdChanged) setClauses.Add("lowstockthreshold = @lowstockthreshold");
+                            if (expiryDateChanged) setClauses.Add("expiredatee = @expiredatee");
+                            if (isPerishableChanged) setClauses.Add("isPerishable = @isPerishable");
+
+                            string setClause = string.Join(", ", setClauses);
+                            string query = $"UPDATE tbProduct SET pname = @pname, pdescription = @pdescription, pcategory = @pcategory, {setClause} WHERE pid = @pid";
+
                             using (var cm = new SqlCommand(query, connection))
                             {
                                 cm.Parameters.AddWithValue("@pname", txtPName.Text);
-                                if (quantityChanged) cm.Parameters.AddWithValue("@pqty", currentQuantity);
-                                if (priceChanged) cm.Parameters.AddWithValue("@pprice", currentPrice);
                                 cm.Parameters.AddWithValue("@pdescription", txtPDes.Text);
                                 cm.Parameters.AddWithValue("@pcategory", CmbCatCategory.Text);
+                                if (quantityChanged) cm.Parameters.AddWithValue("@pqty", currentQuantity);
+                                if (priceChanged) cm.Parameters.AddWithValue("@pprice", currentPrice);
                                 if (lowStockThresholdChanged) cm.Parameters.AddWithValue("@lowstockthreshold", currentLowStockThreshold);
-                                if (expiryDateChanged) cm.Parameters.AddWithValue("@expiredatee", currentExpiryDate);
+                                if (expiryDateChanged) cm.Parameters.AddWithValue("@expiredatee", currentExpiryDate.HasValue ? (object)currentExpiryDate.Value : DBNull.Value);
                                 if (isPerishableChanged) cm.Parameters.AddWithValue("@isPerishable", currentIsPerishable);
                                 cm.Parameters.AddWithValue("@pid", LblPid.Text);
 
@@ -238,6 +242,8 @@ namespace SpecialProjectInventory
                 MessageBox.Show("An error occurred while updating the product: " + ex.Message);
             }
         }
+
+
 
         private void BtnClearPM_Click(object sender, EventArgs e)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
@@ -82,41 +83,11 @@ namespace SpecialProjectInventory
                     adapter.Fill(reportData);
                 }
             }
-           
+
             DgvReport.DataSource = reportData;
 
             // SaveReport(reportData);
         }
-
-        /*private string BuildReportQuery(DateTime startDate, DateTime endDate, string category, string criteria)
-        {
-            string baseQuery;
-
-            switch (criteria)
-            {
-                case "Perishable":
-                case "Non-Perishable":
-                case "Stock Below Threshold":
-                    baseQuery = "SELECT * FROM tbProduct WHERE (expiredatee BETWEEN @startDate AND @endDate)";
-                    if (!string.IsNullOrEmpty(category))
-                    {
-                        baseQuery += " AND pcategory = @category";
-                    }
-                    if (criteria == "Perishable") baseQuery += " AND isPerishable = 1";
-                    if (criteria == "Non-Perishable") baseQuery += " AND isPerishable = 0";
-                    if (criteria == "Stock Below Threshold") baseQuery += " AND pqty <= lowstockthreshold";
-                    break;
-                case "Total Revenue":
-                    // This query targets the sales table to calculate total revenue
-                    baseQuery = "SELECT SUM(totalAmount) AS TotalRevenue FROM tbSales WHERE (saleDate BETWEEN @startDate AND @endDate)";
-                    break;
-                default:
-                    baseQuery = "";
-                    break;
-            }
-
-            return baseQuery;
-        }*/
 
         private string BuildReportQuery(DateTime startDate, DateTime endDate, string category, string criteria)
         {

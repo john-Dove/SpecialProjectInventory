@@ -183,9 +183,9 @@ ALTER COLUMN pprice money;*/
 ADD LastCheckedOn DATETIME NULL;*/
 
 -- Delete all entries from the table
-/*DELETE FROM tbAlertLog;*/
+/*DELETE FROM tbAlertLog;
 -- Reset the identity column
-/*DBCC CHECKIDENT ('tbAlertLog',  RESEED, 0);*/
+DBCC CHECKIDENT ('tbAlertLog',  RESEED, 0);*/
 
 
 /*EXEC sp_rename 'tbAlertLog.LastCheckedOn', 'lastCheckedOn', 'COLUMN';*/
@@ -234,8 +234,7 @@ ADD isPerishable BIT DEFAULT 0 NOT NULL;*/
     FOREIGN KEY (customerID) REFERENCES tbCustomer(cid) -- If you have a customer table
 );*/
 
-
-
+/*SELECT * FROM tbProduct WHERE expiredatee BETWEEN '2023-11-01' AND '2023-11-29' AND pcategory = 'Groceries' AND isPerishable = 1*/
 
 
 
