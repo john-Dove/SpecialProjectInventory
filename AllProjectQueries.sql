@@ -193,9 +193,9 @@ DBCC CHECKIDENT ('tbAlertLog',  RESEED, 0);*/
 /*ALTER TABLE tbProduct
 ADD lastCheckedOn DATETIME NULL;*/
 
-/*TRUNCATE TABLE tbAlertLog;*/
+/*TRUNCATE TABLE tbAlertLog;
 
-/*DBCC CHECKIDENT ('tbAlertLog', RESEED, 1);*/
+DBCC CHECKIDENT ('tbAlertLog', RESEED, 1);*/
 
 /*ALTER TABLE tbOrder
 ALTER COLUMN price money;*/
@@ -203,7 +203,7 @@ ALTER COLUMN price money;*/
 /*ALTER TABLE tbOrder
 ALTER COLUMN total money;*/
 
-/*UPDATE tbProduct SET LastCheckedOn = NULL;*/
+/*UPDATE tbProduct SET LastCheckedOn = NULL;
 /*ALTER TABLE tbAlertLog
 ADD productID INT;*/
 
