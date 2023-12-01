@@ -125,8 +125,8 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(160)))));
-            this.panel2.Controls.Add(this.CbSettings);
-            this.panel2.Controls.Add(this.BtnAlertConfig);
+//            this.panel2.Controls.Add(this.CbSettings);
+//            this.panel2.Controls.Add(this.BtnAlertConfig);
             this.panel2.Controls.Add(this.LblManageAlerts);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 523);

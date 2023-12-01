@@ -16,6 +16,16 @@ namespace SpecialProjectInventory
             _connectionString = connectionString;
         }
 
+        public class AlertLogEntry
+        {
+            public int LogID { get; set; }
+            public int AlertID { get; set; }
+            public DateTime TriggeredOn { get; set; }
+            public string Message { get; set; }
+            public bool IsResolved { get; set; }
+            public int ProductID { get; set; }
+        }
+
 
         public class Product
         {
@@ -230,45 +240,7 @@ namespace SpecialProjectInventory
             }
         }
 
-        /* public void CheckExpiringProductAlerts(DateTime lastCheckedTime)
-         {
-             int expiringAlertID = GetAlertID("Expiring-Product");
-             int expiredAlertID = GetAlertID("Expired-Product");
-             var expiringProducts = GetAllExpiringProducts(lastCheckedTime);
-
-             foreach (var product in expiringProducts)
-             {
-                 // Check if the product's last checked time is before today to prevent duplicate alerts.
-                 if (!product.LastCheckedOn.HasValue || product.LastCheckedOn.Value.Date < DateTime.Now.Date)
-                 {
-                     if (product.ExpirationDate.HasValue)
-                     {
-                         if (product.ExpirationDate.Value.Date == DateTime.Now.Date)
-                         {
-                             // If the product expires today
-                             LogAlert($"Product expires today alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiringAlertID, product.Id);
-                         }
-                         else if (product.ExpirationDate.Value < DateTime.Now)
-                         {
-                             // If the product has already expired
-                             LogAlert($"Expired product alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiredAlertID, product.Id);
-                         }
-                         else 
-                         {
-                             if (product.ExpirationDate.Value <= DateTime.Now.AddDays(3))
-
-                                 // If the product is expiring within the next 3 days
-                                 LogAlert($"Expiring product alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiringAlertID, product.Id);
-
-                         }
-
-                         // Update the last checked time regardless of whether an alert was logged to prevent duplicate alerts.
-                         UpdateProductLastCheckedTime(product.Id);
-                     }
-                 }
-             }
-         }*/
-
+       
         public bool CheckExpiringProductAlerts(DateTime lastCheckedTime)
         {
             bool newAlertsLogged = false; // Indicates if new alerts were logged
@@ -428,6 +400,68 @@ namespace SpecialProjectInventory
                 }
             }
         }
+
+        /*public List<AlertLogEntry> GetActiveAlerts()
+        {
+            var alerts = new List<AlertLogEntry>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand("SELECT * FROM tbAlertLog WHERE IsResolved = 0", connection);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var alert = new AlertLogEntry
+                        {
+                            LogID = Convert.ToInt32(reader["LogID"]),
+                            AlertID = Convert.ToInt32(reader["AlertID"]),
+                            TriggeredOn = Convert.ToDateTime(reader["TriggeredOn"]),
+                            Message = reader["Message"].ToString(),
+                            IsResolved = Convert.ToBoolean(reader["IsResolved"]),
+                            ProductID = reader.GetInt32(reader.GetOrdinal("ProductID"))
+                        };
+                        alerts.Add(alert);
+                    }
+                }
+            }
+
+            return alerts;
+        }*/
+
+        public List<AlertLogEntry> GetActiveAlerts()
+        {
+            var alerts = new List<AlertLogEntry>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                // Ensure the SQL query selects the ProductID column.
+                var command = new SqlCommand("SELECT LogID, AlertID, TriggeredOn, Message, IsResolved, ProductID FROM tbAlertLog WHERE IsResolved = 0", connection);
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var alert = new AlertLogEntry
+                        {
+                            LogID = Convert.ToInt32(reader["LogID"]),
+                            AlertID = Convert.ToInt32(reader["AlertID"]),
+                            TriggeredOn = Convert.ToDateTime(reader["TriggeredOn"]),
+                            Message = reader["Message"].ToString(),
+                            IsResolved = Convert.ToBoolean(reader["IsResolved"]),
+                            ProductID = Convert.ToInt32(reader["ProductID"]) // Now retrieving ProductID
+                        };
+                        alerts.Add(alert);
+                    }
+                }
+            }
+
+            return alerts;
+        }
+
 
 
         private List<Product> GetAllExpiringProducts(DateTime thresholdDate)

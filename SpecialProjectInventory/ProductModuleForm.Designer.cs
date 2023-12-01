@@ -56,6 +56,7 @@
             this.LblPerishable = new System.Windows.Forms.Label();
             this.RdBtnNonPerishable = new System.Windows.Forms.RadioButton();
             this.LblProductID = new System.Windows.Forms.Label();
+            this.CmbProductIDs = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NudReorderLevel)).BeginInit();
@@ -336,11 +337,22 @@
             this.LblProductID.TabIndex = 39;
             this.LblProductID.Text = "Product ID:";
             // 
+            // CmbProductIDs
+            // 
+            this.CmbProductIDs.FormattingEnabled = true;
+            this.CmbProductIDs.Location = new System.Drawing.Point(204, 75);
+            this.CmbProductIDs.Name = "CmbProductIDs";
+            this.CmbProductIDs.Size = new System.Drawing.Size(72, 25);
+            this.CmbProductIDs.TabIndex = 40;
+            this.CmbProductIDs.Visible = false;
+            this.CmbProductIDs.SelectedIndexChanged += new System.EventHandler(this.CmbProductIDs_SelectedIndexChanged);
+            // 
             // ProductModuleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(686, 629);
+            this.Controls.Add(this.CmbProductIDs);
             this.Controls.Add(this.LblProductID);
             this.Controls.Add(this.RdBtnNonPerishable);
             this.Controls.Add(this.LblPerishable);
@@ -410,5 +422,6 @@
         private System.Windows.Forms.Label LblPerishable;
         private System.Windows.Forms.RadioButton RdBtnNonPerishable;
         public System.Windows.Forms.Label LblProductID;
+        private System.Windows.Forms.ComboBox CmbProductIDs;
     }
 }
