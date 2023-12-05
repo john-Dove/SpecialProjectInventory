@@ -66,7 +66,6 @@ namespace SpecialProjectInventory
             txtPDes.Enabled = false;
             CmbCatCategory.Enabled = false;
             txtPprice.Enabled = false;
-            txtPDes.Enabled = false;
             btnSavePM.Enabled = false;
           
             txtPQTY.Enabled = true;
@@ -102,8 +101,8 @@ namespace SpecialProjectInventory
 
                                 if (!reader.IsDBNull(reader.GetOrdinal("expiredatee")))
                                 {
-                                    var expiryDate = reader.GetDateTime(reader.GetOrdinal("expiredatee"));
-                                    MessageBox.Show($"Debug: Expiry date read from database is {expiryDate}"); 
+                                    //var expiryDate = reader.GetDateTime(reader.GetOrdinal("expiredatee"));
+                                    //MessageBox.Show($"Debug: Expiry date read from database is {expiryDate}"); 
                                     DtExpiryDate.Value = reader.GetDateTime(reader.GetOrdinal("expiredatee"));
                                     DtExpiryDate.Visible = true;
                                 }
@@ -249,13 +248,13 @@ namespace SpecialProjectInventory
                 if (!int.TryParse(txtPQTY.Text, out int currentQuantity))
                 {
                     MessageBox.Show("Quantity is not in the correct format.");
-                    return; // Exit the method if parsing failed
+                    return; // Exits the method if parsing failed
                 }
 
                 if (!decimal.TryParse(txtPprice.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal currentPrice))
                 {
                     MessageBox.Show("Price is not in the correct format.");
-                    return; // Exit the method if parsing failed
+                    return; // Exits the method if parsing failed
                 }
 
                 decimal currentLowStockThreshold = NudReorderLevel.Value;
@@ -272,7 +271,10 @@ namespace SpecialProjectInventory
                 bool expiryDateChanged = originalExpiryDate != currentExpiryDate;
                 bool isPerishableChanged = originalIsPerishable != currentIsPerishable;
 
-                if (quantityChanged || priceChanged || lowStockThresholdChanged || expiryDateChanged || isPerishableChanged)
+                // Adds a check for lastCheckedOn update
+                bool updateLastCheckedOn = true;
+
+                if (quantityChanged || priceChanged || lowStockThresholdChanged || expiryDateChanged || isPerishableChanged || updateLastCheckedOn)
                 {
                     if (MessageBox.Show("Are you sure you want to update this product?", "Update Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
@@ -284,10 +286,10 @@ namespace SpecialProjectInventory
                             if (lowStockThresholdChanged) setClauses.Add("lowstockthreshold = @lowstockthreshold");
                             if (expiryDateChanged) setClauses.Add("expiredatee = @expiredatee");
                             if (isPerishableChanged) setClauses.Add("isPerishable = @isPerishable");
-
+                            if (updateLastCheckedOn) setClauses.Add("lastCheckedOn = GETDATE()");
+                            
                             string setClause = string.Join(", ", setClauses);
                             string query = $"UPDATE tbProduct SET pname = @pname, pdescription = @pdescription, pcategory = @pcategory, {setClause} WHERE pid = @pid";
-
                             using (var cm = new SqlCommand(query, connection))
                             {
                                 cm.Parameters.AddWithValue("@pname", txtPName.Text);
@@ -317,6 +319,8 @@ namespace SpecialProjectInventory
                 MessageBox.Show("An error occurred while updating the product: " + ex.Message);
             }
         }
+
+        
 
         private void BtnClearPM_Click(object sender, EventArgs e)
         {

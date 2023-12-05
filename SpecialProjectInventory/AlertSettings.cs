@@ -14,7 +14,6 @@ namespace SpecialProjectInventory
 
         private void BtnSaveAlert_Click(object sender, EventArgs e)
         {
-            // Validates the input first
             if (string.IsNullOrWhiteSpace(TxtBxAlertType.Text))
             {
                 MessageBox.Show("Alert Type is a required field.");
@@ -27,7 +26,7 @@ namespace SpecialProjectInventory
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "INSERT INTO alertsettings (alertType, threshold, isEnabled) VALUES (@alertType, @threshold, @isEnabled)";
+                string query = "INSERT INTO tbAlertSettings (alertType, threshold, isEnabled) VALUES (@alertType, @threshold, @isEnabled)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -42,6 +41,7 @@ namespace SpecialProjectInventory
                         MessageBox.Show("Alert setting saved successfully.");
 
                         ClearForm();
+                        LoadDataIntoGrid();
                     }
                     catch (Exception ex)
                     {
@@ -50,6 +50,7 @@ namespace SpecialProjectInventory
                 }
             }
         }
+
 
         private void BtnUpdateAlert_Click(object sender, EventArgs e)
         {
@@ -186,6 +187,55 @@ namespace SpecialProjectInventory
             }
         }
 
+        private void BtnDeleteAlertSettings_Click(object sender, EventArgs e)
+        {
+            // Validates the input first
+            if (string.IsNullOrWhiteSpace(TxtBxAlertID.Text))
+            {
+                MessageBox.Show("Alert ID is required to delete an alert setting.");
+                return;
+            }
+
+            if (!int.TryParse(TxtBxAlertID.Text, out int alertID))
+            {
+                MessageBox.Show("Please enter a valid Alert ID.");
+                return;
+            }
+
+            string connectionString = SpecialProjectInventory.DatabaseConfig.ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "DELETE FROM tbAlertSettings WHERE alertID = @alertID";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@alertID", alertID);
+
+                    try
+                    {
+                        connection.Open();
+                        int result = command.ExecuteNonQuery();
+
+                        if (result > 0)
+                        {
+                            MessageBox.Show("Alert setting deleted successfully.");
+                            ClearForm();
+                            LoadDataIntoGrid();
+                        }
+                        else
+                        {
+                            MessageBox.Show("No alert setting found with the given ID.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred while deleting the alert setting: " + ex.Message);
+                    }
+                }
+            }
+
+        }
     }
 
 

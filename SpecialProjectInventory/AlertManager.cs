@@ -83,7 +83,7 @@ namespace SpecialProjectInventory
                         // Inserts the alert log with productID
                         var logCommand = new SqlCommand("INSERT INTO tbAlertLog (alertID, productID, Message, TriggeredOn, IsResolved) VALUES (@alertID, @productID, @message, @triggeredOn, @isResolved)", connection, transaction);
                         logCommand.Parameters.AddWithValue("@alertID", alertID);
-                        logCommand.Parameters.AddWithValue("@productID", productID); // Ensure this parameter is correctly passed to the method
+                        logCommand.Parameters.AddWithValue("@productID", productID); 
                         logCommand.Parameters.AddWithValue("@message", message);
                         logCommand.Parameters.AddWithValue("@triggeredOn", DateTime.Now);
                         logCommand.Parameters.AddWithValue("@isResolved", false);
@@ -112,7 +112,7 @@ namespace SpecialProjectInventory
             // Retrieves the threshold for the product
             int threshold = GetProductThreshold(productID);
 
-            // Check if the product's quantity is above the threshold and the expiry date is valid and in the future
+            // Checks if the product's quantity is above the threshold and the expiry date is valid and in the future
             if (CanResolveAlert(productID, threshold) && expiryDate.HasValue && expiryDate.Value > DateTime.Now)
             {
                 using (var connection = new SqlConnection(_connectionString))
@@ -400,36 +400,6 @@ namespace SpecialProjectInventory
                 }
             }
         }
-
-        /*public List<AlertLogEntry> GetActiveAlerts()
-        {
-            var alerts = new List<AlertLogEntry>();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var command = new SqlCommand("SELECT * FROM tbAlertLog WHERE IsResolved = 0", connection);
-
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var alert = new AlertLogEntry
-                        {
-                            LogID = Convert.ToInt32(reader["LogID"]),
-                            AlertID = Convert.ToInt32(reader["AlertID"]),
-                            TriggeredOn = Convert.ToDateTime(reader["TriggeredOn"]),
-                            Message = reader["Message"].ToString(),
-                            IsResolved = Convert.ToBoolean(reader["IsResolved"]),
-                            ProductID = reader.GetInt32(reader.GetOrdinal("ProductID"))
-                        };
-                        alerts.Add(alert);
-                    }
-                }
-            }
-
-            return alerts;
-        }*/
 
         public List<AlertLogEntry> GetActiveAlerts()
         {

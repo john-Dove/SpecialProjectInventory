@@ -45,14 +45,15 @@
             this.RdBtnYes = new System.Windows.Forms.RadioButton();
             this.RdBtnNo = new System.Windows.Forms.RadioButton();
             this.DgvAlertSettings = new System.Windows.Forms.DataGridView();
-            this.tbAlertSettingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.specialProjectDBsDataSet = new SpecialProjectInventory.SpecialProjectDBsDataSet();
-            this.tbAlertSettingsTableAdapter = new SpecialProjectInventory.SpecialProjectDBsDataSetTableAdapters.tbAlertSettingsTableAdapter();
-            this.UdAlertThreshold = new System.Windows.Forms.NumericUpDown();
             this.alertID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.alertType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.threshold = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isEnabled = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.tbAlertSettingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.specialProjectDBsDataSet = new SpecialProjectInventory.SpecialProjectDBsDataSet();
+            this.tbAlertSettingsTableAdapter = new SpecialProjectInventory.SpecialProjectDBsDataSetTableAdapters.tbAlertSettingsTableAdapter();
+            this.UdAlertThreshold = new System.Windows.Forms.NumericUpDown();
+            this.BtnDeleteAlertSettings = new System.Windows.Forms.Button();
             this.PanAlertSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PcBxCloseAlert)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DgvAlertSettings)).BeginInit();
@@ -110,7 +111,7 @@
             this.BtnClearAlert.FlatAppearance.BorderSize = 0;
             this.BtnClearAlert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnClearAlert.ForeColor = System.Drawing.Color.White;
-            this.BtnClearAlert.Location = new System.Drawing.Point(533, 273);
+            this.BtnClearAlert.Location = new System.Drawing.Point(499, 273);
             this.BtnClearAlert.Name = "BtnClearAlert";
             this.BtnClearAlert.Size = new System.Drawing.Size(93, 38);
             this.BtnClearAlert.TabIndex = 46;
@@ -124,7 +125,7 @@
             this.btnUpdateAlert.FlatAppearance.BorderSize = 0;
             this.btnUpdateAlert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdateAlert.ForeColor = System.Drawing.Color.White;
-            this.btnUpdateAlert.Location = new System.Drawing.Point(408, 273);
+            this.btnUpdateAlert.Location = new System.Drawing.Point(255, 273);
             this.btnUpdateAlert.Name = "btnUpdateAlert";
             this.btnUpdateAlert.Size = new System.Drawing.Size(93, 38);
             this.btnUpdateAlert.TabIndex = 45;
@@ -138,7 +139,7 @@
             this.btnSaveAlert.FlatAppearance.BorderSize = 0;
             this.btnSaveAlert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveAlert.ForeColor = System.Drawing.Color.White;
-            this.btnSaveAlert.Location = new System.Drawing.Point(283, 273);
+            this.btnSaveAlert.Location = new System.Drawing.Point(133, 273);
             this.btnSaveAlert.Name = "btnSaveAlert";
             this.btnSaveAlert.Size = new System.Drawing.Size(93, 38);
             this.btnSaveAlert.TabIndex = 44;
@@ -228,6 +229,31 @@
             this.DgvAlertSettings.TabIndex = 60;
             this.DgvAlertSettings.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvAlertSettings_CellContentClick);
             // 
+            // alertID
+            // 
+            this.alertID.DataPropertyName = "alertID";
+            this.alertID.HeaderText = "alertID";
+            this.alertID.Name = "alertID";
+            this.alertID.ReadOnly = true;
+            // 
+            // alertType
+            // 
+            this.alertType.DataPropertyName = "alertType";
+            this.alertType.HeaderText = "alertType";
+            this.alertType.Name = "alertType";
+            // 
+            // threshold
+            // 
+            this.threshold.DataPropertyName = "threshold";
+            this.threshold.HeaderText = "threshold";
+            this.threshold.Name = "threshold";
+            // 
+            // isEnabled
+            // 
+            this.isEnabled.DataPropertyName = "isEnabled";
+            this.isEnabled.HeaderText = "isEnabled";
+            this.isEnabled.Name = "isEnabled";
+            // 
             // tbAlertSettingsBindingSource
             // 
             this.tbAlertSettingsBindingSource.DataMember = "tbAlertSettings";
@@ -254,36 +280,26 @@
             this.UdAlertThreshold.Size = new System.Drawing.Size(138, 20);
             this.UdAlertThreshold.TabIndex = 61;
             // 
-            // alertID
+            // BtnDeleteAlertSettings
             // 
-            this.alertID.DataPropertyName = "alertID";
-            this.alertID.HeaderText = "alertID";
-            this.alertID.Name = "alertID";
-            this.alertID.ReadOnly = true;
-            // 
-            // alertType
-            // 
-            this.alertType.DataPropertyName = "alertType";
-            this.alertType.HeaderText = "alertType";
-            this.alertType.Name = "alertType";
-            // 
-            // threshold
-            // 
-            this.threshold.DataPropertyName = "threshold";
-            this.threshold.HeaderText = "threshold";
-            this.threshold.Name = "threshold";
-            // 
-            // isEnabled
-            // 
-            this.isEnabled.DataPropertyName = "isEnabled";
-            this.isEnabled.HeaderText = "isEnabled";
-            this.isEnabled.Name = "isEnabled";
+            this.BtnDeleteAlertSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
+            this.BtnDeleteAlertSettings.FlatAppearance.BorderSize = 0;
+            this.BtnDeleteAlertSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDeleteAlertSettings.ForeColor = System.Drawing.Color.White;
+            this.BtnDeleteAlertSettings.Location = new System.Drawing.Point(377, 273);
+            this.BtnDeleteAlertSettings.Name = "BtnDeleteAlertSettings";
+            this.BtnDeleteAlertSettings.Size = new System.Drawing.Size(93, 38);
+            this.BtnDeleteAlertSettings.TabIndex = 62;
+            this.BtnDeleteAlertSettings.Text = "Delete Alert Settings";
+            this.BtnDeleteAlertSettings.UseVisualStyleBackColor = false;
+            this.BtnDeleteAlertSettings.Click += new System.EventHandler(this.BtnDeleteAlertSettings_Click);
             // 
             // AlertSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1122, 517);
+            this.Controls.Add(this.BtnDeleteAlertSettings);
             this.Controls.Add(this.UdAlertThreshold);
             this.Controls.Add(this.DgvAlertSettings);
             this.Controls.Add(this.RdBtnNo);
@@ -338,5 +354,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn alertType;
         private System.Windows.Forms.DataGridViewTextBoxColumn threshold;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isEnabled;
+        public System.Windows.Forms.Button BtnDeleteAlertSettings;
     }
 }

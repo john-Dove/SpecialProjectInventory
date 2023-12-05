@@ -141,6 +141,7 @@ namespace SpecialProjectInventory
 
                     // Pre-loads the form with the details of the first product in the alert list
                     var firstAlertedProduct = activeAlerts.First();
+                    //productModuleForm.EditingProductId = firstAlertedProduct.ProductID;
                     productModuleForm.LoadProductDetails(firstAlertedProduct.ProductID);
 
                     // Shows the form as a dialog
@@ -153,16 +154,22 @@ namespace SpecialProjectInventory
             }
             else
             {
-                MessageBox.Show("You do not have permission to configure alerts.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("You do not have permission to modify alerts.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-
-
-        private void CBtnSettings_Click(object sender, EventArgs e)
+        private void CBtnAlertConfig_Click(object sender, EventArgs e)
         {
-            AlertSettings alertSettings = new AlertSettings();
-            alertSettings.ShowDialog();
+            if (_userRole == "Admin" || _userRole == "Manager")
+            {
+                AlertSettings alertSettings = new AlertSettings();
+                alertSettings.ShowDialog();
+
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to configure alert settings.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 

@@ -41,6 +41,8 @@
             this.TxtNewPassword = new System.Windows.Forms.TextBox();
             this.lblUserID = new System.Windows.Forms.Label();
             this.BtnClearPassword = new System.Windows.Forms.Button();
+            this.ChkBxShowPassword = new System.Windows.Forms.CheckBox();
+            this.LblUserIDNum = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,7 +127,7 @@
             this.BtnChangePassword.FlatAppearance.BorderSize = 0;
             this.BtnChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnChangePassword.ForeColor = System.Drawing.Color.White;
-            this.BtnChangePassword.Location = new System.Drawing.Point(212, 325);
+            this.BtnChangePassword.Location = new System.Drawing.Point(212, 343);
             this.BtnChangePassword.Name = "BtnChangePassword";
             this.BtnChangePassword.Size = new System.Drawing.Size(140, 38);
             this.BtnChangePassword.TabIndex = 26;
@@ -154,7 +156,7 @@
             // lblUserID
             // 
             this.lblUserID.AutoSize = true;
-            this.lblUserID.Location = new System.Drawing.Point(167, 77);
+            this.lblUserID.Location = new System.Drawing.Point(209, 77);
             this.lblUserID.Name = "lblUserID";
             this.lblUserID.Size = new System.Drawing.Size(38, 13);
             this.lblUserID.TabIndex = 31;
@@ -167,7 +169,7 @@
             this.BtnClearPassword.FlatAppearance.BorderSize = 0;
             this.BtnClearPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnClearPassword.ForeColor = System.Drawing.Color.White;
-            this.BtnClearPassword.Location = new System.Drawing.Point(370, 325);
+            this.BtnClearPassword.Location = new System.Drawing.Point(370, 343);
             this.BtnClearPassword.Name = "BtnClearPassword";
             this.BtnClearPassword.Size = new System.Drawing.Size(140, 38);
             this.BtnClearPassword.TabIndex = 28;
@@ -175,12 +177,35 @@
             this.BtnClearPassword.UseVisualStyleBackColor = false;
             this.BtnClearPassword.Click += new System.EventHandler(this.BtnClearPassword_Click);
             // 
+            // ChkBxShowPassword
+            // 
+            this.ChkBxShowPassword.AutoSize = true;
+            this.ChkBxShowPassword.Location = new System.Drawing.Point(211, 302);
+            this.ChkBxShowPassword.Name = "ChkBxShowPassword";
+            this.ChkBxShowPassword.Size = new System.Drawing.Size(102, 17);
+            this.ChkBxShowPassword.TabIndex = 32;
+            this.ChkBxShowPassword.Text = "Show Password";
+            this.ChkBxShowPassword.UseVisualStyleBackColor = true;
+            this.ChkBxShowPassword.CheckedChanged += new System.EventHandler(this.ChkBxShowPassword_CheckedChanged);
+            // 
+            // LblUserIDNum
+            // 
+            this.LblUserIDNum.AutoSize = true;
+            this.LblUserIDNum.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblUserIDNum.Location = new System.Drawing.Point(149, 77);
+            this.LblUserIDNum.Name = "LblUserIDNum";
+            this.LblUserIDNum.Size = new System.Drawing.Size(54, 17);
+            this.LblUserIDNum.TabIndex = 33;
+            this.LblUserIDNum.Text = "User ID:";
+            // 
             // PasswordResetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 406);
             this.ControlBox = false;
+            this.Controls.Add(this.LblUserIDNum);
+            this.Controls.Add(this.ChkBxShowPassword);
             this.Controls.Add(this.lblUserID);
             this.Controls.Add(this.TxtNewPassword);
             this.Controls.Add(this.LblNewPassword);
@@ -220,5 +245,7 @@
         public System.Windows.Forms.TextBox TxtNewPassword;
         public System.Windows.Forms.Label lblUserID;
         public System.Windows.Forms.Button BtnClearPassword;
+        private System.Windows.Forms.CheckBox ChkBxShowPassword;
+        private System.Windows.Forms.Label LblUserIDNum;
     }
 }

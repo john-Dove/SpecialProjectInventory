@@ -138,6 +138,7 @@
             // 
             // btncusAdd
             // 
+            this.btncusAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btncusAdd.Image = ((System.Drawing.Image)(resources.GetObject("btncusAdd.Image")));
             this.btncusAdd.ImageHover = ((System.Drawing.Image)(resources.GetObject("btncusAdd.ImageHover")));
             this.btncusAdd.ImageNormal = ((System.Drawing.Image)(resources.GetObject("btncusAdd.ImageNormal")));

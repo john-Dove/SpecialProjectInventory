@@ -133,5 +133,21 @@ namespace SpecialProjectInventory
 
 
         }
+
+        private void ChkBxShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ChkBxShowPassword.Checked == false)
+            {
+                TxtCurrentPassword.UseSystemPasswordChar = true;
+                TxtNewPassword.UseSystemPasswordChar = true;
+                TxtConfirmPassword.UseSystemPasswordChar = true;
+            }
+            else
+            {
+                TxtCurrentPassword.UseSystemPasswordChar = false;
+                TxtNewPassword.UseSystemPasswordChar = false;
+                TxtConfirmPassword.UseSystemPasswordChar = false;
+            }
+        }
     }
 }

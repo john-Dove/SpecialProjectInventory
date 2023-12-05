@@ -32,14 +32,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CategoryForm));
             this.dgvCategory = new System.Windows.Forms.DataGridView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btncatAdd = new SpecialProjectInventory.CustomerButton();
-            this.label1 = new System.Windows.Forms.Label();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Edit = new System.Windows.Forms.DataGridViewImageColumn();
             this.Delete = new System.Windows.Forms.DataGridViewImageColumn();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btncatAdd = new SpecialProjectInventory.CustomerButton();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btncatAdd)).BeginInit();
@@ -80,41 +80,6 @@
             this.dgvCategory.TabIndex = 5;
             this.dgvCategory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCategory_CellContentClick);
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(160)))));
-            this.panel1.Controls.Add(this.btncatAdd);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 523);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(953, 49);
-            this.panel1.TabIndex = 4;
-            // 
-            // btncatAdd
-            // 
-            this.btncatAdd.Image = ((System.Drawing.Image)(resources.GetObject("btncatAdd.Image")));
-            this.btncatAdd.ImageHover = ((System.Drawing.Image)(resources.GetObject("btncatAdd.ImageHover")));
-            this.btncatAdd.ImageNormal = ((System.Drawing.Image)(resources.GetObject("btncatAdd.ImageNormal")));
-            this.btncatAdd.Location = new System.Drawing.Point(907, 6);
-            this.btncatAdd.Name = "btncatAdd";
-            this.btncatAdd.Size = new System.Drawing.Size(51, 38);
-            this.btncatAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.btncatAdd.TabIndex = 2;
-            this.btncatAdd.TabStop = false;
-            this.btncatAdd.Click += new System.EventHandler(this.btncatAdd_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(12, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(163, 19);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Manage Categories";
-            // 
             // Column5
             // 
             this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -151,6 +116,42 @@
             this.Delete.Name = "Delete";
             this.Delete.Width = 5;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(160)))));
+            this.panel1.Controls.Add(this.btncatAdd);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 523);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(953, 49);
+            this.panel1.TabIndex = 4;
+            // 
+            // btncatAdd
+            // 
+            this.btncatAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btncatAdd.Image = ((System.Drawing.Image)(resources.GetObject("btncatAdd.Image")));
+            this.btncatAdd.ImageHover = ((System.Drawing.Image)(resources.GetObject("btncatAdd.ImageHover")));
+            this.btncatAdd.ImageNormal = ((System.Drawing.Image)(resources.GetObject("btncatAdd.ImageNormal")));
+            this.btncatAdd.Location = new System.Drawing.Point(907, 6);
+            this.btncatAdd.Name = "btncatAdd";
+            this.btncatAdd.Size = new System.Drawing.Size(51, 38);
+            this.btncatAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btncatAdd.TabIndex = 2;
+            this.btncatAdd.TabStop = false;
+            this.btncatAdd.Click += new System.EventHandler(this.btncatAdd_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(12, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(163, 19);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Manage Categories";
+            // 
             // CategoryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -160,7 +161,7 @@
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CategoryForm";
             this.Text = "CategoryForm";
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).EndInit();

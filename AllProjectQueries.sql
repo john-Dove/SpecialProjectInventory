@@ -203,7 +203,7 @@ ALTER COLUMN price money;*/
 /*ALTER TABLE tbOrder
 ALTER COLUMN total money;*/
 
-/*UPDATE tbProduct SET LastCheckedOn = NULL;
+/*UPDATE tbProduct SET LastCheckedOn = NULL;*/
 /*ALTER TABLE tbAlertLog
 ADD productID INT;*/
 
