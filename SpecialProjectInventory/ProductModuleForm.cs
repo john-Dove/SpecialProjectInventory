@@ -38,10 +38,14 @@ namespace SpecialProjectInventory
             NudReorderLevel.Value = NudReorderLevel.Minimum; // Resets NudReorderLevel
         }
 
+        public void DisableSaveButton()
+        {
+            btnSavePM.Enabled = false; 
+        }
+
 
         public void LoadCategory()
         {
-            //comboCat.Items.Clear();
             using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
             {
                 using (SqlCommand cm = new SqlCommand("SELECT catname FROM tbCategory", connection))
@@ -101,8 +105,7 @@ namespace SpecialProjectInventory
 
                                 if (!reader.IsDBNull(reader.GetOrdinal("expiredatee")))
                                 {
-                                    //var expiryDate = reader.GetDateTime(reader.GetOrdinal("expiredatee"));
-                                    //MessageBox.Show($"Debug: Expiry date read from database is {expiryDate}"); 
+                                                            
                                     DtExpiryDate.Value = reader.GetDateTime(reader.GetOrdinal("expiredatee"));
                                     DtExpiryDate.Visible = true;
                                 }
@@ -292,6 +295,8 @@ namespace SpecialProjectInventory
                             string query = $"UPDATE tbProduct SET pname = @pname, pdescription = @pdescription, pcategory = @pcategory, {setClause} WHERE pid = @pid";
                             using (var cm = new SqlCommand(query, connection))
                             {
+                                //cm.Parameters.AddWithValue("@pid", productId);
+                                cm.Parameters.AddWithValue("@pid", EditingProductId);
                                 cm.Parameters.AddWithValue("@pname", txtPName.Text);
                                 cm.Parameters.AddWithValue("@pdescription", txtPDes.Text);
                                 cm.Parameters.AddWithValue("@pcategory", CmbCatCategory.Text);
@@ -300,8 +305,7 @@ namespace SpecialProjectInventory
                                 if (lowStockThresholdChanged) cm.Parameters.AddWithValue("@lowstockthreshold", currentLowStockThreshold);
                                 if (expiryDateChanged) cm.Parameters.AddWithValue("@expiredatee", currentExpiryDate.HasValue ? (object)currentExpiryDate.Value : DBNull.Value);
                                 if (isPerishableChanged) cm.Parameters.AddWithValue("@isPerishable", currentIsPerishable);
-                                cm.Parameters.AddWithValue("@pid", productId);
-
+                                
                                 connection.Open();
                                 cm.ExecuteNonQuery();
                                 MessageBox.Show("Product has been successfully updated!");

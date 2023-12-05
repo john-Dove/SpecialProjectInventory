@@ -27,6 +27,13 @@ namespace SpecialProjectInventory
         // Evaluates and resets password where applicable
         private void BtnChangePassword_Click(object sender, EventArgs e)
         {
+            // Checks whether the new password meets complexity requirements
+            if (!ProjectUtility.IsPasswordComplex(TxtNewPassword.Text))
+            {
+                MessageBox.Show("The password does not meet complexity requirements.");
+                return;
+            }
+
             // Declares an integer to hold the parsed userID
             if (!int.TryParse(lblUserID.Text.Trim(), out int userId))
             {

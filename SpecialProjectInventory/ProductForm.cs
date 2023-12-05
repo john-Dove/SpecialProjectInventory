@@ -66,6 +66,7 @@ namespace SpecialProjectInventory
                 ProductModuleForm productModule = new ProductModuleForm();
                 int productId = Convert.ToInt32(dgvProduct.Rows[e.RowIndex].Cells[1].Value);
                 productModule.EditingProductId = productId;
+                productModule.LoadProductDetails(productId);
                 productModule.LblPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
                 productModule.txtPName.Text = dgvProduct.Rows[e.RowIndex].Cells[2].Value.ToString();
                 productModule.txtPQTY.Text = dgvProduct.Rows[e.RowIndex].Cells[3].Value.ToString();
@@ -120,5 +121,6 @@ namespace SpecialProjectInventory
             
             return MainForm.UserRole == roleName;
         }
+
     }
 }

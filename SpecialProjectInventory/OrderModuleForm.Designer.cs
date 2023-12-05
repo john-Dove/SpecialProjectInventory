@@ -185,7 +185,7 @@
             this.txtSearchCust.Name = "txtSearchCust";
             this.txtSearchCust.Size = new System.Drawing.Size(201, 23);
             this.txtSearchCust.TabIndex = 7;
-            this.txtSearchCust.TextChanged += new System.EventHandler(this.txtSearchCust_TextChanged);
+            this.txtSearchCust.TextChanged += new System.EventHandler(this.TxtSearchCust_TextChanged);
             // 
             // label2
             // 
@@ -429,7 +429,7 @@
             this.txtSearchProd.Name = "txtSearchProd";
             this.txtSearchProd.Size = new System.Drawing.Size(393, 23);
             this.txtSearchProd.TabIndex = 8;
-            this.txtSearchProd.TextChanged += new System.EventHandler(this.txtSearchProd_TextChanged);
+            this.txtSearchProd.TextChanged += new System.EventHandler(this.TxtSearchProd_TextChanged);
             // 
             // label3
             // 

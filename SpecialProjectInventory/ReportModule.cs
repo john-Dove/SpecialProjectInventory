@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
@@ -86,7 +87,6 @@ namespace SpecialProjectInventory
 
             DgvReport.DataSource = reportData;
 
-            // SaveReport(reportData);
         }
 
         private string BuildReportQuery(DateTime startDate, DateTime endDate, string category, string criteria)
@@ -98,7 +98,7 @@ namespace SpecialProjectInventory
                 case "Perishable":
                 case "Non-Perishable":
                 case "Stock Below Threshold":
-                    baseQuery = "SELECT * FROM tbProduct WHERE (expiredatee BETWEEN @startDate AND @endDate)";
+                    baseQuery = "SELECT pid, pname, pqty, pprice, pdescription, pcategory FROM tbProduct WHERE 1=1"; // Start with a base that always evaluates to true
                     if (!string.IsNullOrEmpty(category))
                     {
                         baseQuery += " AND pcategory = @category";
@@ -108,9 +108,16 @@ namespace SpecialProjectInventory
                     if (criteria == "Stock Below Threshold") baseQuery += " AND pqty <= lowstockthreshold";
                     break;
                 case "Total Revenue":
-                    // Query targets the sales table to calculate total revenue
-                    baseQuery = "SELECT SUM(totalAmount) AS TotalRevenue FROM tbSales WHERE (saleDate BETWEEN @startDate AND @endDate)";
-                    // Assumes no category filter for Total Revenue since tbSales might not have category info
+                    // This query joins tbOrder with tbProduct to filter by category
+                    baseQuery = @"
+                    SELECT SUM(o.total) AS TotalRevenue 
+                    FROM tbOrder o
+                    INNER JOIN tbProduct p ON o.pid = p.pid
+                    WHERE (o.odate BETWEEN @startDate AND @endDate)";
+                    if (!string.IsNullOrEmpty(category))
+                    {
+                        baseQuery += " AND p.pcategory = @category";
+                    }
                     break;
                 default:
                     baseQuery = "";
@@ -120,7 +127,29 @@ namespace SpecialProjectInventory
             return baseQuery;
         }
 
+        private void SaveDataTableToCSV(DataTable dataTable, string filePath)
+        {
+            StringBuilder fileContent = new StringBuilder();
 
+            // Column Headers
+            foreach (var col in dataTable.Columns)
+            {
+                fileContent.Append(col.ToString() + ",");
+            }
+            fileContent.Replace(",", Environment.NewLine, fileContent.Length - 1, 1);
+
+            // Rows Data
+            foreach (DataRow dr in dataTable.Rows)
+            {
+                foreach (var column in dr.ItemArray)
+                {
+                    fileContent.Append("\"" + column.ToString() + "\",");
+                }
+                fileContent.Replace(",", Environment.NewLine, fileContent.Length - 1, 1);
+            }
+
+            File.WriteAllText(filePath, fileContent.ToString());
+        }
 
         private void PicBoxCloseReport_Click(object sender, EventArgs e)
         {
@@ -128,6 +157,19 @@ namespace SpecialProjectInventory
         }
 
 
+        private void BtnSaveReport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV file (*.csv)|*.csv";
+            saveFileDialog.Title = "Save report as CSV";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Calls method to save the data
+                SaveDataTableToCSV(DgvReport.DataSource as DataTable, saveFileDialog.FileName);
+            }
+
+        }
     }
 
 }

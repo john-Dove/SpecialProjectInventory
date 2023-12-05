@@ -1,11 +1,7 @@
 ﻿using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Text;
-using System.Data;
-using System.IO;
 using System.Linq;
-using System.Data.SqlClient;
-using System;
 
 namespace SpecialProjectInventory
 {
@@ -21,6 +17,17 @@ namespace SpecialProjectInventory
             };
             return phoneMaskedTextBox;
         }
+        public static bool IsPasswordComplex(string password)
+        {
+            if (password.Length < 8) return false;
+            if (!password.Any(char.IsUpper)) return false;
+            if (!password.Any(char.IsLower)) return false;
+            if (!password.Any(char.IsDigit)) return false;
+            if (!password.Any(ch => !char.IsLetterOrDigit(ch))) return false; // Checks for a special character
+
+            return true;
+        }
+
 
         public static string HashPassword(string password)
         {
@@ -38,79 +45,7 @@ namespace SpecialProjectInventory
                 return builder.ToString();
             }
         }
-        public static DataTable GetInventoryData()
-        {
-            DataTable dataTable = new DataTable();
-            string connectionString = DatabaseConfig.ConnectionString;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT orderid, odate, pid, cid, qty, price, total FROM tbOrder";
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                        {
-                            adapter.Fill(dataTable);
-                        }
-                    }
-                }
-                catch (SqlException sqlEx)
-                {
-                    Console.WriteLine(sqlEx.Message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-            return dataTable;
-        }
-
-        public static void GenerateInventoryReport(DataTable inventoryData, string reportPath)
-        {
-            if (inventoryData == null || inventoryData.Rows.Count == 0)
-            {
-                throw new InvalidOperationException("No data available to generate the report.");
-            }
-
-            StringBuilder csvContent = new StringBuilder();
-
-            // Column headers
-            string[] columnNames = inventoryData.Columns.Cast<DataColumn>()
-                                        .Select(column => "\"" + column.ColumnName.Replace("\"", "\"\"") + "\"").ToArray();
-            csvContent.AppendLine(string.Join(",", columnNames));
-
-            // Rows data
-            foreach (DataRow row in inventoryData.Rows)
-            {
-                string[] fields = row.ItemArray.Select(field => "\"" + field.ToString().Replace("\"", "\"\"") + "\"").ToArray();
-                csvContent.AppendLine(string.Join(",", fields));
-            }
-
-            // Summary data
-            decimal totalSales = inventoryData.AsEnumerable().Sum(row => row.Field<decimal>("total"));
-            int totalUnitsSold = inventoryData.AsEnumerable().Sum(row => row.Field<int>("qty"));
-
-            // Adds a blank line before the summary for readability
-            csvContent.AppendLine();
-            csvContent.AppendLine("Summary");
-            csvContent.AppendLine($"\"Total Sales\",\"{totalSales}\"");
-            csvContent.AppendLine($"\"Total Units Sold\",\"{totalUnitsSold}\"");
-
-            // Ensures directory exists
-            string directoryPath = Path.GetDirectoryName(reportPath);
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            // Writes the CSV content to the file
-            File.WriteAllText(reportPath, csvContent.ToString());
-        }
-
+               
 
 
     }

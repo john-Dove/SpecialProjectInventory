@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using static SpecialProjectInventory.LoginForm;
 
 namespace SpecialProjectInventory
 {
@@ -52,7 +53,7 @@ namespace SpecialProjectInventory
 
             // Closes the MainForm after logging out
             Close();
-
+            UserSession.IsUserLoggedIn = false;
         }
         public void SetWelcomeMessage(string username)
         {
@@ -90,9 +91,12 @@ namespace SpecialProjectInventory
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            notificationTimer.Interval = 60000;
-            notificationTimer.Tick += new EventHandler(NotificationTimer_Tick);
-            notificationTimer.Start();
+            if(LoginForm.UserSession.IsUserLoggedIn)
+            {
+                notificationTimer.Interval = 60000;
+                notificationTimer.Tick += new EventHandler(NotificationTimer_Tick);
+                notificationTimer.Start();
+            }
 
             // Presets for main buttons
             BtncusUsers.Visible = BtncusCustomer.Visible = BtncusCategories.Visible = false;
@@ -153,12 +157,15 @@ namespace SpecialProjectInventory
 
         private void NotificationTimer_Tick(object sender, EventArgs e)
         {
-            
-            if (CheckForNewAlerts())
+            if(LoginForm.UserSession.IsUserLoggedIn)
             {
-                var message = "You have new alerts!";
-                ShowNotificationHere(message);
+                if (CheckForNewAlerts())
+                {
+                    var message = "You have new alerts!";
+                    ShowNotificationHere(message);
+                }
             }
+            
         }
 
         private bool CheckForNewAlerts()

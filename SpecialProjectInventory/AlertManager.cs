@@ -54,7 +54,6 @@ namespace SpecialProjectInventory
 
         public class ExpiringProduct
         {
-            
             public int Id { get; set; }
             public string Name { get; set; }
             public int Quantity { get; set; }
@@ -101,8 +100,6 @@ namespace SpecialProjectInventory
                 }
             }
         }
-
-
 
         public void ResolveAlert(int logID, int productID)
         {
@@ -152,7 +149,6 @@ namespace SpecialProjectInventory
                 }
             }
         }
-
 
         public int GetProductThreshold(int productID)
         {
@@ -280,7 +276,7 @@ namespace SpecialProjectInventory
                 }
             }
 
-            return newAlertsLogged; // Return true if any new alerts were logged
+            return newAlertsLogged; // Returns true if any new alerts were logged
         }
 
 
@@ -340,7 +336,6 @@ namespace SpecialProjectInventory
             return lastCheckedTime;
         }
 
-
         public void CheckLowStockAlerts(DateTime lastCheckedTime)
         {
             int defaultThreshold = GetDefaultThreshold("Low-Stock");
@@ -361,6 +356,7 @@ namespace SpecialProjectInventory
                 
             }
         }
+
         public bool IsAlertResolved(int logID)
         {
             using (var connection = new SqlConnection(_connectionString))

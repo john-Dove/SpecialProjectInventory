@@ -132,6 +132,8 @@ namespace SpecialProjectInventory
 
                     // Configures the form for alerts and pass the active alerts
                     productModuleForm.ConfigureForAlerts();
+                    // Disables save button
+                    productModuleForm.DisableSaveButton();
 
                     // Enables configuration mode which will show the ComboBox
                     productModuleForm.EnableConfigurationMode(true);
@@ -141,7 +143,7 @@ namespace SpecialProjectInventory
 
                     // Pre-loads the form with the details of the first product in the alert list
                     var firstAlertedProduct = activeAlerts.First();
-                    //productModuleForm.EditingProductId = firstAlertedProduct.ProductID;
+                    productModuleForm.EditingProductId = firstAlertedProduct.ProductID;
                     productModuleForm.LoadProductDetails(firstAlertedProduct.ProductID);
 
                     // Shows the form as a dialog

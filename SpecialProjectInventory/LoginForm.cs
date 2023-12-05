@@ -6,7 +6,11 @@ namespace SpecialProjectInventory
 {
     public partial class LoginForm : Form
     {
-       
+        public static class UserSession
+        {
+            public static bool IsUserLoggedIn { get; set; } = false;
+        }
+
         public LoginForm()
         {
             InitializeComponent();
@@ -32,6 +36,16 @@ namespace SpecialProjectInventory
 
                         if (reader.Read())
                         {
+                            string actualUsername = reader["username"].ToString();
+                            string inputUsername = TxtUserName.Text;
+
+                            // Perform a case-sensitive comparison of the usernames
+                            if (!string.Equals(actualUsername, inputUsername, StringComparison.Ordinal))
+                            {
+                                MessageBox.Show("Invalid username or password!", "ACCESS DENIED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                return;
+                            }
+
                             // Hashes the input password
                             string inputPasswordHashed = ProjectUtility.HashPassword(TxtPassword.Text);
 
@@ -61,7 +75,7 @@ namespace SpecialProjectInventory
                                     main.SetWelcomeMessage(username);
                                     
                                     main.ShowDialog();
-                                    
+                                    UserSession.IsUserLoggedIn = true;
                                 }
                             }
                             else
@@ -114,17 +128,28 @@ namespace SpecialProjectInventory
         {
             using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
             {
-                string query = "SELECT isPasswordReset FROM tbUser WHERE username = @username";
+                string query = "SELECT isPasswordReset, password FROM tbUser WHERE username = @username";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@username", username);
 
                     connection.Open();
-                    bool resetRequired = (bool)command.ExecuteScalar();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            bool isPasswordReset = (bool)reader["isPasswordReset"];
+                            string storedPasswordHash = reader["password"].ToString();
+                            string defaultPasswordHashed = ProjectUtility.HashPassword("password123");
 
-                    return resetRequired;
+                            // The password reset is required if the isPasswordReset flag is true
+                            // or if the user's password is still the default one.
+                            return isPasswordReset || storedPasswordHash == defaultPasswordHashed;
+                        }
+                    }
                 }
             }
+            return false;
         }
 
         private void ShowChangePasswordForm(int userID, string username)

@@ -62,16 +62,17 @@ namespace SpecialProjectInventory
 
         }
 
-        private void txtSearchCust_TextChanged(object sender, EventArgs e)
+        private void TxtSearchCust_TextChanged(object sender, EventArgs e)
         {
             LoadCustomer();     //find items stored in the customer table when type
         }
 
-        private void txtSearchProd_TextChanged(object sender, EventArgs e)
+        private void TxtSearchProd_TextChanged(object sender, EventArgs e)
         {
             LoadProduct();       //find items stored in the products table when type
         }
-   
+
+
         private void NumericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             GetQty();
@@ -79,7 +80,16 @@ namespace SpecialProjectInventory
             if (UDQty.Value > qty) // Ensures that the ordering amount doesn't go over what is in stock
             {
                 MessageBox.Show("In-stock quantity is not enough!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                UDQty.Value = UDQty.Value - 1;
+
+                // Temporarily unsubscribe from the event
+                UDQty.ValueChanged -= NumericUpDown1_ValueChanged;
+
+                // Adjust the value
+                UDQty.Value = Math.Max(UDQty.Value - 1, 0);
+
+                // Subscribe back to the event
+                UDQty.ValueChanged += NumericUpDown1_ValueChanged;
+
                 return;
             }
 
@@ -89,9 +99,6 @@ namespace SpecialProjectInventory
                 decimal total = Convert.ToDecimal(txtPrice.Text) * UDQty.Value;
                 txtTotal.Text = total.ToString();
             }
-
-
-
         }
 
         private void DgvCustomer_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -111,57 +118,6 @@ namespace SpecialProjectInventory
 
 
         }
-
-        /* private void BtnInsert_Click(object sender, EventArgs e)
-         {
-             try
-             {
-                 if (txtCld.Text == "")
-                 {
-                     MessageBox.Show("Please select a customer!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                     return;
-                 }
-                 if (txtPid.Text == "")
-                 {
-                     MessageBox.Show("Please select a product!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                     return;
-                 }
-
-                 if (MessageBox.Show("Are you sure you want to Insert this order?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                 {
-                     cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total) VALUES (@odate, @pid, @cid, @qty, @price, @total)", con);
-                     cm.Parameters.AddWithValue("@odate", dtOrder.Value);
-                     cm.Parameters.AddWithValue("@pid", Convert.ToInt32(txtPid.Text));
-                     cm.Parameters.AddWithValue("@cid", Convert.ToInt32(txtCld.Text));
-                     cm.Parameters.AddWithValue("@qty", Convert.ToInt32(UDQty.Value));
-                     cm.Parameters.AddWithValue("@price", Convert.ToDecimal(txtPrice.Text));
-                     cm.Parameters.AddWithValue("@total", Convert.ToDecimal(txtTotal.Text));
-                     con.Open();
-                     cm.ExecuteNonQuery();
-                     con.Close();
-                     MessageBox.Show("Order has been successfully Inserted.");
-                     //Clear();
-
-                     cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid LIKE '"+ txtPid.Text +"' ", con);     // as a part with quantity not going over what is in stock
-                     cm.Parameters.AddWithValue("@pqty", Convert.ToInt16(UDQty.Value));
-
-                     con.Open();
-                     cm.ExecuteNonQuery();
-                     con.Close();
-                     Clear();
-                     LoadProduct();      //loads new product list after and order has been made
-
-                 }
-
-
-             }
-             catch (Exception ex)
-             {
-                 MessageBox.Show(ex.Message);
-             }
-
-
-         }*/
 
         private void BtnInsert_Click(object sender, EventArgs e)
         {
@@ -203,7 +159,7 @@ namespace SpecialProjectInventory
                     Clear();
                     LoadProduct(); //loads new product list after and order has been made
 
-                    // Record the sale for analytics
+                    // Records the sale for analytics
                     SalesUtility.RecordSale(
                         productId: Convert.ToInt32(txtPid.Text),
                         quantitySold: Convert.ToInt32(UDQty.Value),

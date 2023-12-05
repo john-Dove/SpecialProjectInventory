@@ -236,6 +236,25 @@ ADD isPerishable BIT DEFAULT 0 NOT NULL;*/
 
 /*SELECT * FROM tbProduct WHERE expiredatee BETWEEN '2023-11-01' AND '2023-11-29' AND pcategory = 'Groceries' AND isPerishable = 1*/
 
+/*INSERT INTO tbSales (productID, quantitySold, totalAmount, saleDate, customerID)
+SELECT 
+    pid,           -- This is the product ID in tbOrder
+    qty,           -- This is the quantity sold in tbOrder
+    total,         -- This is the total sale amount in tbOrder
+    odate,         -- This is the order date in tbOrder
+    cid            -- This is the customer ID in tbOrder
+FROM 
+    tbOrder
+WHERE 
+    NOT EXISTS (
+        SELECT 1 FROM tbSales 
+        WHERE 
+            tbSales.productID = tbOrder.pid AND 
+            tbSales.saleDate = tbOrder.odate AND 
+            tbSales.customerID = tbOrder.cid
+    );
+
+*/
 
 
 

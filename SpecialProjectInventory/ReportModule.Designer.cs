@@ -34,7 +34,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.PicBoxCloseReport = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.BtnClearReport = new System.Windows.Forms.Button();
             this.btnSaveReport = new System.Windows.Forms.Button();
             this.LblReportCategory = new System.Windows.Forms.Label();
             this.LblStartDate = new System.Windows.Forms.Label();
@@ -100,19 +99,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Report Module";
             // 
-            // BtnClearReport
-            // 
-            this.BtnClearReport.BackColor = System.Drawing.Color.Red;
-            this.BtnClearReport.FlatAppearance.BorderSize = 0;
-            this.BtnClearReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnClearReport.ForeColor = System.Drawing.Color.White;
-            this.BtnClearReport.Location = new System.Drawing.Point(519, 257);
-            this.BtnClearReport.Name = "BtnClearReport";
-            this.BtnClearReport.Size = new System.Drawing.Size(93, 38);
-            this.BtnClearReport.TabIndex = 50;
-            this.BtnClearReport.Text = "Clear";
-            this.BtnClearReport.UseVisualStyleBackColor = false;
-            // 
             // btnSaveReport
             // 
             this.btnSaveReport.BackColor = System.Drawing.Color.Green;
@@ -125,6 +111,7 @@
             this.btnSaveReport.TabIndex = 48;
             this.btnSaveReport.Text = "Save";
             this.btnSaveReport.UseVisualStyleBackColor = false;
+            this.btnSaveReport.Click += new System.EventHandler(this.BtnSaveReport_Click);
             // 
             // LblReportCategory
             // 
@@ -220,7 +207,6 @@
             this.Controls.Add(this.DtReportStart);
             this.Controls.Add(this.CmbCategory);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.BtnClearReport);
             this.Controls.Add(this.btnSaveReport);
             this.Controls.Add(this.LblReportCategory);
             this.Controls.Add(this.LblStartDate);
@@ -243,7 +229,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox PicBoxCloseReport;
         private System.Windows.Forms.Label label1;
-        public System.Windows.Forms.Button BtnClearReport;
         public System.Windows.Forms.Button btnSaveReport;
         private System.Windows.Forms.Label LblReportCategory;
         private System.Windows.Forms.Label LblStartDate;

@@ -58,21 +58,7 @@ namespace SpecialProjectInventory
         private void dgvUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             string colName = dgvOrder.Columns[e.ColumnIndex].Name;
-            /* if (colName == "Edit")  the edit section on the order form
-             {
-                 OrderModuleForm formModule = new OrderModuleForm();
-                 formModule.lblOid.Text = dgvOrder.Rows[e.RowIndex].Cells[1].Value.ToString();
-                 formModule.dtOrder.Text = dgvOrder.Rows[e.RowIndex].Cells[2].Value.ToString();
-                 formModule.txtPid.Text = dgvOrder.Rows[e.RowIndex].Cells[3].Value.ToString();
-                 formModule.txtCld.Text = dgvOrder.Rows[e.RowIndex].Cells[4].Value.ToString();
-                 formModule.UDQty.Value = Convert.ToInt32(dgvOrder.Rows[e.RowIndex].Cells[5].Value.ToString());
-                 formModule.txtPrice.Text = dgvOrder.Rows[e.RowIndex].Cells[6].Value.ToString();
-
-                 formModule.btnInsert.Enabled = false;
-                 formModule.btnOUpdate.Enabled = true;
-                 formModule.ShowDialog();
-
-             }*/
+            
             if (colName == "Delete")
             {
                 if (MessageBox.Show("Are you sure you want to delete this order?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
