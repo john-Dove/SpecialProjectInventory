@@ -64,7 +64,7 @@
             this.picBoxClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBoxClose.TabIndex = 12;
             this.picBoxClose.TabStop = false;
-            this.picBoxClose.Click += new System.EventHandler(this.picBoxClose_Click);
+            this.picBoxClose.Click += new System.EventHandler(this.PicBoxClose_Click);
             // 
             // label1
             // 
@@ -103,7 +103,7 @@
             this.btnUpdateUM.TabIndex = 24;
             this.btnUpdateUM.Text = "Update";
             this.btnUpdateUM.UseVisualStyleBackColor = false;
-            this.btnUpdateUM.Click += new System.EventHandler(this.btnUpdateUM_Click);
+            this.btnUpdateUM.Click += new System.EventHandler(this.BtnUpdateUM_Click);
             // 
             // btnSave
             // 
@@ -117,7 +117,7 @@
             this.btnSave.TabIndex = 23;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // txtCPhone
             // 

@@ -13,7 +13,6 @@ namespace SpecialProjectInventory
 {
     public partial class CategoryForm : Form
     {
-        //SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
         SqlCommand cm = new SqlCommand();
         SqlDataReader dr;
 
@@ -23,7 +22,7 @@ namespace SpecialProjectInventory
             LoadCategory();
         }
 
-        public void LoadCategory()  //allows data in the system to show in the data grid view here
+        public void LoadCategory()  // Allows data in the system to show in the data grid view here
         {
             int i = 0;
             dgvCategory.Rows.Clear();
@@ -49,7 +48,7 @@ namespace SpecialProjectInventory
             }
         }
 
-        private void btncatAdd_Click(object sender, EventArgs e)
+        private void BtncatAdd_Click(object sender, EventArgs e)
         {
             CategoryModuleForm formModule = new CategoryModuleForm();
             formModule.btnSaveCM.Enabled = true;
@@ -60,7 +59,7 @@ namespace SpecialProjectInventory
 
         }
 
-        private void dgvCategory_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvCategory_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
             string colName = dgvCategory.Columns[e.ColumnIndex].Name;

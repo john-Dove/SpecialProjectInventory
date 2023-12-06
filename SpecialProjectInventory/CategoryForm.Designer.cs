@@ -78,7 +78,7 @@
             this.dgvCategory.Name = "dgvCategory";
             this.dgvCategory.Size = new System.Drawing.Size(953, 523);
             this.dgvCategory.TabIndex = 5;
-            this.dgvCategory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCategory_CellContentClick);
+            this.dgvCategory.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvCategory_CellContentClick);
             // 
             // Column5
             // 
@@ -139,7 +139,7 @@
             this.btncatAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btncatAdd.TabIndex = 2;
             this.btncatAdd.TabStop = false;
-            this.btncatAdd.Click += new System.EventHandler(this.btncatAdd_Click);
+            this.btncatAdd.Click += new System.EventHandler(this.BtncatAdd_Click);
             // 
             // label1
             // 

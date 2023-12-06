@@ -1,28 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-
 
 namespace SpecialProjectInventory
 {
     public partial class CustomerModuleForm : Form
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-78II3F3\SQLEXPRESS;Initial Catalog=SpecialProjectDBs;Integrated Security=True");
-        SqlCommand cm = new SqlCommand();
-
         public CustomerModuleForm()
         {
             InitializeComponent();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             try
             {
@@ -62,12 +51,12 @@ namespace SpecialProjectInventory
             btnUpdateUM.Enabled = false;
         }
 
-        private void picBoxClose_Click(object sender, EventArgs e)
+        private void PicBoxClose_Click(object sender, EventArgs e)
         {
             this.Dispose();
         }
 
-        private void btnUpdateUM_Click(object sender, EventArgs e)
+        private void BtnUpdateUM_Click(object sender, EventArgs e)
         {
             try
             {
