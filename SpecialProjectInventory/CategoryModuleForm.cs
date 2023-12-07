@@ -77,7 +77,7 @@ namespace SpecialProjectInventory
                         } // The SqlCommand object is disposed here
 
                         MessageBox.Show("Category has been successfully updated!");
-                        this.Dispose();
+                        Dispose();
                     } // The SqlConnection object is disposed here
                 }
             }

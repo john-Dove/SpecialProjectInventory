@@ -137,7 +137,7 @@ namespace SpecialProjectInventory
 
         private void DgvAlertSettings_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Checks whether the click is on a valid row (not the header).
+            // Checks whether the click is on a valid row (not the header)
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = DgvAlertSettings.Rows[e.RowIndex];
