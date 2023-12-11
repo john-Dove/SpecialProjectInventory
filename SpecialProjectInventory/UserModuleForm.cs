@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 
 
 namespace SpecialProjectInventory
@@ -87,7 +87,7 @@ namespace SpecialProjectInventory
 
         }
 
-        
+
         public void Clear()
         {
             if (ChkBxEditUserName.Checked)
@@ -203,12 +203,12 @@ namespace SpecialProjectInventory
             string sql = "SELECT roleName FROM tbRole";
             using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
             {
-                using(SqlCommand command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     connection.Open();
-                    using(SqlDataReader reader = command.ExecuteReader())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while(reader.Read())
+                        while (reader.Read())
                         {
                             roles.Add(reader["roleName"].ToString());
                         }
@@ -230,7 +230,7 @@ namespace SpecialProjectInventory
             }
 
             // Hides user role checkbox if user is manager
-            if(RoleHelper.IsManager())
+            if (RoleHelper.IsManager())
             {
                 ChkBxEditRole.Visible = false;
             }
@@ -261,7 +261,7 @@ namespace SpecialProjectInventory
 
                         // Adds parameters to SqlCommand
                         cm.Parameters.AddWithValue("@newPassword", hashedNewPassword); // Sets the new password
-                        cm.Parameters.AddWithValue("@userID", lblUserID.Text); 
+                        cm.Parameters.AddWithValue("@userID", lblUserID.Text);
 
                         // Opens connection, execute command, and closes connection
                         con.Open();
@@ -285,12 +285,12 @@ namespace SpecialProjectInventory
 
         private void UpdateButtonStates()
         {
-            bool anyBoxChecked = ChkBxEditRole.Checked || ChkBxEditUserName.Checked 
+            bool anyBoxChecked = ChkBxEditRole.Checked || ChkBxEditUserName.Checked
                                || ChkBxEditName.Checked || ChkBxEditPhone.Checked;
-            
+
             btnUpdateUM.Enabled = anyBoxChecked && !IsAddButtonClicked;
             BtnClearUM.Enabled = anyBoxChecked;
-           
+
         }
 
 
@@ -325,7 +325,7 @@ namespace SpecialProjectInventory
             UpdateButtonStates();
         }
 
-        
+
 
 
     }

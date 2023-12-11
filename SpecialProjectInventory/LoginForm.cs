@@ -17,9 +17,9 @@ namespace SpecialProjectInventory
         }
 
         // Login query instructions
-        private void BtnLogin_Click(object sender, EventArgs e) 
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
-           
+
             string sql = "SELECT tbUser.*, tbRole.roleName FROM tbUser INNER JOIN tbRole ON tbUser.roleID = tbRole.roleID WHERE username=@username";
 
             try
@@ -55,7 +55,7 @@ namespace SpecialProjectInventory
                             // Compares the hashed input password with the stored hashed password
                             if (inputPasswordHashed == storedPasswordHash)
                             {
-                                // Continues with login success logic...
+                                // Continues with login success logic
                                 MainForm.UserRole = reader["roleName"].ToString();
                                 int userID = (int)reader["userID"];
 
@@ -68,14 +68,14 @@ namespace SpecialProjectInventory
                                 }
                                 else
                                 {
+                                    UserSession.IsUserLoggedIn = true;
                                     string username = reader["username"].ToString();
                                     MessageBox.Show("Welcome " + reader["fullname"].ToString() + "!", "ACCESS GRANTED", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     Hide();
                                     MainForm main = new MainForm();
                                     main.SetWelcomeMessage(username);
-                                    
                                     main.ShowDialog();
-                                    UserSession.IsUserLoggedIn = true;
+                                    Dispose();
                                 }
                             }
                             else
@@ -99,7 +99,7 @@ namespace SpecialProjectInventory
         // Toggles between masking and unmasking password
         private void ChkBxPassword_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbPassword.Checked == false) 
+            if (cbPassword.Checked == false)
             {
                 TxtPassword.UseSystemPasswordChar = true;
             }
@@ -117,7 +117,7 @@ namespace SpecialProjectInventory
 
         private void PicBoxClose_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("Exit Application", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Exit Application", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Application.Exit();
             }

@@ -18,13 +18,13 @@ namespace SpecialProjectInventory
         private decimal originalLowStockThreshold;
         private bool originalIsPerishable;
         private DateTime? originalExpiryDate;
-        
+
 
         public ProductModuleForm()
         {
             InitializeComponent();
             LoadCategory();
-            
+
         }
 
         public void Clear()
@@ -40,13 +40,13 @@ namespace SpecialProjectInventory
 
         public void DisableSaveButton()
         {
-            btnSavePM.Enabled = false; 
+            btnSavePM.Enabled = false;
         }
 
 
         public void LoadCategory()
         {
-            using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+            using (SqlConnection connection = new SqlConnection(DatabaseConfig.ConnectionString))
             {
                 using (SqlCommand cm = new SqlCommand("SELECT catname FROM tbCategory", connection))
                 {
@@ -71,21 +71,21 @@ namespace SpecialProjectInventory
             CmbCatCategory.Enabled = false;
             txtPprice.Enabled = false;
             btnSavePM.Enabled = false;
-          
+
             txtPQTY.Enabled = true;
             DtExpiryDate.Enabled = true;
             DtpThresholdDate.Enabled = true;
             NudReorderLevel.Enabled = true;
         }
-                
+
         public void LoadProductDetails(int productId)
         {
             EditingProductId = productId;
             try
             {
-                using (var connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                using (var connection = new SqlConnection(DatabaseConfig.ConnectionString))
                 {
-                    
+
                     var query = "SELECT pname, pqty, pprice, pdescription, pcategory, lowstockthreshold, expiredatee, isPerishable FROM tbProduct WHERE pid = @pid";
                     using (var command = new SqlCommand(query, connection))
                     {
@@ -105,7 +105,7 @@ namespace SpecialProjectInventory
 
                                 if (!reader.IsDBNull(reader.GetOrdinal("expiredatee")))
                                 {
-                                                            
+
                                     DtExpiryDate.Value = reader.GetDateTime(reader.GetOrdinal("expiredatee"));
                                     DtExpiryDate.Visible = true;
                                 }
@@ -144,7 +144,7 @@ namespace SpecialProjectInventory
 
             foreach (var alert in activeAlerts)
             {
-               
+
                 CmbProductIDs.Items.Add(alert.ProductID.ToString());
             }
 
@@ -202,7 +202,7 @@ namespace SpecialProjectInventory
             {
                 if (MessageBox.Show("Are you sure you want to save this product?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    using (SqlConnection connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                    using (SqlConnection connection = new SqlConnection(DatabaseConfig.ConnectionString))
                     {
                         string query = "INSERT INTO tbProduct(pname, pqty, pprice, pdescription, pcategory, lowstockthreshold, expiredatee, isPerishable) " +
                                        "VALUES(@pname, @pqty, @pprice, @pdescription, @pcategory, @lowstockthreshold, @expiredatee, @isPerishable)";
@@ -281,7 +281,7 @@ namespace SpecialProjectInventory
                 {
                     if (MessageBox.Show("Are you sure you want to update this product?", "Update Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        using (var connection = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString))
+                        using (var connection = new SqlConnection(DatabaseConfig.ConnectionString))
                         {
                             List<string> setClauses = new List<string>();
                             if (quantityChanged) setClauses.Add("pqty = @pqty");
@@ -290,7 +290,7 @@ namespace SpecialProjectInventory
                             if (expiryDateChanged) setClauses.Add("expiredatee = @expiredatee");
                             if (isPerishableChanged) setClauses.Add("isPerishable = @isPerishable");
                             if (updateLastCheckedOn) setClauses.Add("lastCheckedOn = GETDATE()");
-                            
+
                             string setClause = string.Join(", ", setClauses);
                             string query = $"UPDATE tbProduct SET pname = @pname, pdescription = @pdescription, pcategory = @pcategory, {setClause} WHERE pid = @pid";
                             using (var cm = new SqlCommand(query, connection))
@@ -305,7 +305,7 @@ namespace SpecialProjectInventory
                                 if (lowStockThresholdChanged) cm.Parameters.AddWithValue("@lowstockthreshold", currentLowStockThreshold);
                                 if (expiryDateChanged) cm.Parameters.AddWithValue("@expiredatee", currentExpiryDate.HasValue ? (object)currentExpiryDate.Value : DBNull.Value);
                                 if (isPerishableChanged) cm.Parameters.AddWithValue("@isPerishable", currentIsPerishable);
-                                
+
                                 connection.Open();
                                 cm.ExecuteNonQuery();
                                 MessageBox.Show("Product has been successfully updated!");
@@ -324,7 +324,7 @@ namespace SpecialProjectInventory
             }
         }
 
-        
+
 
         private void BtnClearPM_Click(object sender, EventArgs e)
         {
@@ -340,10 +340,10 @@ namespace SpecialProjectInventory
             // Checks whether the selected category is "Groceries"
             bool isGroceries = CmbCatCategory.SelectedItem.ToString() == "Groceries";
 
-            DtExpiryDate.Visible = isGroceries; // Shows or hides expiry date for groceries
-            DtpThresholdDate.Visible = isGroceries; // Shows or hides threshold date for groceries
-            RdBtnPerishable.Visible = isGroceries; // Shows or hides perishable radio button
-            RdBtnNonPerishable.Visible = isGroceries; // Shows or hides non-perishable radio button
+            DtExpiryDate.Visible = isGroceries;
+            DtpThresholdDate.Visible = isGroceries;
+            RdBtnPerishable.Visible = isGroceries;
+            RdBtnNonPerishable.Visible = isGroceries;
 
             // If the category is not Groceries, then we assume the product is not perishable
             // and we set the non-perishable radio button to checked.

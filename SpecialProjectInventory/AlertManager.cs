@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Windows.Forms;
+using static SpecialProjectInventory.ProjectUtility;
 
 namespace SpecialProjectInventory
 {
+
     public class AlertManager
     {
-
+    
         private readonly string _connectionString;
 
+      
         public AlertManager(string connectionString)
         {
             _connectionString = connectionString;
@@ -18,6 +22,7 @@ namespace SpecialProjectInventory
 
         public class AlertLogEntry
         {
+
             public int LogID { get; set; }
             public int AlertID { get; set; }
             public DateTime TriggeredOn { get; set; }
@@ -25,7 +30,6 @@ namespace SpecialProjectInventory
             public bool IsResolved { get; set; }
             public int ProductID { get; set; }
         }
-
 
         public class Product
         {
@@ -39,6 +43,7 @@ namespace SpecialProjectInventory
             public DateTime? ExpirationDate { get; set; }
             public DateTime? LastCheckedOn { get; set; }
         }
+
         public class Order
         {
             public int Id { get; set; }
@@ -62,30 +67,32 @@ namespace SpecialProjectInventory
             public bool AlertSent { get; set; }
         }
 
+       
         public void LogAlert(string message, int alertID, int productID)
         {
             if (alertID == -1)
             {
-                MessageBox.Show("No valid alertID found for the given alert type.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Logger.LogMessage("No valid alertID found for the given alert type, not logging alert.", nameof(LogAlert));
                 return;
             }
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-
                 // Starts a transaction to ensure both commands are executed together
                 using (var transaction = connection.BeginTransaction())
                 {
+                   
                     try
                     {
+
                         // Inserts the alert log with productID
-                        var logCommand = new SqlCommand("INSERT INTO tbAlertLog (alertID, productID, Message, TriggeredOn, IsResolved) VALUES (@alertID, @productID, @message, @triggeredOn, @isResolved)", connection, transaction);
+                        Logger.LogMessage($"Logging Alert: {message} for AlertID: {alertID}, ProductID: {productID}", nameof(LogAlert));
+                        var logCommand = new SqlCommand("INSERT INTO tbAlertLog (alertID, TriggeredOn, Message, IsResolved, productID) VALUES (@alertID, @triggeredOn, @message, @isResolved, @productID)", connection, transaction);
                         logCommand.Parameters.AddWithValue("@alertID", alertID);
-                        logCommand.Parameters.AddWithValue("@productID", productID); 
-                        logCommand.Parameters.AddWithValue("@message", message);
                         logCommand.Parameters.AddWithValue("@triggeredOn", DateTime.Now);
+                        logCommand.Parameters.AddWithValue("@message", message);
                         logCommand.Parameters.AddWithValue("@isResolved", false);
+                        logCommand.Parameters.AddWithValue("@productID", productID);
                         logCommand.ExecuteNonQuery();
 
                         // Commits the transaction
@@ -94,13 +101,24 @@ namespace SpecialProjectInventory
                     catch (Exception ex)
                     {
                         // Attempts to roll back the transaction
-                        transaction.Rollback();
-                        MessageBox.Show("Error in LogAlert: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        try
+                        {
+                            transaction.Rollback();
+                        }
+                        catch (Exception rollbackEx)
+                        {
+                            // Logs the rollback exception if it fails, 
+                            Logger.LogException(rollbackEx, nameof(LogAlert) + " - Rollback");
+                        }
+
+                        // Logs the original exception
+                        Logger.LogException(ex, nameof(LogAlert));
                     }
+
                 }
             }
         }
-
+       
         public void ResolveAlert(int logID, int productID)
         {
             // Retrieves the expiry date for the product
@@ -128,7 +146,7 @@ namespace SpecialProjectInventory
             }
         }
 
-        // Method to get the expiry date of a product
+  
         public DateTime? GetProductExpiryDate(int productID)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -145,11 +163,12 @@ namespace SpecialProjectInventory
                 }
                 else
                 {
-                    return null; 
+                    return null;
                 }
             }
         }
 
+ 
         public int GetProductThreshold(int productID)
         {
             int threshold = default;
@@ -172,7 +191,7 @@ namespace SpecialProjectInventory
             catch (Exception ex)
             {
                 // Logs the exception 
-                Console.WriteLine(ex.Message);
+                Logger.LogException(ex, nameof(GetProductThreshold));
             }
 
             return threshold;
@@ -182,45 +201,53 @@ namespace SpecialProjectInventory
         {
             var productsWithLowStock = new List<Product>();
 
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                var command = new SqlCommand(@"
-        SELECT pid, pname, pqty, pprice, pdescription, pcategory, lowstockthreshold 
-        FROM tbProduct 
-        WHERE pqty <= lowstockthreshold AND 
-        (lastCheckedOn IS NULL OR lastCheckedOn < @lastCheckedTime)", connection);
-
-                SqlParameter lastCheckedParam = new SqlParameter("@lastCheckedTime", SqlDbType.DateTime)
+                using (var connection = new SqlConnection(_connectionString))
                 {
-                    Value = (lastCheckedTime == DateTime.MinValue) ? (object)DBNull.Value : lastCheckedTime
-                };
-                command.Parameters.Add(lastCheckedParam);
+                    var command = new SqlCommand(@"
+            SELECT pid, pname, pqty, pprice, pdescription, pcategory, lowstockthreshold 
+            FROM tbProduct 
+            WHERE pqty <= lowstockthreshold AND 
+            (lastCheckedOn IS NULL OR lastCheckedOn < @lastCheckedTime)", connection);
 
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
+                    SqlParameter lastCheckedParam = new SqlParameter("@lastCheckedTime", SqlDbType.DateTime)
                     {
-                        // Uses a default value for lowstockthreshold if it's NULL
-                        int defaultLowStockThreshold = 0; // Defines the default threshold value
+                        Value = (lastCheckedTime == DateTime.MinValue) ? (object)DBNull.Value : lastCheckedTime
+                    };
+                    command.Parameters.Add(lastCheckedParam);
 
-                        var product = new Product
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("pid")),
-                            Name = reader.GetString(reader.GetOrdinal("pname")),
-                            Quantity = reader.GetInt32(reader.GetOrdinal("pqty")),
-                            Price = reader.GetDecimal(reader.GetOrdinal("pprice")),
-                            Description = reader.IsDBNull(reader.GetOrdinal("pdescription")) ? null : reader.GetString(reader.GetOrdinal("pdescription")),
-                            Category = reader.GetString(reader.GetOrdinal("pcategory")),
-                            LowStockThreshold = reader.IsDBNull(reader.GetOrdinal("lowstockthreshold")) ? defaultLowStockThreshold : reader.GetInt32(reader.GetOrdinal("lowstockthreshold"))
-                        };
-                        productsWithLowStock.Add(product);
+                            // Uses a default value for lowstockthreshold if it's NULL
+                            int defaultLowStockThreshold = 0;
+
+                            var product = new Product
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("pid")),
+                                Name = reader.GetString(reader.GetOrdinal("pname")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("pqty")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("pprice")),
+                                Description = reader.IsDBNull(reader.GetOrdinal("pdescription")) ? null : reader.GetString(reader.GetOrdinal("pdescription")),
+                                Category = reader.GetString(reader.GetOrdinal("pcategory")),
+                                LowStockThreshold = reader.IsDBNull(reader.GetOrdinal("lowstockthreshold")) ? defaultLowStockThreshold : reader.GetInt32(reader.GetOrdinal("lowstockthreshold"))
+                            };
+                            productsWithLowStock.Add(product);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, nameof(GetAllProductsWithLowStockThreshold));
             }
 
             return productsWithLowStock;
         }
+
 
 
         public void UpdateProductLastCheckedTime(int productId)
@@ -236,52 +263,70 @@ namespace SpecialProjectInventory
             }
         }
 
-       
         public bool CheckExpiringProductAlerts(DateTime lastCheckedTime)
         {
             bool newAlertsLogged = false; // Indicates if new alerts were logged
-            int expiringAlertID = GetAlertID("Expiring-Product");
-            int expiredAlertID = GetAlertID("Expired-Product");
-            var expiringProducts = GetAllExpiringProducts(lastCheckedTime);
 
-            foreach (var product in expiringProducts)
+            try
             {
-                // Check if the product's last checked time is before today to prevent duplicate alerts.
-                if (!product.LastCheckedOn.HasValue || product.LastCheckedOn.Value.Date < DateTime.Now.Date)
-                {
-                    if (product.ExpirationDate.HasValue)
-                    {
-                        if (product.ExpirationDate.Value.Date == DateTime.Now.Date)
-                        {
-                            // If the product expires today
-                            LogAlert($"Product expires today alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiringAlertID, product.Id);
-                            newAlertsLogged = true;
-                        }
-                        else if (product.ExpirationDate.Value < DateTime.Now)
-                        {
-                            // If the product has already expired
-                            LogAlert($"Expired product alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiredAlertID, product.Id);
-                            newAlertsLogged = true;
-                        }
-                        else if (product.ExpirationDate.Value <= DateTime.Now.AddDays(3))
-                        {
-                            // If the product is expiring within the next 3 days
-                            LogAlert($"Expiring product alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiringAlertID, product.Id);
-                            newAlertsLogged = true;
-                        }
+                int expiringAlertID = GetAlertID("Expiring-Product");
+                int expiredAlertID = GetAlertID("Expired-Product");
+                var expiringProducts = GetAllExpiringProducts(lastCheckedTime);
 
-                        // Updates the last checked time regardless of whether an alert was logged to prevent duplicate alerts.
-                        UpdateProductLastCheckedTime(product.Id);
+
+                foreach (var product in expiringProducts)
+                {
+                    
+                    // Checks if the product's last checked time is before today to prevent duplicate alerts.
+                    if (!product.LastCheckedOn.HasValue || product.LastCheckedOn.Value.Date < DateTime.Now.Date)
+                    {
+                        if (product.ExpirationDate.HasValue)
+                        {
+                            if (product.ExpirationDate.Value.Date == DateTime.Now.Date)
+                            {
+                                // If the product expires today
+                                LogAlert($"Product expires today alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiringAlertID, product.Id);
+                                newAlertsLogged = true;
+                            }
+                            else if (product.ExpirationDate.Value < DateTime.Now)
+                            {
+                                // If the product has already expired
+                                LogAlert($"Expired product alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiredAlertID, product.Id);
+                                newAlertsLogged = true;
+                            }
+                            else if (product.ExpirationDate.Value <= DateTime.Now.AddDays(3))
+                            {
+                                // If the product is expiring within the next 3 days
+                                LogAlert($"Expiring product alert for {product.Name}. Expiration date: {product.ExpirationDate.Value.ToShortDateString()}.", expiringAlertID, product.Id);
+                                newAlertsLogged = true;
+                            }
+                        }
+                        else
+                        {
+                            Logger.LogMessage($"Product {product.Name} with ID {product.Id} has no expiration date set.", nameof(CheckExpiringProductAlerts));
+                            
+                        }
                     }
+                    else
+                    {
+                        Logger.LogMessage($"Product {product.Name} with ID {product.Id} was already checked today.", nameof(CheckExpiringProductAlerts));
+                    }
+
+                    // Updates the last checked time regardless of whether an alert was logged to prevent duplicate alerts
+                    UpdateProductLastCheckedTime(product.Id);
                 }
+            }
+            catch (Exception ex)
+            {
+                // Logs the exception 
+                Logger.LogException(ex, "Error in CheckExpiringProductAlerts");
+                
             }
 
             return newAlertsLogged; // Returns true if any new alerts were logged
         }
 
 
-
-        // Checks for pending orders
         public void CheckPendingOrdersAlerts(DateTime lastCheckedTime)
         {
             int alertID = GetAlertID("Pending-Order");
@@ -297,6 +342,7 @@ namespace SpecialProjectInventory
             }
         }
 
+       
         public int GetAlertID(string alertType)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -309,16 +355,18 @@ namespace SpecialProjectInventory
 
                 if (result != null && int.TryParse(result.ToString(), out int alertID))
                 {
+                    Logger.LogMessage($"Retrieved AlertID: {alertID} for AlertType: {alertType}", nameof(GetAlertID));
                     return alertID;
                 }
             }
             return -1; // Returns an invalid ID in case of error or if not found
         }
 
+        
         public DateTime GetLastCheckedTime()
         {
             DateTime lastCheckedTime = new DateTime(1753, 1, 1);
-            
+
             using (var connection = new SqlConnection(_connectionString))
             {
                 var command = new SqlCommand("SELECT MAX(LastCheckedOn) FROM tbAlertLog", connection);
@@ -336,24 +384,29 @@ namespace SpecialProjectInventory
             return lastCheckedTime;
         }
 
+        
         public void CheckLowStockAlerts(DateTime lastCheckedTime)
         {
             int defaultThreshold = GetDefaultThreshold("Low-Stock");
             var products = GetAllProductsWithLowStockThreshold(lastCheckedTime);
-            
+
             foreach (var product in products)
             {
                 int effectiveThreshold = product.LowStockThreshold > 0 ? product.LowStockThreshold : defaultThreshold;
-                if(product.Quantity <= effectiveThreshold)
+                if (product.Quantity <= effectiveThreshold)
                 {
                     int alertID = GetAlertID("Low-Stock");
-                    if(alertID != -1)
+                    if (alertID != -1)
                     {
-                        LogAlert($"Low stock alert for product {product.Name}. Only {product.Quantity} left in stock.", alertID, product.Id);
+                        string message = $"Low stock alert for product {product.Name}. Only {product.Quantity} left in stock.";
+                        LogAlert(message, alertID, product.Id);
                     }
-                    
+                    else
+                    {
+                        Logger.LogMessage("Invalid AlertID received, not logging alert.", nameof(CheckLowStockAlerts));
+                    }
                 }
-                
+
             }
         }
 
@@ -370,7 +423,7 @@ namespace SpecialProjectInventory
                 return result != null && Convert.ToBoolean(result);
             }
         }
-
+       
 
         public bool CanResolveAlert(int productID, int threshold)
         {
@@ -391,12 +444,13 @@ namespace SpecialProjectInventory
                 else
                 {
                     // Handles the case where no matching product was found or quantity is null
-                    
-                    return false; 
+
+                    return false;
                 }
             }
         }
 
+        
         public List<AlertLogEntry> GetActiveAlerts()
         {
             var alerts = new List<AlertLogEntry>();
@@ -428,51 +482,57 @@ namespace SpecialProjectInventory
             return alerts;
         }
 
-
-
         private List<Product> GetAllExpiringProducts(DateTime thresholdDate)
         {
             var expiringProducts = new List<Product>();
 
-            // Adjusts threshold date to include today's date.
-            thresholdDate = thresholdDate.Date;
-
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                var command = new SqlCommand("SELECT pid, pname, pqty, pprice, pdescription, pcategory, lowstockthreshold, expiredatee, lastCheckedOn FROM tbProduct WHERE expiredatee IS NOT NULL AND expiredatee >= @ThresholdDate", connection);
-
-                // Uses the threshold date in the SQL query.
-                command.Parameters.AddWithValue("@ThresholdDate", thresholdDate);
-
-                connection.Open();
-                using (var reader = command.ExecuteReader())
+                using (var connection = new SqlConnection(_connectionString))
                 {
-                    while (reader.Read())
-                    {
-                        var product = new Product
-                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("pid")),
-                            Name = reader.GetString(reader.GetOrdinal("pname")),
-                            Quantity = reader.GetInt32(reader.GetOrdinal("pqty")),
-                            Price = reader.GetDecimal(reader.GetOrdinal("pprice")),
-                            Description = reader.IsDBNull(reader.GetOrdinal("pdescription")) ? null : reader.GetString(reader.GetOrdinal("pdescription")),
-                            Category = reader.GetString(reader.GetOrdinal("pcategory")),
-                            LowStockThreshold = reader.GetInt32(reader.GetOrdinal("lowstockthreshold")),
-                            ExpirationDate = reader.IsDBNull(reader.GetOrdinal("expiredatee")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("expiredatee")),
-                            LastCheckedOn = reader.IsDBNull(reader.GetOrdinal("lastCheckedOn")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("lastCheckedOn"))
-                        };
+                    var command = new SqlCommand("SELECT pid, pname, pqty, pprice, pdescription, pcategory, lowstockthreshold, expiredatee, lastCheckedOn FROM tbProduct WHERE expiredatee IS NOT NULL AND expiredatee >= @ThresholdDate", connection);
 
-                        // Adds the product to the list if the expiration date is not null.
-                        if (product.ExpirationDate.HasValue)
+                    // Ensure that the threshold date is within the SQL DateTime range.
+                    if (thresholdDate < (DateTime)SqlDateTime.MinValue)
+                    {
+                        thresholdDate = (DateTime)SqlDateTime.MinValue;
+                    }
+
+                    // Uses the threshold date in the SQL query.
+                    command.Parameters.AddWithValue("@ThresholdDate", thresholdDate);
+
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
                         {
+                            var product = new Product
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("pid")),
+                                Name = reader.GetString(reader.GetOrdinal("pname")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("pqty")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("pprice")),
+                                Description = reader.IsDBNull(reader.GetOrdinal("pdescription")) ? null : reader.GetString(reader.GetOrdinal("pdescription")),
+                                Category = reader.GetString(reader.GetOrdinal("pcategory")),
+                                LowStockThreshold = reader.GetInt32(reader.GetOrdinal("lowstockthreshold")),
+                                ExpirationDate = reader.IsDBNull(reader.GetOrdinal("expiredatee")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("expiredatee")),
+                                LastCheckedOn = reader.IsDBNull(reader.GetOrdinal("lastCheckedOn")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("lastCheckedOn"))
+                            };
+
                             expiringProducts.Add(product);
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex, nameof(GetAllExpiringProducts));
+                MessageBox.Show("An error occurred. Please contact support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             return expiringProducts;
         }
+
 
 
         private List<Order> GetAllPendingOrders(DateTime lastCheckedTime)
@@ -533,7 +593,7 @@ namespace SpecialProjectInventory
                     return threshold;
                 }
             }
-            return 0; 
+            return 0;
         }
 
     }

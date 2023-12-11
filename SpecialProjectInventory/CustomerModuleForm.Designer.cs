@@ -35,11 +35,11 @@
             this.BtnClearUM = new System.Windows.Forms.Button();
             this.btnUpdateUM = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
-            this.txtCPhone = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.txtCName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lblCld = new System.Windows.Forms.Label();
+            this.MskTxtCPhone = new System.Windows.Forms.MaskedTextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxClose)).BeginInit();
             this.SuspendLayout();
@@ -86,7 +86,7 @@
             this.BtnClearUM.Location = new System.Drawing.Point(471, 189);
             this.BtnClearUM.Name = "BtnClearUM";
             this.BtnClearUM.Size = new System.Drawing.Size(93, 38);
-            this.BtnClearUM.TabIndex = 25;
+            this.BtnClearUM.TabIndex = 4;
             this.BtnClearUM.Text = "Clear";
             this.BtnClearUM.UseVisualStyleBackColor = false;
             this.BtnClearUM.Click += new System.EventHandler(this.BtnClearUM_Click);
@@ -100,7 +100,7 @@
             this.btnUpdateUM.Location = new System.Drawing.Point(349, 189);
             this.btnUpdateUM.Name = "btnUpdateUM";
             this.btnUpdateUM.Size = new System.Drawing.Size(93, 38);
-            this.btnUpdateUM.TabIndex = 24;
+            this.btnUpdateUM.TabIndex = 3;
             this.btnUpdateUM.Text = "Update";
             this.btnUpdateUM.UseVisualStyleBackColor = false;
             this.btnUpdateUM.Click += new System.EventHandler(this.BtnUpdateUM_Click);
@@ -114,17 +114,10 @@
             this.btnSave.Location = new System.Drawing.Point(227, 189);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(93, 38);
-            this.btnSave.TabIndex = 23;
+            this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
-            // 
-            // txtCPhone
-            // 
-            this.txtCPhone.Location = new System.Drawing.Point(155, 140);
-            this.txtCPhone.Name = "txtCPhone";
-            this.txtCPhone.Size = new System.Drawing.Size(409, 23);
-            this.txtCPhone.TabIndex = 22;
             // 
             // label5
             // 
@@ -141,7 +134,7 @@
             this.txtCName.Location = new System.Drawing.Point(155, 94);
             this.txtCName.Name = "txtCName";
             this.txtCName.Size = new System.Drawing.Size(409, 23);
-            this.txtCName.TabIndex = 16;
+            this.txtCName.TabIndex = 0;
             // 
             // label2
             // 
@@ -164,17 +157,25 @@
             this.lblCld.Text = "Customer Id";
             this.lblCld.Visible = false;
             // 
+            // MskTxtCPhone
+            // 
+            this.MskTxtCPhone.Location = new System.Drawing.Point(155, 143);
+            this.MskTxtCPhone.Mask = "(999) 999-9999";
+            this.MskTxtCPhone.Name = "MskTxtCPhone";
+            this.MskTxtCPhone.Size = new System.Drawing.Size(409, 23);
+            this.MskTxtCPhone.TabIndex = 1;
+            // 
             // CustomerModuleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(630, 268);
+            this.Controls.Add(this.MskTxtCPhone);
             this.Controls.Add(this.lblCld);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.BtnClearUM);
             this.Controls.Add(this.btnUpdateUM);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtCPhone);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtCName);
             this.Controls.Add(this.label2);
@@ -200,10 +201,10 @@
         public System.Windows.Forms.Button BtnClearUM;
         public System.Windows.Forms.Button btnUpdateUM;
         public System.Windows.Forms.Button btnSave;
-        public System.Windows.Forms.TextBox txtCPhone;
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox txtCName;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.Label lblCld;
+        public System.Windows.Forms.MaskedTextBox MskTxtCPhone;
     }
 }

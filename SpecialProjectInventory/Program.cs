@@ -13,7 +13,8 @@ namespace SpecialProjectInventory
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WelcomeForm());  // LoginForm was changed to MainFrom
+            Application.Run(new WelcomeForm());
+
         }
     }
 }

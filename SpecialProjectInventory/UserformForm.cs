@@ -5,13 +5,13 @@ using System.Windows.Forms;
 namespace SpecialProjectInventory
 {
     public partial class UserformForm : Form
-    {        
+    {
         public UserformForm()
         {
             InitializeComponent();
             LoadUser();
         }
-        
+
         public void LoadUser()
         {
             dgvUser.Rows.Clear();
@@ -39,7 +39,7 @@ namespace SpecialProjectInventory
         }
 
         // Invokes the LoadUser method if the correct role is established
-        private void BtncusAdd_Click(object sender, EventArgs e)  
+        private void BtncusAdd_Click(object sender, EventArgs e)
         {
             // Checks whether the user's role grants permission
             if (RoleHelper.IsManager())
@@ -63,12 +63,12 @@ namespace SpecialProjectInventory
         {
             string colName = dgvUser.Columns[e.ColumnIndex].Name;
 
-           
+
             if (colName == "Edit")
             {
                 UserModuleForm userModule = new UserModuleForm();
 
-                userModule.lblUserID.Text = dgvUser.Rows[e.RowIndex].Cells["userID"].Value.ToString(); 
+                userModule.lblUserID.Text = dgvUser.Rows[e.RowIndex].Cells["userID"].Value.ToString();
                 userModule.txtUserNameUM.Text = dgvUser.Rows[e.RowIndex].Cells["userName"].Value.ToString();
                 userModule.txtFullnameUM.Text = dgvUser.Rows[e.RowIndex].Cells["fullName"].Value.ToString();
                 userModule.txtPasswordUM.Text = dgvUser.Rows[e.RowIndex].Cells["password"].Value.ToString();
@@ -100,7 +100,7 @@ namespace SpecialProjectInventory
                             cm.ExecuteNonQuery();
                         }
                     }
-                    MessageBox.Show("Record has been successfully deleted!"); 
+                    MessageBox.Show("Record has been successfully deleted!");
                 }
             }
             LoadUser();

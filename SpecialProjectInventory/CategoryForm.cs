@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpecialProjectInventory
@@ -34,7 +27,7 @@ namespace SpecialProjectInventory
                     connection.Open();
                     dr = cm.ExecuteReader();
 
-                    while(dr.Read())
+                    while (dr.Read())
                     {
                         i++;
                         dgvCategory.Rows.Add(i, dr[0].ToString(), dr[1].ToString());
@@ -44,7 +37,7 @@ namespace SpecialProjectInventory
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -97,7 +90,7 @@ namespace SpecialProjectInventory
 
 
             }
-            LoadCategory(); 
+            LoadCategory();
 
         }
     }

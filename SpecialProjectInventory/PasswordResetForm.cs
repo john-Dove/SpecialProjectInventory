@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 
 namespace SpecialProjectInventory
 {
     public partial class PasswordResetForm : Form
     {
-        private string _username;
+        private readonly string _username;
 
         public PasswordResetForm(int userID, string username)
         {
@@ -15,7 +15,7 @@ namespace SpecialProjectInventory
 
             _username = username;
             TxtUserName.Text = _username;
-            this.lblUserID.Text = userID.ToString();
+            lblUserID.Text = userID.ToString();
         }
 
 

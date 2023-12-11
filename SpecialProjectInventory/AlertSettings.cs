@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using static SpecialProjectInventory.ProjectUtility;
 
 namespace SpecialProjectInventory
 {
@@ -45,7 +46,7 @@ namespace SpecialProjectInventory
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("An error occurred: " + ex.Message);
+                        Logger.LogException(ex, nameof(BtnSaveAlert_Click));
                     }
                 }
             }
@@ -199,6 +200,12 @@ namespace SpecialProjectInventory
             if (!int.TryParse(TxtBxAlertID.Text, out int alertID))
             {
                 MessageBox.Show("Please enter a valid Alert ID.");
+                return;
+            }
+
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this alert setting?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult != DialogResult.Yes)
+            {
                 return;
             }
 

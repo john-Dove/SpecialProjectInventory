@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using System.IO;
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
+using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
@@ -45,7 +47,37 @@ namespace SpecialProjectInventory
                 return builder.ToString();
             }
         }
-               
+
+        public static class Logger
+        {
+            public static void LogException(Exception ex, string methodName)
+            {
+                string startupPath = Application.StartupPath;
+                string logFileName = "error_log.txt";
+                string logFilePath = Path.Combine(startupPath, logFileName);
+
+                string message = $"{DateTime.Now}: Exception in {methodName} - {ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}";
+
+                lock (logFileName)
+                {
+                    File.AppendAllText(logFilePath, message);
+                }
+            }
+
+            public static void LogMessage(string message, string methodName)
+            {
+                string startupPath = Application.StartupPath;
+                string logFileName = "error_log.txt";
+                string logFilePath = Path.Combine(startupPath, logFileName);
+
+                string fullMessage = $"{DateTime.Now}: Message in {methodName} - {message}{Environment.NewLine}";
+
+                lock (logFileName)
+                {
+                    File.AppendAllText(logFilePath, fullMessage);
+                }
+            }
+        }
 
 
     }

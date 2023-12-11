@@ -17,7 +17,7 @@ namespace SpecialProjectInventory
         {
             startPoint += 2;
             progressBar1.Value = startPoint;
-            if(progressBar1.Value == 100)
+            if (progressBar1.Value == 100)
             {
                 progressBar1.Value = 0;
                 timer1.Stop();

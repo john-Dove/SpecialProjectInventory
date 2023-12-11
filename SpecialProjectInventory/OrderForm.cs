@@ -6,7 +6,7 @@ namespace SpecialProjectInventory
 {
     public partial class OrderForm : Form
     {
-        
+
 
         public OrderForm()
         {
@@ -45,10 +45,10 @@ namespace SpecialProjectInventory
 
         }
 
-        private void BtnCusAdd_Click(object sender, EventArgs e) 
+        private void BtnCusAdd_Click(object sender, EventArgs e)
         {
             OrderModuleForm moduleForm = new OrderModuleForm();
-           // moduleForm.btnInsert.Enabled = true;
+            // moduleForm.btnInsert.Enabled = true;
             //moduleForm.btnOUpdate.Enabled = false;
             moduleForm.ShowDialog();
             LoadOrder();
@@ -58,7 +58,7 @@ namespace SpecialProjectInventory
         private void dgvUser_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             string colName = dgvOrder.Columns[e.ColumnIndex].Name;
-            
+
             if (colName == "Delete")
             {
                 if (MessageBox.Show("Are you sure you want to delete this order?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)

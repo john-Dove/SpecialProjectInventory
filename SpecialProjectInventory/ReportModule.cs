@@ -54,8 +54,8 @@ namespace SpecialProjectInventory
         private void BtnGenerateReport_Click(object sender, EventArgs e)
         {
             DateTime startDate = DtReportStart.Value.Date;
-            DateTime endDate = DtReportEnd.Value.Date.AddDays(1).AddTicks(-1); 
-            string selectedCategory = CmbCategory.SelectedItem?.ToString(); 
+            DateTime endDate = DtReportEnd.Value.Date.AddDays(1).AddTicks(-1);
+            string selectedCategory = CmbCategory.SelectedItem?.ToString();
             string selectedCriteria = CmbCriteria.SelectedItem?.ToString();
             GenerateReport(startDate, endDate, selectedCategory, selectedCriteria);
 
@@ -159,9 +159,11 @@ namespace SpecialProjectInventory
 
         private void BtnSaveReport_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "CSV file (*.csv)|*.csv";
-            saveFileDialog.Title = "Save report as CSV";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CSV file (*.csv)|*.csv",
+                Title = "Save report as CSV"
+            };
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {

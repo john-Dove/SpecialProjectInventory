@@ -6,7 +6,7 @@ namespace SpecialProjectInventory
 {
     public partial class ProductForm : Form
     {
-        
+
         SqlCommand cm = new SqlCommand();
         SqlDataReader dr;
 
@@ -16,7 +16,7 @@ namespace SpecialProjectInventory
             LoadProduct();
         }
         // Populates the data grid with data from the system
-        public void LoadProduct()  
+        public void LoadProduct()
         {
             int i = 0;
             dgvProduct.Rows.Clear();
@@ -28,8 +28,8 @@ namespace SpecialProjectInventory
                     cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE @search", connection);
                     cm.Parameters.AddWithValue("@search", searchQuery);
                     connection.Open();
-                    dr = cm.ExecuteReader();    
-                    while(dr.Read())
+                    dr = cm.ExecuteReader();
+                    while (dr.Read())
                     {
                         i++;
                         dgvProduct.Rows.Add(i, dr[0].ToString(), dr[1].ToString(), dr[2].ToString(), dr[3].ToString(), dr[4].ToString(), dr[5].ToString());
@@ -38,13 +38,13 @@ namespace SpecialProjectInventory
                     dr.Close();
                 }
 
-             }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-    }
+        }
 
         private void BtnCatAdd_Click(object sender, EventArgs e)
         {
@@ -95,7 +95,7 @@ namespace SpecialProjectInventory
                         }
                         MessageBox.Show("Record has been successfully deleted!");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show("An error occurred while connecting to the database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -104,7 +104,7 @@ namespace SpecialProjectInventory
             }
             else
             {
-               if (colName == "Delete") MessageBox.Show("You do not have permission to delete products.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                if (colName == "Delete") MessageBox.Show("You do not have permission to delete products.", "Permission Denied", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
             LoadProduct();
 
@@ -118,7 +118,7 @@ namespace SpecialProjectInventory
 
         private bool CheckUserRole(string roleName)
         {
-            
+
             return MainForm.UserRole == roleName;
         }
 

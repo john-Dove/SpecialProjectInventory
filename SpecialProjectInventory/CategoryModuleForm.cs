@@ -6,7 +6,7 @@ namespace SpecialProjectInventory
 {
     public partial class CategoryModuleForm : Form
     {
-       
+
         public CategoryModuleForm()
         {
             InitializeComponent();

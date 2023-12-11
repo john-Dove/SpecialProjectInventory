@@ -161,7 +161,6 @@
             this.lblUserID.Size = new System.Drawing.Size(38, 13);
             this.lblUserID.TabIndex = 31;
             this.lblUserID.Text = "userID";
-            this.lblUserID.Visible = false;
             // 
             // BtnClearPassword
             // 

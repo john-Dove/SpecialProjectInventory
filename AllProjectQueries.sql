@@ -255,8 +255,21 @@ WHERE
             tbSales.customerID = tbOrder.cid
     );
 */
+/*USE master;
+GO
+ALTER DATABASE [SpecialProjectDBs] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+GO*/
 
+/*ALTER DATABASE [SpecialProjectDBs] SET MULTI_USER;
+GO*/
 
+/*SELECT DB_NAME() AS CurrentDatabase;*/
+
+/*INSERT INTO tbAlertLog (alertID, TriggeredOn, Message, IsResolved, productID)
+VALUES (1, GETDATE(), 'Low stock alert for product Sausage. Only 8 left in stock.', 0, 2);*/
+
+/*ALTER TABLE tbAlertLog
+DROP COLUMN lastCheckedOn;*/
 
 
 

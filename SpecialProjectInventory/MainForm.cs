@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Windows.Forms;
 using static SpecialProjectInventory.LoginForm;
+using static SpecialProjectInventory.ProjectUtility;
 
 namespace SpecialProjectInventory
 {
     public partial class MainForm : Form
     {
         private readonly Timer notificationTimer = new Timer();
+        private DateTime _lastAlertCheckTime = DateTime.MinValue;
 
         public static string UserRole { get; set; }
 
@@ -17,7 +19,7 @@ namespace SpecialProjectInventory
 
         // Shows subform form in mainform
         private Form activeForm = null;
-        
+
         public void OpenChildForm(Form childForm)
         {
             activeForm?.Close();
@@ -57,7 +59,7 @@ namespace SpecialProjectInventory
         }
         public void SetWelcomeMessage(string username)
         {
-            
+
             LblWelcomeMsg.Text = $"SIGNED IN AS,\n{username.ToUpper()}";
         }
 
@@ -91,11 +93,17 @@ namespace SpecialProjectInventory
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if(LoginForm.UserSession.IsUserLoggedIn)
+            
+            if (UserSession.IsUserLoggedIn)
             {
                 notificationTimer.Interval = 60000;
                 notificationTimer.Tick += new EventHandler(NotificationTimer_Tick);
                 notificationTimer.Start();
+                
+            }
+            else
+            {
+                Logger.LogMessage("User is not logged in, timer not started.", nameof(NotificationTimer_Tick));
             }
 
             // Presets for main buttons
@@ -138,7 +146,7 @@ namespace SpecialProjectInventory
                 LblProduct.Visible = LblAlerts.Visible = true;
             }
         }
-       
+
         private void ShowNotificationHere(string message)
         {
             // Passes 'UserRole' as an additional argument to the NotificationForm constructor
@@ -157,43 +165,44 @@ namespace SpecialProjectInventory
 
         private void NotificationTimer_Tick(object sender, EventArgs e)
         {
-            if(LoginForm.UserSession.IsUserLoggedIn)
+            if (UserSession.IsUserLoggedIn)
             {
                 if (CheckForNewAlerts())
                 {
-                    var message = "You have new alerts!";
+                    string message = "You have new alerts!";
                     ShowNotificationHere(message);
                 }
             }
-            
+            else
+            {
+                notificationTimer.Stop();
+            }
+
         }
 
         private bool CheckForNewAlerts()
         {
+            
             AlertManager alertManager = new AlertManager(DatabaseConfig.ConnectionString);
 
             bool hasNewAlerts = false;
-            DateTime lastCheckedTime = alertManager.GetLastCheckedTime();
-
-            // Ensures lastCheckedTime is within SQL Server's date range
-            if (lastCheckedTime < new DateTime(1753, 1, 1))
-            {
-                lastCheckedTime = new DateTime(1753, 1, 1);
-            }
 
             try
             {
                 // Checks for low stock alerts
-                hasNewAlerts |= CheckLowStockAlerts(alertManager, lastCheckedTime);
-
+                hasNewAlerts |= CheckLowStockAlerts(alertManager, _lastAlertCheckTime);
+                
                 // Checks for expiring product alerts
-                hasNewAlerts |= alertManager.CheckExpiringProductAlerts(lastCheckedTime);
+                hasNewAlerts |= alertManager.CheckExpiringProductAlerts(_lastAlertCheckTime);
+                
+                // Updates _lastAlertCheckTime after checking alerts
+                _lastAlertCheckTime = DateTime.Now;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error checking for new alerts: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.LogException(ex, nameof(CheckForNewAlerts));
             }
-
+            
             return hasNewAlerts;
         }
 
@@ -201,9 +210,12 @@ namespace SpecialProjectInventory
         {
             bool newAlerts = false;
             var lowStockProducts = alertManager.GetAllProductsWithLowStockThreshold(lastCheckedTime);
+
             foreach (var product in lowStockProducts)
             {
                 int alertID = alertManager.GetAlertID("Low-Stock");
+
+       
                 if (alertID != -1)
                 {
                     string message = $"Low stock alert for {product.Name} (ID: {product.Id}). Only {product.Quantity} items left.";
@@ -211,9 +223,18 @@ namespace SpecialProjectInventory
                     alertManager.UpdateProductLastCheckedTime(product.Id);
                     newAlerts = true;
                 }
+                else
+                {
+                    // Logs a warning if the alertID is invalid
+                    Logger.LogMessage($"[MainForm] Warning: Invalid AlertID received for {product.Name} (ID: {product.Id})", nameof(CheckLowStockAlerts));
+
+                }
             }
+
             return newAlerts;
         }
+
+
 
     }
 }

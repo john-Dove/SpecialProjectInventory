@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
@@ -22,7 +22,7 @@ namespace SpecialProjectInventory
                         using (SqlCommand cm = new SqlCommand("INSERT INTO tbCustomer(cname,cphone)VALUES(@cname, @cphone)", con))
                         {
                             cm.Parameters.AddWithValue("@cname", txtCName.Text);
-                            cm.Parameters.AddWithValue("@cphone", txtCPhone.Text);
+                            cm.Parameters.AddWithValue("@cphone", MskTxtCPhone.Text);
                             con.Open();
                             cm.ExecuteNonQuery();
                         }
@@ -40,7 +40,7 @@ namespace SpecialProjectInventory
         public void Clear()
         {
             txtCName.Clear();
-            txtCPhone.Clear();
+            MskTxtCPhone.Clear();
 
         }
 
@@ -67,7 +67,7 @@ namespace SpecialProjectInventory
                         using (SqlCommand cm = new SqlCommand("UPDATE tbCustomer SET cname = @cname, cphone=@cphone WHERE cid LIKE '" + lblCld.Text + "' ", con))
                         {
                             cm.Parameters.AddWithValue("@cname", txtCName.Text);
-                            cm.Parameters.AddWithValue("@cphone", txtCPhone.Text);
+                            cm.Parameters.AddWithValue("@cphone", MskTxtCPhone.Text);
                             con.Open();
                             cm.ExecuteNonQuery();
                         }

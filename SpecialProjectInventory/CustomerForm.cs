@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace SpecialProjectInventory
 {
     public partial class CustomerForm : Form
-    {    
+    {
         public CustomerForm()
         {
             InitializeComponent();
@@ -52,7 +52,7 @@ namespace SpecialProjectInventory
                 CustomerModuleForm customerModule = new CustomerModuleForm();
                 customerModule.lblCld.Text = dgvCustomer.Rows[e.RowIndex].Cells[1].Value.ToString();
                 customerModule.txtCName.Text = dgvCustomer.Rows[e.RowIndex].Cells[2].Value.ToString();
-                customerModule.txtCPhone.Text = dgvCustomer.Rows[e.RowIndex].Cells[3].Value.ToString();
+                customerModule.MskTxtCPhone.Text = dgvCustomer.Rows[e.RowIndex].Cells[3].Value.ToString();
 
                 customerModule.btnSave.Enabled = false;
                 customerModule.btnUpdateUM.Enabled = true;

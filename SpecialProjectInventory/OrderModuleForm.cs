@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using static SpecialProjectInventory.ProjectUtility;
 
 namespace SpecialProjectInventory
 {
@@ -8,7 +9,7 @@ namespace SpecialProjectInventory
     {
         SqlConnection con = new SqlConnection(SpecialProjectInventory.DatabaseConfig.ConnectionString);
         SqlCommand cm = new SqlCommand();
-  
+
         SqlDataReader dr;
         int qty = 0;            //ensures that amount ordering doesnt goes over what is in stock con't
 
@@ -22,7 +23,7 @@ namespace SpecialProjectInventory
         private void picBoxClose_Click(object sender, EventArgs e)
         {
             this.Dispose();
-            
+
 
         }
 
@@ -30,7 +31,7 @@ namespace SpecialProjectInventory
         {
             int i = 0;
             dgvCustomer.Rows.Clear();
-            cm = new SqlCommand("SELECT cid, cname FROM tbCustomer WHERE CONCAT(cid,cname) LIKE '%"+txtSearchCust.Text+"%'", con);  // should be tbCustomer <--- recheck back this
+            cm = new SqlCommand("SELECT cid, cname FROM tbCustomer WHERE CONCAT(cid,cname) LIKE '%" + txtSearchCust.Text + "%'", con);  // should be tbCustomer <--- recheck back this
             con.Open();
             dr = cm.ExecuteReader();
             while (dr.Read())
@@ -48,7 +49,7 @@ namespace SpecialProjectInventory
         {
             int i = 0;
             dgvProduct.Rows.Clear();
-            cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE '%"+txtSearchProd.Text+"%'", con);
+            cm = new SqlCommand("SELECT * FROM tbProduct WHERE CONCAT(pid, pname, pprice, pdescription, pcategory) LIKE '%" + txtSearchProd.Text + "%'", con);
             con.Open();
             dr = cm.ExecuteReader();
             while (dr.Read())
@@ -114,7 +115,7 @@ namespace SpecialProjectInventory
             txtPid.Text = dgvProduct.Rows[e.RowIndex].Cells[1].Value.ToString();
             txtPName.Text = dgvProduct.Rows[e.RowIndex].Cells[2].Value.ToString();
             txtPrice.Text = dgvProduct.Rows[e.RowIndex].Cells[4].Value.ToString();
-           // qty = Convert.ToInt16(dgvProduct.Rows[e.RowIndex].Cells[3].Value.ToString());        //ensures that amount ordering doesnt goes over what is in stock con't
+            // qty = Convert.ToInt16(dgvProduct.Rows[e.RowIndex].Cells[3].Value.ToString());        //ensures that amount ordering doesnt goes over what is in stock con't
 
 
         }
@@ -133,10 +134,15 @@ namespace SpecialProjectInventory
                     MessageBox.Show("Please select a product!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+                if (!decimal.TryParse(txtPrice.Text, out decimal price))
+                {
+                    MessageBox.Show("Please enter a valid price!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 if (MessageBox.Show("Are you sure you want to Insert this order?", "Saving Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    // Inserts the order into tbOrder
+                    // Inserts the order in the tbOrder table
                     cm = new SqlCommand("INSERT INTO tbOrder(odate, pid, cid, qty, price, total) VALUES (@odate, @pid, @cid, @qty, @price, @total)", con);
                     cm.Parameters.AddWithValue("@odate", dtOrder.Value);
                     cm.Parameters.AddWithValue("@pid", Convert.ToInt32(txtPid.Text));
@@ -150,14 +156,16 @@ namespace SpecialProjectInventory
                     MessageBox.Show("Order has been successfully Inserted.");
 
                     // Deducts the quantity from tbProduct
-                    cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid LIKE '" + txtPid.Text + "' ", con);
+                    //cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid LIKE '" + txtPid.Text + "' ", con);
+                    cm = new SqlCommand("UPDATE tbProduct SET pqty=(pqty-@pqty) WHERE pid = @pid", con);
                     cm.Parameters.AddWithValue("@pqty", Convert.ToInt16(UDQty.Value));
+                    cm.Parameters.AddWithValue("@pid", Convert.ToInt32(txtPid.Text));
 
                     con.Open();
                     cm.ExecuteNonQuery();
                     con.Close();
                     Clear();
-                    LoadProduct(); //loads new product list after and order has been made
+                    LoadProduct(); // Loads new product list after and order has been made
 
                     // Records the sale for analytics
                     SalesUtility.RecordSale(
@@ -171,19 +179,19 @@ namespace SpecialProjectInventory
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Logger.LogException(ex, nameof(BtnInsert_Click));
             }
         }
 
 
-        public void Clear() 
+        public void Clear()
         {
             txtCld.Clear();
             txtCname.Clear();
-            
+
             txtPid.Clear();
             txtPName.Clear();
-            
+
             txtPrice.Clear();
             UDQty.Value = 0;
             txtTotal.Clear();
@@ -212,6 +220,6 @@ namespace SpecialProjectInventory
             dr.Close();
             con.Close();
         }
-        
+
     }
 }

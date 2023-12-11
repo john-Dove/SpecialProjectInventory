@@ -43,11 +43,11 @@ namespace SpecialProjectInventory
 
                                 // Using column names to retrieve data
                                 DgvAlerts.Rows.Add(
-                                    dr["logID"].ToString(),     // logID
-                                    dr["alertID"].ToString(),   // alertID
-                                    Convert.ToDateTime(dr["triggeredOn"]).ToString("g"), // triggeredOn
-                                    dr["message"].ToString(),   // message
-                                    productID.ToString()        // productID
+                                    dr["logID"].ToString(),
+                                    dr["alertID"].ToString(),
+                                    Convert.ToDateTime(dr["triggeredOn"]).ToString("g"),
+                                    dr["message"].ToString(),
+                                    productID.ToString()
                                 );
                             }
                         }
@@ -69,6 +69,7 @@ namespace SpecialProjectInventory
                 BtnAlertConfig.Enabled = false; // Disables the alert configuration button
             }
         }
+
 
         private void AddResolveButtonColumn()
         {
